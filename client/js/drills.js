@@ -23,7 +23,7 @@ let isGuidesVisible = true;
 let currentLoadedSvgStrokes = [];
 let strokesDrawnInCurrentAttempt = 0;
 
-// Local Fallback Datasets (Used if /api/drills/${category} is unreachable)
+// Local Fallback Datasets
 const fallbackDrillData = {
     hiragana: [
         { char: "あ", romaji: "a", reading: "a", type: "Hiragana", meaning: "hiragana 'a'", tips: ["Horizontal top stroke first", "Loop down and curve right"], compounds: [{ word: "あめ", reading: "ame", meaning: "Rain" }, { word: "あさ", reading: "asa", meaning: "Morning" }] },
@@ -49,7 +49,6 @@ const fallbackDrillData = {
     ]
 };
 
-// Compound Map Lookup
 const compoundMap = {
     '一': [ { word: '一人', reading: 'ひとり', meaning: 'one person' }, { word: '一月', reading: 'いちがつ', meaning: 'January' } ],
     '二': [ { word: '二人', reading: 'ふたり', meaning: 'two people' }, { word: '二月', reading: 'にがつ', meaning: 'February' } ],
@@ -59,7 +58,6 @@ const compoundMap = {
     '水': [ { word: '水曜日', reading: 'すいようび', meaning: 'Wednesday' }, { word: '飲み水', reading: 'のみみず', meaning: 'drinking water' } ]
 };
 
-// Utility Helpers
 function cleanString(str) {
     if (!str || typeof str !== 'string') return '';
     return str.replace(/\(\s*\)/g, '').replace(/[\(\)]/g, '').replace(/\s+/g, ' ').trim();
@@ -74,40 +72,12 @@ function isKanjiCharacter(char) {
     return /[\u4e00-\u9faf]/.test(char);
 }
 
-// User Profile & Progress Storage
-function syncSidebarUserProfile() {
-    const username = localStorage.getItem('kotolab_username') || 'Shoyo';
-
-    const nameEls = document.querySelectorAll('#user-display-name, .sidebar-username, #sidebar-user-name');
-    nameEls.forEach(el => { if (el) el.innerText = username; });
-
-    document.querySelectorAll('*').forEach(node => {
-        if (node.children.length === 0 && node.innerText && node.innerText.trim() === 'Loading...') {
-            node.innerText = username;
-        }
-    });
-
-    const avatarEls = document.querySelectorAll('#user-avatar, #top-user-avatar, .user-avatar-circle');
-    avatarEls.forEach(el => {
-        if (el && username) {
-            el.innerText = username.charAt(0).toUpperCase();
-            el.style.display = 'flex';
-            el.style.alignItems = 'center';
-            el.style.justifyContent = 'center';
-            el.style.fontWeight = '800';
-            el.style.color = '#ffffff';
-        }
-    });
-}
-
 function getUserProgress() {
-    const user = localStorage.getItem('kotolab_username') || 'Shoyo';
+    const user = localStorage.getItem('kotolab_username') || 'User';
     const stored = localStorage.getItem(`kotolab_progress_${user}`);
 
     let userObj = {};
-    if (stored) {
-        try { userObj = JSON.parse(stored); } catch (e) {}
-    }
+    if (stored) { try { userObj = JSON.parse(stored); } catch (e) {} }
 
     const defaultData = {
         overall: 32, sandbox: 35, drills: 28, exam: 15,
@@ -122,7 +92,7 @@ function getUserProgress() {
 }
 
 function incrementUserCharacterProgress(char, category) {
-    const user = localStorage.getItem('kotolab_username') || 'Shoyo';
+    const user = localStorage.getItem('kotolab_username') || 'User';
     let progress = getUserProgress();
 
     const currentScore = progress.characters[char] || 0;
@@ -130,27 +100,14 @@ function incrementUserCharacterProgress(char, category) {
     progress.characters[char] = newScore;
     progress.totalCorrect = (Number(progress.totalCorrect) || 0) + 1;
 
-    const charScores = Object.values(progress.characters);
-    if (charScores.length > 0) {
-        const sum = charScores.reduce((acc, curr) => acc + curr, 0);
-        progress.drills = Math.min(100, Math.round(sum / Math.max(charScores.length, 10)));
-        if (category === 'hiragana') progress.hiraganaMastery = progress.drills;
-        else if (category === 'katakana') progress.katakanaMastery = progress.drills;
-        else if (category === 'kanji') progress.kanjiMastery = progress.drills;
-    }
-
     localStorage.setItem(`kotolab_progress_${user}`, JSON.stringify(progress));
-    syncSidebarUserProfile();
     return newScore;
 }
 
-// Page Initialization
 document.addEventListener('DOMContentLoaded', () => {
-    syncSidebarUserProfile();
     loadCategoryDrills('hiragana');
 });
 
-// Category Switcher
 function loadCategoryDrills(category) {
     currentCategory = category;
     const grid = document.getElementById('drills-grid');
@@ -176,13 +133,11 @@ function loadCategoryDrills(category) {
             renderDrillCards(currentDrillItems);
         })
         .catch(() => {
-            // Use Fallback Dataset on Server Error
             currentDrillItems = fallbackDrillData[category] || fallbackDrillData.hiragana;
             renderDrillCards(currentDrillItems);
         });
 }
 
-// UPDATED HTML RENDERER: Using cleaner classes for beginners (.char-text and .romaji-hint)
 function renderDrillCards(items) {
     const grid = document.getElementById('drills-grid');
     if (!grid || !items) return;
@@ -196,7 +151,6 @@ function renderDrillCards(items) {
 
         return `
             <div class="drill-card" onclick="openPracticeModal(${index})">
-                <!-- Subtle Progress Indicator -->
                 <div style="width: 100%; display: flex; justify-content: space-between; font-size: 0.65rem; color: #94a3b8; margin-bottom: 0.25rem;">
                     <span>Mastery</span><span>${charProgress}%</span>
                 </div>
@@ -204,7 +158,6 @@ function renderDrillCards(items) {
                     <div style="width: ${charProgress}%; height: 100%; background: #22c55e;"></div>
                 </div>
 
-                <!-- Clean Character & Romaji Display -->
                 <div class="char-text" style="margin-top: 0.5rem;">${displayChar}</div>
                 <div class="romaji-hint">${displayReading}</div>
             </div>
@@ -212,7 +165,6 @@ function renderDrillCards(items) {
     }).join('');
 }
 
-// Open Practice Modal
 function openPracticeModal(index) {
     if (!currentDrillItems || !currentDrillItems[index]) return;
 
@@ -244,6 +196,9 @@ function openPracticeModal(index) {
 
     renderCompoundWords(currentItem.char);
     initInteractiveCanvas(currentItem);
+    
+    // Reset timer logic
+    timeRemaining = 300;
     startModalTimer();
 }
 
@@ -253,7 +208,6 @@ function closePracticeModal() {
     if (sessionTimer) clearInterval(sessionTimer);
 }
 
-// KanjiVG Vector Fetcher for SVG Stroke Paths
 async function loadKanjiVgStrokeData(char) {
     const hex = getUnicodeHex(char);
     const url = `https://cdn.jsdelivr.net/gh/kanjivg/kanjivg/kanji/${hex}.svg`;
@@ -304,11 +258,14 @@ function renderStrokeOrderColumn(strokeData) {
     `).join('');
 
     if (tipsList) {
-        tipsList.innerHTML = `
-            <li>Total Strokes: <strong>${strokes.length}</strong></li>
-            <li>Mastery Goal: <strong>40 Full Characters</strong></li>
-            <li>Follow natural top-to-bottom order.</li>
-        `;
+        if (currentItem && currentItem.tips && currentItem.tips.length > 0) {
+            tipsList.innerHTML = currentItem.tips.map(t => `<li style="margin-bottom: 4px;">${t}</li>`).join('');
+        } else {
+            tipsList.innerHTML = `
+                <li style="margin-bottom: 4px;">Total Strokes: <strong>${strokes.length}</strong></li>
+                <li>Follow natural top-to-bottom order.</li>
+            `;
+        }
     }
 }
 
@@ -332,7 +289,6 @@ function renderCompoundWords(char) {
     `).join('');
 }
 
-// Dual Engine Canvas Initializer (HanziWriter + KanjiVG Vector SVG Fallback)
 async function initInteractiveCanvas(item) {
     const target = document.getElementById('kanji-target');
     if (!target) return;
@@ -409,7 +365,6 @@ async function setupKanaReferenceSvg(item) {
     }
 }
 
-// User Practice Canvas Listener Setup
 function setupUserPracticeCanvas() {
     kanaCanvas = document.getElementById('kana-canvas');
     if (!kanaCanvas) return;
@@ -480,25 +435,12 @@ function addCanvasDrawingListeners(cvs) {
 
 function updateFeedbackAndAccuracy() {
     const feedback = document.getElementById('modal-feedback-msg');
-    const scoreBadge = document.getElementById('modal-score-badge');
-    const accuracyElem = document.getElementById('modal-session-accuracy');
 
     if (currentItem) {
         const updatedScore = incrementUserCharacterProgress(currentItem.char, currentCategory);
-
         if (feedback) feedback.innerText = `Full Character Completed! Mastery: ${updatedScore}% (+2.5%) 🎉`;
-        if (scoreBadge) scoreBadge.innerText = `Mastery: ${updatedScore}%`;
-        if (accuracyElem) accuracyElem.innerText = `${updatedScore}%`;
-
         renderDrillCards(currentDrillItems);
     }
-}
-
-function toggleGuideOverlay() {
-    const guide = document.getElementById('guide-overlay');
-    if (!guide) return;
-    isGuidesVisible = !isGuidesVisible;
-    guide.style.opacity = isGuidesVisible ? "0.15" : "0";
 }
 
 function playStrokeDemo() {
@@ -550,15 +492,16 @@ function loadNextCharacter() {
     completedCount++;
     const sessCount = document.getElementById('modal-session-count');
     const sessProgress = document.getElementById('modal-session-progress');
+    const feedback = document.getElementById('modal-feedback-msg');
 
     if (sessCount) sessCount.innerText = `${completedCount} / ${totalSessionItems}`;
     if (sessProgress) sessProgress.style.width = `${(completedCount / totalSessionItems) * 100}%`;
+    if (feedback) feedback.innerText = `Trace the character above!`;
 
     const nextIdx = (currentItemIndex + 1) % currentDrillItems.length;
     openPracticeModal(nextIdx);
 }
 
-// Text-to-Speech Audio Implementation
 function speakJapanese(text) {
     if ('speechSynthesis' in window && text) {
         window.speechSynthesis.cancel();
@@ -590,7 +533,6 @@ function resetStrokePractice() {
     if (kanaCtx && kanaCanvas) kanaCtx.clearRect(0, 0, kanaCanvas.width, kanaCanvas.height);
 }
 
-// FIXED: Added missing closing bracket for startModalTimer function
 function startModalTimer() {
     if (sessionTimer) clearInterval(sessionTimer);
     sessionTimer = setInterval(() => {
@@ -598,7 +540,9 @@ function startModalTimer() {
         const mins = String(Math.floor(timeRemaining / 60)).padStart(2, '0');
         const secs = String(timeRemaining % 60).padStart(2, '0');
         const timerElem = document.getElementById('modal-timer');
+        
         if (timerElem) timerElem.innerText = `${mins}:${secs}`;
+        
         if (timeRemaining <= 0) {
             clearInterval(sessionTimer);
             closePracticeModal();

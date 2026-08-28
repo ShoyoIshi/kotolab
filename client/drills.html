@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- PWA & Mobile Optimization Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0b0f19">
     <link rel="manifest" href="manifest.json"> 
     <title>KotoLab - Character Drills</title>
 
-    <!-- Auth Guard (FIXED: No global variable clash & prevents back-button bypass) -->
     <script>
         if (!localStorage.getItem('kotolab_token')) { 
             window.location.replace('login.html'); 
@@ -16,7 +14,6 @@
     </script>
 
     <link rel="stylesheet" href="css/style.css">
-    <!-- HanziWriter Library -->
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
 
     <style>
@@ -58,24 +55,23 @@
         .weak-btn { background: #1e293b; color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.4rem 0.85rem; border-radius: 8px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: all 0.2s ease; }
         .weak-btn:hover { background: #334155; color: white; }
         
-        /* UPDATED: Romaji Hint Support for Drill Cards */
+        /* Romaji Hint Support for Drill Cards */
         .drill-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; transition: transform 0.2s, border-color 0.2s; cursor: pointer; min-height: 100px; }
         .drill-card:hover { transform: translateY(-4px); border-color: #6366f1; }
         .char-text { font-size: 2.5rem; font-weight: 800; color: white; line-height: 1; }
         .romaji-hint { font-size: 0.85rem; color: #38bdf8; font-weight: 600; text-transform: lowercase; }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; z-index: 100; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 100; }
         .modal-card { background: #0f172a; border: 1px solid var(--border-color); border-radius: 20px; width: 1080px; max-width: 95vw; padding: 1.5rem; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); max-height: 95vh; overflow-y: auto; }
         
         @media (max-width: 1100px) {
             .modal-card { display: flex; flex-direction: column; }
-            .modal-card > div:nth-child(3) { grid-template-columns: 1fr !important; }
+            .modal-grid-layout { grid-template-columns: 1fr !important; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Canonical Sidebar -->
     <aside class="sidebar">
         <div>
             <div class="brand">
@@ -90,7 +86,6 @@
                 <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
                 <li><a href="drills.html" class="nav-link active">⚡ Character Drills</a></li>
                 <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
-                <!-- Locked Advanced Modules -->
                 <li><a href="#" class="nav-link locked" title="Unlocks at Level 2">🔒 Sandbox</a></li>
                 <li><a href="#" class="nav-link locked" title="Unlocks at Level 5">🔒 Exams</a></li>
                 <li><a href="#" class="nav-link locked" title="Unlocks after Phase 1">🔒 Analytics</a></li>
@@ -121,7 +116,6 @@
         </div>
     </aside>
 
-    <!-- Main Workspace -->
     <main class="main-wrapper">
         <header class="top-header">
             <div class="header-title">
@@ -129,7 +123,6 @@
                 <p>Choose a script to practice. <span style="color:#38bdf8; font-weight:600;">(Beginner Romaji hints are ON)</span></p>
             </div>
 
-            <!-- Top Bar Badges -->
             <div class="top-bar-badges" style="display: flex; align-items: center; gap: 0.75rem;">
                 <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">
                     ⚡ <span id="xpCountDisplay">0</span> XP
@@ -150,13 +143,10 @@
             <input type="text" id="character-search-input" placeholder="🔍 Search character..." oninput="filterDrillCharacters(this.value)" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1.25rem; border-radius: 20px; color: white; font-size: 0.85rem; outline: none; width: 240px;">
         </div>
 
-        <!-- Drills Grid -->
         <div id="drills-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.25rem;">
-            <!-- Generated dynamically by drills.js. Format will now support romaji hints -->
-        </div>
+            </div>
     </main>
 
-    <!-- Practice Modal -->
     <div id="practice-modal" class="modal-overlay" style="display: none;">
         <div class="modal-card">
             
@@ -173,7 +163,7 @@
 
                 <div style="display: flex; align-items: center; gap: 0.75rem;">
                     <span id="modal-pronunciation-text" style="font-size: 0.85rem; color: #38bdf8; font-weight: 600;">Pronunciation: jin</span>
-                    <button class="weak-btn hidden md:block" style="padding: 0.35rem 0.75rem;" onclick="speakCurrentCharacter()">▶ Play</button>
+                    <button class="weak-btn" style="padding: 0.35rem 0.75rem;" onclick="speakCurrentCharacter()">▶ Play</button>
                     <button onclick="closePracticeModal()" style="background: transparent; border: none; color: #64748b; font-size: 1.75rem; cursor: pointer; line-height: 1;">&times;</button>
                 </div>
             </div>
@@ -182,9 +172,8 @@
                 💡 Watch the stroke order animation on the left, then trace the character in the box below.
             </div>
 
-            <div style="display: grid; grid-template-columns: 280px 1fr 280px; gap: 1.25rem; margin-bottom: 1.25rem;">
+            <div class="modal-grid-layout" style="display: grid; grid-template-columns: 280px 1fr 280px; gap: 1.25rem; margin-bottom: 1.25rem;">
                 
-                <!-- Left Box: Animation -->
                 <div style="background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 1rem; display: flex; flex-direction: column;">
                     <div style="font-size: 0.85rem; font-weight: 700; color: white; margin-bottom: 0.75rem; display: flex; justify-content: space-between;">
                         <span>Correct Stroke Order</span>
@@ -193,9 +182,10 @@
                     <div style="position: relative; width: 100%; height: 220px; background: #0f172a; border-radius: 12px; border: 1px dashed #334155; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 0.75rem;">
                         <div id="kanji-target" style="width: 200px; height: 200px; position: relative; z-index: 2;"></div>
                     </div>
+                    
+                    <div id="modal-stroke-list" style="display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; max-height: 140px; padding-right: 0.25rem;"></div>
                 </div>
 
-                <!-- Middle Box: Interactive Practice Canvas -->
                 <div style="background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 1rem; display: flex; flex-direction: column;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
                         <span style="font-size: 0.9rem; font-weight: 800; color: white;">Your Practice</span>
@@ -211,28 +201,52 @@
                         <canvas id="kana-canvas" width="380" height="220" style="position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; touch-action: none; z-index: 5;"></canvas>
                     </div>
 
+                    <div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 0.65rem; margin-bottom: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span id="modal-feedback-msg" style="font-size: 0.8rem; color: #a5b4fc; font-weight: 700;">Trace the character above!</span>
+                        </div>
+                    </div>
+
                     <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-top: auto;">
                         <button class="weak-btn" style="padding: 0.5rem 0.85rem; font-size: 0.8rem;" onclick="playStrokeDemo()">🔄 Replay</button>
                         <button class="btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; background: #4f46e5;" onclick="loadNextCharacter()">Next ➔</button>
                     </div>
                 </div>
 
-                <!-- Right Box: Tips -->
                 <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    
                     <div style="background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 0.85rem;">
                         <div style="font-size: 0.85rem; font-weight: 800; color: #f59e0b; margin-bottom: 0.5rem;">✍️ Writing Tips</div>
                         <ul id="modal-tips-list" style="margin: 0; padding-left: 1.1rem; color: #cbd5e1; font-size: 0.75rem; line-height: 1.45;"></ul>
                     </div>
+
+                    <div style="background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 0.85rem; flex: 1; display: flex; flex-direction: column;">
+                        <div style="font-size: 0.85rem; font-weight: 800; color: white; margin-bottom: 0.5rem;">📖 Compound Words</div>
+                        <div id="modal-compound-list" style="display: flex; flex-direction: column; gap: 0.4rem; overflow-y: auto; max-height: 130px; margin-bottom: 0.5rem;"></div>
+                        <button class="weak-btn" style="width: 100%; padding: 0.4rem; font-size: 0.75rem; margin-top: auto;" onclick="speakAllCompounds()">🔊 Hear All Words</button>
+                    </div>
+
                 </div>
             </div>
+            
+            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #94a3b8;">
+                <div>⏰ Time Left: <strong id="modal-timer" style="color: #f97316;">05:00</strong></div>
+                <div style="display: flex; align-items: center; gap: 0.75rem; width: 35%;">
+                    <span>Completed:</span>
+                    <div style="flex: 1; height: 6px; background: #0f172a; border-radius: 3px; overflow: hidden;">
+                        <div id="modal-session-progress" style="width: 0%; height: 100%; background: #6366f1;"></div>
+                    </div>
+                    <strong id="modal-session-count" style="color: white;">0 / 20</strong>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script src="js/speech.js"></script>
-    <script src="js/drills.js?v=16.0"></script>
+    <script src="js/drills.js"></script>
     <script src="js/app.js"></script>
 
-    <!-- UI Logics & Original Initialization -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
@@ -240,43 +254,16 @@
             
             document.querySelectorAll('#sidebar-user-name').forEach(el => el && (el.innerText = username));
             document.querySelectorAll('#sidebar-user-initial').forEach(el => el && (el.innerText = username.charAt(0).toUpperCase()));
-            
-            // Override grid rendering logic to inject Romaji hints directly from drills.js data if available
-            // Note: This relies on drills.js storing the romaji logic. If drills.js uses innerHTML, 
-            // you might need to update the card generation loop inside drills.js as well.
         });
 
         function filterDrillCharacters(query) {
             const searchTerm = query.toLowerCase().trim();
-            const cards = document.querySelectorAll('#drills-grid > div, #drills-grid .card, .drill-card');
+            const cards = document.querySelectorAll('#drills-grid .drill-card');
             cards.forEach(card => {
                 const text = card.innerText.toLowerCase();
                 if (text.includes(searchTerm)) card.style.display = '';
                 else card.style.display = 'none';
             });
-        }
-
-        // ORIGINAL HANZI WRITER LOGIC
-        window.initKanziStrokeOrderDemonstration = function(char) {
-            const target = document.getElementById('kanji-target');
-            if (!target) return;
-            target.innerHTML = '';
-
-            if (window.HanziWriter) {
-                try {
-                    const writer = HanziWriter.create('kanji-target', char, {
-                        width: 180,
-                        height: 180,
-                        padding: 15,
-                        showOutline: true,
-                        strokeColor: '#38bdf8',
-                        outlineColor: '#1e293b',
-                        drawingColor: '#22c55e'
-                    });
-                    writer.animateCharacter();
-                    window.playStrokeDemo = function() { writer.animateCharacter(); };
-                } catch (e) { console.error("HanziWriter initialization error:", e); }
-            }
         }
 
         function openNotifications() { alert("🔔 No unread notifications."); }

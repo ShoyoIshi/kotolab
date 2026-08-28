@@ -190,9 +190,9 @@
                 <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
                 <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
                 
-                <!-- Locked Advanced Modules -->
-                <li><a href="#" class="nav-link locked" title="Unlocks at Level 2">🔒 Sandbox</a></li>
-                <li><a href="#" class="nav-link locked" title="Unlocks at Level 5">🔒 Exams</a></li>
+                <!-- Locked Advanced Modules (IDs added for dynamic unlocking) -->
+                <li><a href="#" id="link-sandbox" class="nav-link locked" title="Unlocks at 600 XP">🔒 Sandbox</a></li>
+                <li><a href="#" id="link-exam" class="nav-link locked" title="Unlocks at 2000 XP">🔒 Exams</a></li>
                 <li><a href="#" class="nav-link locked" title="Unlocks after Phase 1">🔒 Analytics</a></li>
                 
                 <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
@@ -246,22 +246,22 @@
             </div>
         </header>
 
-        <!-- 🌟 NAYA HERO BANNER (Start Here) -->
+        <!-- 🌟 NAYA HERO BANNER -->
         <div class="hero-banner bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-6 text-white mb-8 shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h2 class="text-2xl font-bold mb-2">🚀 Start Your Japanese Journey!</h2>
-                <p class="text-indigo-200">You are on Level 0. Let's master the basic alphabets first.</p>
+                <p class="text-indigo-200">Earn XP in Drills to unlock Basic Vocabulary, Sandbox, and Mock Exams.</p>
             </div>
             <button onclick="window.location.href='drills.html'" class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition shadow-md whitespace-nowrap">
                 Begin Phase 1: Hiragana
             </button>
         </div>
 
-        <!-- 🛤️ LINEAR LEARNING PATH (Unlock System) -->
+        <!-- 🛤️ LINEAR LEARNING PATH -->
         <h2 class="text-xl font-bold text-white mb-4">Your Learning Path</h2>
         <div class="learning-path flex flex-col gap-4">
             
-            <!-- Phase 1: UNLOCKED (Character Drills) -->
+            <!-- Phase 1: UNLOCKED -->
             <div class="module-card flex flex-col md:flex-row items-start md:items-center justify-between bg-[#151e33] p-5 rounded-lg border-l-4 border-green-500 shadow-md gap-4">
                 <div>
                     <h3 class="text-xl font-bold text-white">🟢 Phase 1: Alphabets (Hiragana & Katakana)</h3>
@@ -272,35 +272,35 @@
                 </button>
             </div>
 
-            <!-- Phase 2: LOCKED (Basic Vocabulary) -->
-            <div class="module-card flex flex-col md:flex-row items-start md:items-center justify-between bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] gap-4">
+            <!-- Phase 2: LOCKED (Basic Vocabulary - 300 XP) -->
+            <div id="card-phase-2" class="module-card flex flex-col md:flex-row items-start md:items-center justify-between bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] gap-4 transition-all duration-300">
                 <div>
-                    <h3 class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 2: Basic Vocabulary</h3>
-                    <p class="text-gray-500 text-sm mt-1">Learn everyday words. Unlocks after Phase 1 (500 XP).</p>
+                    <h3 id="title-phase-2" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 2: Basic Vocabulary</h3>
+                    <p class="text-gray-500 text-sm mt-1">Learn everyday words. Unlocks at <strong>300 XP</strong>.</p>
                 </div>
-                <button disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">
+                <button id="btn-phase-2" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">
                     Locked
                 </button>
             </div>
 
-            <!-- Phase 3: LOCKED (Grammar Sandbox) -->
-            <div class="module-card flex flex-col md:flex-row items-start md:items-center justify-between bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] gap-4">
+            <!-- Phase 3: LOCKED (Grammar Sandbox - 600 XP) -->
+            <div id="card-phase-3" class="module-card flex flex-col md:flex-row items-start md:items-center justify-between bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] gap-4 transition-all duration-300">
                 <div>
-                    <h3 class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 3: Grammar Sandbox</h3>
-                    <p class="text-gray-500 text-sm mt-1">Build sentences & practice particles. Unlocks at Level 2.</p>
+                    <h3 id="title-phase-3" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 3: Grammar Sandbox</h3>
+                    <p class="text-gray-500 text-sm mt-1">Build sentences & practice particles. Unlocks at <strong>600 XP</strong>.</p>
                 </div>
-                <button disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">
+                <button id="btn-phase-3" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">
                     Locked
                 </button>
             </div>
 
-            <!-- Phase 4: LOCKED (Mock Exams) -->
-            <div class="module-card flex flex-col md:flex-row items-start md:items-center justify-between bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] gap-4">
+            <!-- Phase 4: LOCKED (Mock Exams - 2000 XP) -->
+            <div id="card-phase-4" class="module-card flex flex-col md:flex-row items-start md:items-center justify-between bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] gap-4 transition-all duration-300">
                 <div>
-                    <h3 class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 4: N5 Mock Exams</h3>
-                    <p class="text-gray-500 text-sm mt-1">Test your skills in a timed environment. Unlocks at Level 5.</p>
+                    <h3 id="title-phase-4" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 4: N5 Mock Exams</h3>
+                    <p class="text-gray-500 text-sm mt-1">Test your skills in a timed environment. Unlocks at <strong>2000 XP</strong>.</p>
                 </div>
-                <button disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">
+                <button id="btn-phase-4" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">
                     Locked
                 </button>
             </div>
@@ -311,11 +311,13 @@
     <script src="js/speech.js"></script>
     <script src="js/app.js"></script>
 
-    <!-- REAL DATABASE SYNC SCRIPT (Safe with new UI) -->
+    <!-- REAL DATABASE SYNC SCRIPT (Safe with new UI & Unlock Logic) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(async () => {
                 let userId = 3; 
+                let totalXP = 0;
+
                 try {
                     const storedUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
                     if (storedUser && storedUser.id) { userId = storedUser.id; }
@@ -328,7 +330,7 @@
                     if (data && !data.error) {
                         const p = data;
                         const correct = p.total_correct || 0;
-                        const totalXP = correct * 10;
+                        totalXP = correct * 10;
 
                         // Updates only existing elements securely without throwing errors
                         document.querySelectorAll('.user-xp-display, #stat-total-xp, #xpCountDisplay').forEach(el => {
@@ -337,15 +339,78 @@
                     }
                 } catch (e) {
                     console.error("Dashboard live fetch error:", e);
+                    // Fallback to local progress if network fails
+                    const user = localStorage.getItem('kotolab_username') || 'User';
+                    const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${user}`) || '{}');
+                    if (localProgress.totalCorrect) {
+                        totalXP = localProgress.totalCorrect * 10;
+                    }
                 }
 
+                // ============================================
+                // DYNAMIC UNLOCK LOGIC BASED ON XP
+                // ============================================
+                
+                // Phase 2 Unlock (300 XP)
+                if (totalXP >= 300) {
+                    unlockModuleCard('card-phase-2', 'title-phase-2', 'btn-phase-2', '🟢 Phase 2: Basic Vocabulary', '#');
+                }
+
+                // Phase 3 Unlock (600 XP)
+                if (totalXP >= 600) {
+                    unlockModuleCard('card-phase-3', 'title-phase-3', 'btn-phase-3', '🟢 Phase 3: Grammar Sandbox', 'sandbox.html');
+                    unlockSidebarLink('link-sandbox', 'sandbox.html', '🧩 Sandbox');
+                }
+
+                // Phase 4 Unlock (2000 XP)
+                if (totalXP >= 2000) {
+                    unlockModuleCard('card-phase-4', 'title-phase-4', 'btn-phase-4', '🟢 Phase 4: N5 Mock Exams', 'exam.html');
+                    unlockSidebarLink('link-exam', 'exam.html', '📝 Exams');
+                }
+
+                // Set User Details
                 const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
-                const uname = currentUser.username || localStorage.getItem('kotolab_username') || 'Shoyo';
+                const uname = currentUser.username || localStorage.getItem('kotolab_username') || 'User';
                 document.querySelectorAll('#user-display-name, #header-greeting-name').forEach(el => el && (el.innerText = uname));
                 document.querySelectorAll('#user-avatar, #userInitialDisplay').forEach(el => el && (el.innerText = uname.charAt(0).toUpperCase()));
                 
             }, 600);
         });
+
+        // Helper function to unlock the UI Cards
+        function unlockModuleCard(cardId, titleId, btnId, titleText, url) {
+            const card = document.getElementById(cardId);
+            const title = document.getElementById(titleId);
+            const btn = document.getElementById(btnId);
+
+            if (card) {
+                card.classList.remove('opacity-60', 'bg-[#0b0f19]');
+                card.classList.add('bg-[#151e33]');
+                card.style.borderLeft = '4px solid #3b82f6'; // Blue border
+            }
+            if (title) {
+                title.innerText = titleText;
+                title.classList.remove('text-[#8fa0bd]');
+                title.classList.add('text-white');
+            }
+            if (btn) {
+                btn.disabled = false;
+                btn.innerText = 'Start';
+                btn.className = 'bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition w-full md:w-auto cursor-pointer';
+                btn.onclick = () => window.location.href = url;
+            }
+        }
+
+        // Helper function to unlock Sidebar Links
+        function unlockSidebarLink(linkId, url, text) {
+            const link = document.getElementById(linkId);
+            if (link) {
+                link.href = url;
+                link.innerText = text;
+                link.classList.remove('locked', 'cursor-not-allowed');
+                link.style.opacity = '1';
+            }
+        }
 
         function openNotifications() { alert("🔔 Notifications:\n• Welcome to KotoLab! Check out your daily goals."); }
         function goToSettings() { window.location.href = 'settings.html'; }

@@ -625,3 +625,43 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Setup failed: ', err));
     });
 }
+
+// --- GLOBAL SIDEBAR & LOCK SYNC SCRIPT ---
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Calculate User XP
+    let totalXP = 0;
+    try {
+        const user = localStorage.getItem('kotolab_username') || 'User';
+        const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${user}`) || '{}');
+        if (localProgress.totalCorrect) {
+            totalXP = localProgress.totalCorrect * 10;
+        }
+    } catch(e) {}
+
+    // 2. Global Unlock Triggers based on XP thresholds
+    // Sandbox unlocks at 600 XP, Exams at 2000 XP, Analytics after Phase 1 (e.g. 100 XP)
+    if (totalXP >= 100) {
+        const anLink = document.getElementById('nav-analytics');
+        if (anLink) { anLink.classList.remove('locked'); anLink.innerHTML = '📈 Analytics'; anLink.href = 'analytics.html'; }
+    }
+    if (totalXP >= 600) {
+        const sbLink = document.getElementById('nav-sandbox');
+        if (sbLink) { sbLink.classList.remove('locked'); sbLink.innerHTML = '🧩 Sandbox'; sbLink.href = 'sandbox.html'; }
+    }
+    if (totalXP >= 2000) {
+        const exLink = document.getElementById('nav-exam');
+        if (exLink) { exLink.classList.remove('locked'); exLink.innerHTML = '📝 Exams'; exLink.href = 'exam.html'; }
+    }
+
+    // 3. Highlight current active page automatically
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-menu .nav-link').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === currentPage) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+});
+

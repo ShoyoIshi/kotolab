@@ -206,6 +206,7 @@
 <body>
 
     <!-- Canonical Sidebar Navigation -->
+    <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div>
             <div class="brand">
@@ -217,13 +218,16 @@
             </div>
 
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
-                <li><a href="sandbox.html" class="nav-link">🧩 Sandbox</a></li>
-                <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
+                <li><a href="index.html" class="nav-link active">🏠 Dashboard</a></li>
                 <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
-                <li><a href="exam.html" class="nav-link">📝 Exams</a></li>
-                <li><a href="analytics.html" class="nav-link">📈 Analytics</a></li>
-                <li><a href="settings.html" class="nav-link active">⚙️ Settings</a></li>
+                <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
+                
+                <!-- Locked Advanced Modules (IDs added for dynamic unlocking) -->
+                <li><a href="#" id="link-sandbox" class="nav-link locked" title="Unlocks at 600 XP">🔒 Sandbox</a></li>
+                <li><a href="#" id="link-exam" class="nav-link locked" title="Unlocks at 2000 XP">🔒 Exams</a></li>
+                <li><a href="#" class="nav-link locked" title="Unlocks after Phase 1">🔒 Analytics</a></li>
+                
+                <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
                 <li id="admin-nav-item" style="display: none;">
                     <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
                 </li>
@@ -234,21 +238,21 @@
             <!-- User Profile Card -->
             <div class="user-profile-card">
                 <div class="user-info">
-                    <div class="user-avatar" id="sidebar-user-initial">S</div>
+                    <div class="user-avatar" id="user-avatar">U</div>
                     <div>
-                        <div class="user-name" id="sidebar-user-name">Shoyo</div>
-                        <div class="user-level" id="user-display-level">Level 1 Learner</div>
+                        <div class="user-name" id="user-display-name">User</div>
+                        <div class="user-level" id="user-display-level">N5 Explorer • Level 1</div>
                     </div>
                 </div>
                 <div class="user-stats-row">
+                    <span>❤️ <strong id="user-lives">5</strong></span>
                     <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
-                    <span style="color: var(--accent-indigo); font-weight: 800;" id="user-display-role">STUDENT</span>
                 </div>
             </div>
 
-            <button onclick="handleLogout()" style="width: 100%; margin-top: 0.85rem; padding: 0.65rem; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); border-radius: 10px; color: var(--accent-red); font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: background 0.2s;">
-                🚪 Logout
-            </button>
+            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">
+                © 2026 KotoLab. All rights reserved.
+            </div>
         </div>
     </aside>
 

@@ -71,6 +71,7 @@
 <body>
 
     <!-- Canonical Sidebar Navigation -->
+    <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div>
             <div class="brand">
@@ -82,12 +83,15 @@
             </div>
 
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
-                <li><a href="sandbox.html" class="nav-link">🧩 Sandbox</a></li>
-                <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
+                <li><a href="index.html" class="nav-link active">🏠 Dashboard</a></li>
                 <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
-                <li><a href="exam.html" class="nav-link active">📝 Exams</a></li>
-                <li><a href="analytics.html" class="nav-link">📈 Analytics</a></li>
+                <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
+                
+                <!-- Locked Advanced Modules (IDs added for dynamic unlocking) -->
+                <li><a href="#" id="link-sandbox" class="nav-link locked" title="Unlocks at 600 XP">🔒 Sandbox</a></li>
+                <li><a href="#" id="link-exam" class="nav-link locked" title="Unlocks at 2000 XP">🔒 Exams</a></li>
+                <li><a href="#" class="nav-link locked" title="Unlocks after Phase 1">🔒 Analytics</a></li>
+                
                 <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
                 <li id="admin-nav-item" style="display: none;">
                     <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
@@ -99,10 +103,10 @@
             <!-- User Profile Card -->
             <div class="user-profile-card">
                 <div class="user-info">
-                    <div class="user-avatar" id="sidebar-user-initial">S</div>
+                    <div class="user-avatar" id="user-avatar">U</div>
                     <div>
-                        <div class="user-name" id="sidebar-user-name">Shoyo</div>
-                        <div class="user-level" id="sidebar-user-level">N5 Explorer • Level 1</div>
+                        <div class="user-name" id="user-display-name">User</div>
+                        <div class="user-level" id="user-display-level">N5 Explorer • Level 1</div>
                     </div>
                 </div>
                 <div class="user-stats-row">
@@ -116,7 +120,6 @@
             </div>
         </div>
     </aside>
-
     <!-- Main Workspace -->
     <main class="main-wrapper">
         <header class="top-header">
