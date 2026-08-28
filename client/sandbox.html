@@ -23,8 +23,10 @@
         .brand-icon-box { width: 40px; height: 40px; background: linear-gradient(135deg, #38bdf8, #6366f1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
         .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
         .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; border-radius: 10px; transition: all 0.2s ease; }
-        .nav-link:hover { color: white; background: rgba(255, 255, 255, 0.04); }
+        .nav-link:hover:not(.locked) { color: white; background: rgba(255, 255, 255, 0.04); }
         .nav-link.active { color: white; background: linear-gradient(135deg, #6366f1, #7c3aed); box-shadow: 0 6px 16px -2px rgba(99, 102, 241, 0.45); }
+        .nav-link.locked { opacity: 0.5; cursor: not-allowed; }
+        
         .user-profile-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 0.85rem; }
         .user-info { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.65rem; }
         .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: #6366f1; color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; }
@@ -79,11 +81,11 @@
 
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
-                <li><a href="sandbox.html" class="nav-link active">🧩 Sandbox</a></li>
-                <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
                 <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
-                <li><a href="exam.html" class="nav-link">📝 Exams</a></li>
-                <li><a href="analytics.html" class="nav-link">📈 Analytics</a></li>
+                <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
+                <li><a href="sandbox.html" id="nav-sandbox" class="nav-link active">🧩 Sandbox</a></li>
+                <li><a href="exam.html" id="nav-exam" class="nav-link locked" title="Unlocks at 2000 XP">🔒 Exams</a></li>
+                <li><a href="analytics.html" id="nav-analytics" class="nav-link locked" title="Unlocks at 100 XP">🔒 Analytics</a></li>
                 <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
                 <li id="admin-nav-item" style="display: none;">
                     <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>

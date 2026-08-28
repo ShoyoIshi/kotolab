@@ -48,6 +48,7 @@
 <body>
 
     <!-- Sidebar Navigation -->
+    <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div>
             <div class="brand">
@@ -59,15 +60,12 @@
             </div>
 
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link active">🏠 Dashboard</a></li>
+                <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
                 <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
                 <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
-                
-                <!-- Locked Advanced Modules (IDs added for dynamic unlocking) -->
-                <li><a href="#" id="link-sandbox" class="nav-link locked" title="Unlocks at 600 XP">🔒 Sandbox</a></li>
-                <li><a href="#" id="link-exam" class="nav-link locked" title="Unlocks at 2000 XP">🔒 Exams</a></li>
-                <li><a href="#" class="nav-link locked" title="Unlocks after Phase 1">🔒 Analytics</a></li>
-                
+                <li><a href="sandbox.html" id="nav-sandbox" class="nav-link locked" title="Unlocks at 600 XP">🔒 Sandbox</a></li>
+                <li><a href="exam.html" id="nav-exam" class="nav-link locked" title="Unlocks at 2000 XP">🔒 Exams</a></li>
+                <li><a href="analytics.html" id="nav-analytics" class="nav-link active">📈 Analytics</a></li>
                 <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
                 <li id="admin-nav-item" style="display: none;">
                     <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
@@ -76,7 +74,6 @@
         </div>
 
         <div>
-            <!-- User Profile Card -->
             <div class="user-profile-card">
                 <div class="user-info">
                     <div class="user-avatar" id="user-avatar">U</div>
