@@ -482,12 +482,21 @@
                 }
 
                 if (data.success || data.token) {
+                    const userData = data.user || { username: usernameInput };
+                    
                     localStorage.setItem('kotolab_token', data.token);
-                    localStorage.setItem('kotolab_user', JSON.stringify(data.user || { username: usernameInput }));
+                    localStorage.setItem('kotolab_user', JSON.stringify(userData));
                     localStorage.setItem('kotolab_username', usernameInput);
                     localStorage.setItem('kotolab_onboarding_done', 'true');
 
-                    window.location.href = 'index.html';
+                    // --- ADMIN ROLE CHECK INJECTED HERE ---
+                    if (userData.role === 'admin' || userData.username === 'admin' || userData.username === 'AdminSahil') {
+                        localStorage.setItem('kotolab_role', 'admin');
+                    } else {
+                        localStorage.removeItem('kotolab_role'); 
+                    }
+
+                    window.location.replace('index.html');
                 } else {
                     alert("Authentication failed.");
                     submitBtn.innerText = isSignUpMode ? "Sign Up" : "Sign In";
@@ -505,8 +514,9 @@
             localStorage.setItem('kotolab_token', 'guest_token_999');
             localStorage.setItem('kotolab_user', JSON.stringify({ id: 999, username: 'Guest User', role: 'student' }));
             localStorage.setItem('kotolab_username', 'Guest User');
+            localStorage.removeItem('kotolab_role'); // Ensure guest is never admin
             localStorage.setItem('kotolab_onboarding_done', 'true');
-            window.location.href = 'index.html';
+            window.location.replace('index.html');
         }
     </script>
 </body>

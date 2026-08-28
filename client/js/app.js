@@ -618,3 +618,10 @@ async function fetchContextGrammarNotes() {
 function playFullScriptAudio() { playAudioPromptText(); }
 function openNotifications() { alert("🔔 No unread notifications."); }
 function goToSettings() { window.location.href = 'settings.html'; }
+
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Setup failed: ', err));
+    });
+}

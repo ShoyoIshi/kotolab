@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- PWA & Mobile Optimization Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0b0f19">
+    <link rel="manifest" href="manifest.json"> 
     <title>KotoLab - Character Drills</title>
 
-    <!-- Auth Guard -->
+    <!-- Auth Guard (FIXED: No global variable clash & prevents back-button bypass) -->
     <script>
-        const token = localStorage.getItem('kotolab_token');
-        if (!token) { window.location.href = 'login.html'; }
+        if (!localStorage.getItem('kotolab_token')) { 
+            window.location.replace('login.html'); 
+        }
     </script>
 
     <link rel="stylesheet" href="css/style.css">
@@ -19,13 +23,26 @@
         :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --accent-gold: #f59e0b; --text-main: #f8fafc; --text-muted: #8fa0bd; }
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
         body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Segoe UI', system-ui, sans-serif; display: flex; min-height: 100vh; }
+        
+        /* Mobile Responsive Sidebar */
         .sidebar { width: 260px; background: #090d16; border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; }
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; padding: 1rem; border-right: none; border-bottom: 1px solid var(--border-color); }
+            .main-wrapper { padding: 1rem !important; }
+            .top-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            #character-search-input { width: 100% !important; margin-top: 1rem; }
+            .header-filters { flex-direction: column; width: 100%; }
+        }
+
         .brand { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; padding-left: 0.5rem; }
         .brand-icon-box { width: 40px; height: 40px; background: linear-gradient(135deg, #38bdf8, #6366f1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
         .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
         .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; border-radius: 10px; transition: all 0.2s ease; }
-        .nav-link:hover { color: white; background: rgba(255, 255, 255, 0.04); }
+        .nav-link:hover:not(.locked) { color: white; background: rgba(255, 255, 255, 0.04); }
         .nav-link.active { color: white; background: linear-gradient(135deg, #6366f1, #7c3aed); box-shadow: 0 6px 16px -2px rgba(99, 102, 241, 0.45); }
+        .nav-link.locked { opacity: 0.5; cursor: not-allowed; }
+        
         .user-profile-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 0.85rem; }
         .user-info { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.65rem; }
         .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: #6366f1; color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; }
@@ -40,10 +57,20 @@
         .btn-primary, .btn-tab.active { background: #6366f1; color: white; border-color: #6366f1; }
         .weak-btn { background: #1e293b; color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.4rem 0.85rem; border-radius: 8px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: all 0.2s ease; }
         .weak-btn:hover { background: #334155; color: white; }
-        .drill-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; transition: transform 0.2s, border-color 0.2s; cursor: pointer; }
+        
+        /* UPDATED: Romaji Hint Support for Drill Cards */
+        .drill-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; transition: transform 0.2s, border-color 0.2s; cursor: pointer; min-height: 100px; }
         .drill-card:hover { transform: translateY(-4px); border-color: #6366f1; }
+        .char-text { font-size: 2.5rem; font-weight: 800; color: white; line-height: 1; }
+        .romaji-hint { font-size: 0.85rem; color: #38bdf8; font-weight: 600; text-transform: lowercase; }
+
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; z-index: 100; }
-        .modal-card { background: #0f172a; border: 1px solid var(--border-color); border-radius: 20px; width: 1080px; max-width: 95vw; padding: 1.5rem; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); }
+        .modal-card { background: #0f172a; border: 1px solid var(--border-color); border-radius: 20px; width: 1080px; max-width: 95vw; padding: 1.5rem; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); max-height: 95vh; overflow-y: auto; }
+        
+        @media (max-width: 1100px) {
+            .modal-card { display: flex; flex-direction: column; }
+            .modal-card > div:nth-child(3) { grid-template-columns: 1fr !important; }
+        }
     </style>
 </head>
 <body>
@@ -61,11 +88,12 @@
 
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
-                <li><a href="sandbox.html" class="nav-link">🧩 Sandbox</a></li>
-                <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
                 <li><a href="drills.html" class="nav-link active">⚡ Character Drills</a></li>
-                <li><a href="exam.html" class="nav-link">📝 Exams</a></li>
-                <li><a href="analytics.html" class="nav-link">📈 Analytics</a></li>
+                <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
+                <!-- Locked Advanced Modules -->
+                <li><a href="#" class="nav-link locked" title="Unlocks at Level 2">🔒 Sandbox</a></li>
+                <li><a href="#" class="nav-link locked" title="Unlocks at Level 5">🔒 Exams</a></li>
+                <li><a href="#" class="nav-link locked" title="Unlocks after Phase 1">🔒 Analytics</a></li>
                 <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
                 <li id="admin-nav-item" style="display: none;">
                     <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
@@ -76,9 +104,9 @@
         <div>
             <div class="user-profile-card">
                 <div class="user-info">
-                    <div class="user-avatar" id="sidebar-user-initial">S</div>
+                    <div class="user-avatar" id="sidebar-user-initial">U</div>
                     <div>
-                        <div class="user-name" id="sidebar-user-name">Shoyo</div>
+                        <div class="user-name" id="sidebar-user-name">User</div>
                         <div class="user-level" id="sidebar-user-level">N5 Explorer • Level 1</div>
                     </div>
                 </div>
@@ -87,7 +115,6 @@
                     <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
                 </div>
             </div>
-
             <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">
                 © 2026 KotoLab. All rights reserved.
             </div>
@@ -99,7 +126,7 @@
         <header class="top-header">
             <div class="header-title">
                 <h1>Character Drills ⚡</h1>
-                <p>Choose a script to practice characters with audio and stroke order.</p>
+                <p>Choose a script to practice. <span style="color:#38bdf8; font-weight:600;">(Beginner Romaji hints are ON)</span></p>
             </div>
 
             <!-- Top Bar Badges -->
@@ -107,20 +134,14 @@
                 <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">
                     ⚡ <span id="xpCountDisplay">0</span> XP
                 </div>
-                <div class="badge-item" onclick="openNotifications()" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24;">
+                <div class="badge-item hidden md:flex" onclick="openNotifications()" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24;">
                     🔔
-                </div>
-                <div class="badge-item" onclick="goToSettings()" style="cursor: pointer; background: #6366f1; border: 1px solid #818cf8; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;">
-                    <span id="userInitialDisplay">S</span>
-                </div>
-                <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #8fa0bd;">
-                    📅 <span id="currentDateDisplay">Aug 26, 2026</span>
                 </div>
             </div>
         </header>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <div style="display: flex; gap: 0.75rem;">
+        <div class="header-filters" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
                 <button class="btn-primary" id="tab-hiragana" onclick="loadCategoryDrills('hiragana')">Hiragana</button>
                 <button class="btn-tab" id="tab-katakana" style="background: var(--bg-card); color: var(--text-muted);" onclick="loadCategoryDrills('katakana')">Katakana</button>
                 <button class="btn-tab" id="tab-kanji" style="background: var(--bg-card); color: var(--text-muted);" onclick="loadCategoryDrills('kanji')">N5 Kanji</button>
@@ -129,7 +150,9 @@
             <input type="text" id="character-search-input" placeholder="🔍 Search character..." oninput="filterDrillCharacters(this.value)" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1.25rem; border-radius: 20px; color: white; font-size: 0.85rem; outline: none; width: 240px;">
         </div>
 
-        <div id="drills-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.25rem;">
+        <!-- Drills Grid -->
+        <div id="drills-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.25rem;">
+            <!-- Generated dynamically by drills.js. Format will now support romaji hints -->
         </div>
     </main>
 
@@ -150,7 +173,7 @@
 
                 <div style="display: flex; align-items: center; gap: 0.75rem;">
                     <span id="modal-pronunciation-text" style="font-size: 0.85rem; color: #38bdf8; font-weight: 600;">Pronunciation: jin</span>
-                    <button class="weak-btn" style="padding: 0.35rem 0.75rem;" onclick="speakCurrentCharacter()">▶ Play</button>
+                    <button class="weak-btn hidden md:block" style="padding: 0.35rem 0.75rem;" onclick="speakCurrentCharacter()">▶ Play</button>
                     <button onclick="closePracticeModal()" style="background: transparent; border: none; color: #64748b; font-size: 1.75rem; cursor: pointer; line-height: 1;">&times;</button>
                 </div>
             </div>
@@ -165,54 +188,32 @@
                 <div style="background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 1rem; display: flex; flex-direction: column;">
                     <div style="font-size: 0.85rem; font-weight: 700; color: white; margin-bottom: 0.75rem; display: flex; justify-content: space-between;">
                         <span>Correct Stroke Order</span>
-                        <span style="color: #64748b; cursor: pointer;">ⓘ</span>
                     </div>
 
                     <div style="position: relative; width: 100%; height: 220px; background: #0f172a; border-radius: 12px; border: 1px dashed #334155; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 0.75rem;">
-                        <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; border-top: 1px dashed rgba(255, 255, 255, 0.15); pointer-events: none; z-index: 1;"></div>
-                        <div style="position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; border-left: 1px dashed rgba(255, 255, 255, 0.15); pointer-events: none; z-index: 1;"></div>
-
                         <div id="kanji-target" style="width: 200px; height: 200px; position: relative; z-index: 2;"></div>
                     </div>
-
-                    <div id="modal-stroke-list" style="display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; max-height: 140px; padding-right: 0.25rem;"></div>
                 </div>
 
-                <!-- Middle Box: Interactive Practice Canvas (RESTORED TO ORIGINAL) -->
+                <!-- Middle Box: Interactive Practice Canvas -->
                 <div style="background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 1rem; display: flex; flex-direction: column;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
                         <span style="font-size: 0.9rem; font-weight: 800; color: white;">Your Practice</span>
                         <div style="display: flex; gap: 0.5rem;">
                             <button class="weak-btn" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="resetStrokePractice()">🧹 Clear</button>
-                            <button class="weak-btn" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="toggleGuideOverlay()">👁️ Show Guides</button>
                         </div>
                     </div>
 
-                    <!-- ORIGINAL CANVAS CONTAINER FOR DRILLS.JS -->
                     <div style="position: relative; width: 100%; height: 220px; background: #0f172a; border-radius: 12px; border: 1px dashed #334155; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 0.75rem;">
-                        <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; border-top: 1px dashed rgba(255, 255, 255, 0.15); pointer-events: none; z-index: 1;"></div>
-                        <div style="position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; border-left: 1px dashed rgba(255, 255, 255, 0.15); pointer-events: none; z-index: 1;"></div>
-
-                        <div id="guide-overlay" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; opacity: 0.15; transition: opacity 0.2s ease; z-index: 2;">
+                        <div id="guide-overlay" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; opacity: 0.15; z-index: 2;">
                             <span id="guide-char-text" style="font-size: 140px; font-weight: 800; color: white;">人</span>
                         </div>
-                        
-                        <!-- Original drawing canvas linked to your drills.js -->
                         <canvas id="kana-canvas" width="380" height="220" style="position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; touch-action: none; z-index: 5;"></canvas>
                     </div>
 
-                    <div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 0.65rem; margin-bottom: 0.75rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-                            <span id="modal-feedback-msg" style="font-size: 0.8rem; color: #a5b4fc; font-weight: 700;">Practice cleared. Trace the first stroke!</span>
-                        </div>
-                    </div>
-
                     <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <div style="display: flex; gap: 0.5rem;">
-                            <button class="weak-btn" style="padding: 0.5rem 0.85rem; font-size: 0.8rem;" onclick="playStrokeDemo()">🔄 Replay Animation</button>
-                            <button class="weak-btn" style="padding: 0.5rem 0.85rem; font-size: 0.8rem;" onclick="speakCurrentCharacter()">🔊 Listen</button>
-                        </div>
-                        <button class="btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; background: #4f46e5;" onclick="loadNextCharacter()">Next Character ➔</button>
+                        <button class="weak-btn" style="padding: 0.5rem 0.85rem; font-size: 0.8rem;" onclick="playStrokeDemo()">🔄 Replay</button>
+                        <button class="btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; background: #4f46e5;" onclick="loadNextCharacter()">Next ➔</button>
                     </div>
                 </div>
 
@@ -222,26 +223,7 @@
                         <div style="font-size: 0.85rem; font-weight: 800; color: #f59e0b; margin-bottom: 0.5rem;">✍️ Writing Tips</div>
                         <ul id="modal-tips-list" style="margin: 0; padding-left: 1.1rem; color: #cbd5e1; font-size: 0.75rem; line-height: 1.45;"></ul>
                     </div>
-
-                    <div style="background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 0.85rem; flex: 1; display: flex; flex-direction: column;">
-                        <div style="font-size: 0.85rem; font-weight: 800; color: white; margin-bottom: 0.5rem;">📖 Compound Words</div>
-                        <div id="modal-compound-list" style="display: flex; flex-direction: column; gap: 0.4rem; overflow-y: auto; max-height: 130px; margin-bottom: 0.5rem;"></div>
-                        <button class="weak-btn" style="width: 100%; padding: 0.4rem; font-size: 0.75rem; margin-top: auto;" onclick="speakAllCompounds()">🔊 Hear All Words</button>
-                    </div>
                 </div>
-            </div>
-            
-            <!-- Bottom Session Tracker -->
-            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #94a3b8;">
-                <div>⏰ Time Left: <strong id="modal-timer" style="color: #f97316;">04:32</strong></div>
-                <div style="display: flex; align-items: center; gap: 0.75rem; width: 35%;">
-                    <span>Completed:</span>
-                    <div style="flex: 1; height: 6px; background: #0f172a; border-radius: 3px; overflow: hidden;">
-                        <div id="modal-session-progress" style="width: 25%; height: 100%; background: #6366f1;"></div>
-                    </div>
-                    <strong id="modal-session-count" style="color: white;">5 / 20</strong>
-                </div>
-                <div>Accuracy: <strong id="modal-session-accuracy" style="color: #22c55e;">88%</strong></div>
             </div>
         </div>
     </div>
@@ -253,15 +235,20 @@
     <!-- UI Logics & Original Initialization -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const username = localStorage.getItem('kotolab_username') || 'User';
-            if (document.getElementById('user-display-name')) document.getElementById('user-display-name').innerText = username;
-            if (document.getElementById('user-avatar')) document.getElementById('user-avatar').innerText = username.charAt(0).toUpperCase();
-            if (document.getElementById('userInitialDisplay')) document.getElementById('userInitialDisplay').innerText = username.charAt(0).toUpperCase();
+            const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
+            const username = currentUser.username || localStorage.getItem('kotolab_username') || 'User';
+            
+            document.querySelectorAll('#sidebar-user-name').forEach(el => el && (el.innerText = username));
+            document.querySelectorAll('#sidebar-user-initial').forEach(el => el && (el.innerText = username.charAt(0).toUpperCase()));
+            
+            // Override grid rendering logic to inject Romaji hints directly from drills.js data if available
+            // Note: This relies on drills.js storing the romaji logic. If drills.js uses innerHTML, 
+            // you might need to update the card generation loop inside drills.js as well.
         });
 
         function filterDrillCharacters(query) {
             const searchTerm = query.toLowerCase().trim();
-            const cards = document.querySelectorAll('#drills-grid > div, #drills-grid .card');
+            const cards = document.querySelectorAll('#drills-grid > div, #drills-grid .card, .drill-card');
             cards.forEach(card => {
                 const text = card.innerText.toLowerCase();
                 if (text.includes(searchTerm)) card.style.display = '';
@@ -269,81 +256,30 @@
             });
         }
 
-        // ORIGINAL HANZI WRITER LOGIC (ONLY FOR LEFT SIDE ANIMATION)
+        // ORIGINAL HANZI WRITER LOGIC
         window.initKanziStrokeOrderDemonstration = function(char) {
-            console.log("Initializing stroke order demonstration for:", char);
-            
             const target = document.getElementById('kanji-target');
             if (!target) return;
-
             target.innerHTML = '';
 
             if (window.HanziWriter) {
                 try {
                     const writer = HanziWriter.create('kanji-target', char, {
-                        width: 200,
-                        height: 200,
+                        width: 180,
+                        height: 180,
                         padding: 15,
                         showOutline: true,
                         strokeColor: '#38bdf8',
                         outlineColor: '#1e293b',
-                        drawingColor: '#22c55e',
-                        charDataLoader: function(charToLoad, onDataLoaderError) {
-                            return new Promise((resolve, reject) => {
-                                const hex = charToLoad.charCodeAt(0).toString(16).padStart(5, '0');
-                                const url = `https://cdn.jsdelivr.net/gh/skishore/kanjivg-data@master/kanji/${hex}.svg`;
-
-                                fetch(url)
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('Network response was not ok');
-                                        }
-                                        return response.text();
-                                    })
-                                    .then(svgText => {
-                                        resolve({
-                                            strokes: svgText,
-                                            medians: []
-                                        });
-                                    })
-                                    .catch(error => {
-                                        console.error('Error loading KanjiVG data:', error);
-                                        onDataLoaderError(error);
-                                        reject(error);
-                                    });
-                            });
-                        }
+                        drawingColor: '#22c55e'
                     });
-
                     writer.animateCharacter();
-                    
-                    // Allow replay button to trigger animation
-                    window.playStrokeDemo = function() {
-                        writer.animateCharacter();
-                    };
-
-                } catch (e) {
-                    console.error("HanziWriter initialization error:", e);
-                }
-            } else {
-                console.error("HanziWriter is not loaded.");
+                    window.playStrokeDemo = function() { writer.animateCharacter(); };
+                } catch (e) { console.error("HanziWriter initialization error:", e); }
             }
         }
 
-        document.getElementById('tab-kanji').addEventListener('click', function() {
-            setTimeout(() => {
-                const firstKanjiCard = document.querySelector('#drills-grid .card');
-                if (firstKanjiCard) {
-                    firstKanjiCard.click(); 
-                    document.getElementById('practice-modal').addEventListener('click', function(e) {
-                        initKanziStrokeOrderDemonstration('人');
-                    }, {once: true});
-                }
-            }, 1500);
-        });
-
         function openNotifications() { alert("🔔 No unread notifications."); }
-        function goToSettings() { window.location.href = 'settings.html'; }
     </script>
 </body>
 </html>

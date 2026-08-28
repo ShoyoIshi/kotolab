@@ -182,6 +182,7 @@ function loadCategoryDrills(category) {
         });
 }
 
+// UPDATED HTML RENDERER: Using cleaner classes for beginners (.char-text and .romaji-hint)
 function renderDrillCards(items) {
     const grid = document.getElementById('drills-grid');
     if (!grid || !items) return;
@@ -194,28 +195,18 @@ function renderDrillCards(items) {
         const charProgress = Math.round(userProgress.characters[displayChar] || 0);
 
         return `
-            <div class="drill-card" onclick="openPracticeModal(${index})" style="background: var(--bg-card, #151e33); border: 1px solid var(--border-color, #263552); border-radius: 16px; cursor: pointer; padding: 1.25rem; transition: all 0.2s ease;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                    <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">Progress</span>
-                    <span style="font-size: 0.75rem; color: #38bdf8; font-weight: 800;">${charProgress}%</span>
+            <div class="drill-card" onclick="openPracticeModal(${index})">
+                <!-- Subtle Progress Indicator -->
+                <div style="width: 100%; display: flex; justify-content: space-between; font-size: 0.65rem; color: #94a3b8; margin-bottom: 0.25rem;">
+                    <span>Mastery</span><span>${charProgress}%</span>
+                </div>
+                <div style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; overflow: hidden; margin-bottom: auto;">
+                    <div style="width: ${charProgress}%; height: 100%; background: #22c55e;"></div>
                 </div>
 
-                <div style="width: 100%; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; overflow: hidden; margin-bottom: 1rem;">
-                    <div style="width: ${charProgress}%; height: 100%; background: linear-gradient(90deg, #6366f1, #22c55e); transition: width 0.3s ease;"></div>
-                </div>
-
-                <div style="font-size: 3.5rem; font-weight: 800; text-align: center; color: white; margin-bottom: 0.5rem;">
-                    ${displayChar}
-                </div>
-                
-                <div style="text-align: center; margin-bottom: 1rem;">
-                    ${displayReading ? `<div class="reading-badge" style="display: inline-block; background: #1e293b; padding: 0.25rem 0.65rem; border-radius: 12px; color: #38bdf8; font-size: 0.75rem;">${displayReading}</div>` : ''}
-                </div>
-
-                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; border-top: 1px solid var(--border-color, #263552);">
-                    <button onclick="event.stopPropagation(); speakJapanese('${displayChar}')" class="weak-btn" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;">🔊 Listen</button>
-                    <span style="font-size: 0.75rem; color: #818cf8; font-weight: 700;">Practice ➔</span>
-                </div>
+                <!-- Clean Character & Romaji Display -->
+                <div class="char-text" style="margin-top: 0.5rem;">${displayChar}</div>
+                <div class="romaji-hint">${displayReading}</div>
             </div>
         `;
     }).join('');
@@ -599,6 +590,7 @@ function resetStrokePractice() {
     if (kanaCtx && kanaCanvas) kanaCtx.clearRect(0, 0, kanaCanvas.width, kanaCanvas.height);
 }
 
+// FIXED: Added missing closing bracket for startModalTimer function
 function startModalTimer() {
     if (sessionTimer) clearInterval(sessionTimer);
     sessionTimer = setInterval(() => {

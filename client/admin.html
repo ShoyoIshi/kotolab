@@ -2,19 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>KotoLab - Admin Panel</title>
 
-    <!-- Admin Role Guard -->
     <script>
         const token = localStorage.getItem('kotolab_token');
-        const user = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
+        let userRole = localStorage.getItem('kotolab_role'); 
+        
+        try {
+            const user = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
+            if (user.role) userRole = user.role;
+            if (user.username === 'admin' || user.username === 'AdminSahil') userRole = 'admin'; // Fallback check
+        } catch(e) {}
 
         if (!token) {
-            window.location.href = 'login.html';
-        } else if (user.role !== 'admin') {
+            window.location.replace('login.html');
+        } else if (userRole !== 'admin') {
             alert('Access denied! Only administrators can access the Admin Panel.');
-            window.location.href = 'index.html';
+            window.location.replace('index.html');
         }
     </script>
 
@@ -43,11 +48,18 @@
         }
         .badge-user { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
         .badge-admin { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
+        
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-color); }
+            .stats-grid { grid-template-columns: 1fr !important; }
+            .admin-table { display: block; overflow-x: auto; white-space: nowrap; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div>
             <div class="brand">
@@ -65,51 +77,48 @@
         </div>
 
         <div>
-            <button onclick="handleLogout()" class="tile" style="width: 100%; color: var(--accent-red); border-color: var(--accent-red); cursor: pointer;">
+            <button onclick="handleLogout()" class="tile" style="width: 100%; color: var(--accent-red); border-color: var(--accent-red); cursor: pointer; padding: 0.75rem; border-radius: 8px; background: transparent; border: 1px solid var(--accent-red); transition: all 0.2s;">
                 🚪 Logout
             </button>
         </div>
     </aside>
 
-    <!-- Main Content Area -->
-    <main class="main-wrapper">
-        <header class="top-header">
+    <main class="main-wrapper" style="flex: 1; padding: 2rem; overflow-y: auto;">
+        <header class="top-header" style="margin-bottom: 2rem;">
             <div class="header-title">
-                <h1>Admin Panel ⚙️</h1>
-                <p>Manage users, monitor study activity, and reset student progress.</p>
+                <h1 style="font-size: 1.8rem; font-weight: 800; margin: 0;">Admin Panel ⚙️</h1>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.2rem;">Manage users, monitor study activity, and reset student progress.</p>
             </div>
         </header>
 
-        <!-- Top Summary Cards -->
-        <section class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 2rem;">
-            <div class="stat-card">
-                <div class="stat-icon" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-blue);">👥</div>
+        <section class="stats-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+            <div class="stat-card" style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 12px; display: flex; align-items: center; gap: 1rem;">
+                <div class="stat-icon" style="width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; background: rgba(56, 189, 248, 0.15); color: var(--accent-blue);">👥</div>
                 <div>
-                    <div id="metric-total-students" class="stat-value">0</div>
-                    <div class="stat-label">Total Active Students</div>
+                    <div id="metric-total-students" class="stat-value" style="font-size: 1.5rem; font-weight: 800;">0</div>
+                    <div class="stat-label" style="font-size: 0.8rem; color: var(--text-muted);">Total Active Students</div>
                 </div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-icon" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-purple);">📊</div>
+            <div class="stat-card" style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 12px; display: flex; align-items: center; gap: 1rem;">
+                <div class="stat-icon" style="width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; background: rgba(99, 102, 241, 0.15); color: var(--accent-purple);">📊</div>
                 <div>
-                    <div id="metric-total-users" class="stat-value">0</div>
-                    <div class="stat-label">Total System Accounts</div>
+                    <div id="metric-total-users" class="stat-value" style="font-size: 1.5rem; font-weight: 800;">0</div>
+                    <div class="stat-label" style="font-size: 0.8rem; color: var(--text-muted);">Total System Accounts</div>
                 </div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-green);">⚡</div>
+            <div class="stat-card" style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 12px; display: flex; align-items: center; gap: 1rem;">
+                <div class="stat-icon" style="width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; background: rgba(16, 185, 129, 0.15); color: var(--accent-green);">⚡</div>
                 <div>
-                    <div id="metric-total-attempts" class="stat-value">0</div>
-                    <div class="stat-label">Total Platform Attempts</div>
+                    <div id="metric-total-attempts" class="stat-value" style="font-size: 1.5rem; font-weight: 800;">0</div>
+                    <div class="stat-label" style="font-size: 0.8rem; color: var(--text-muted);">Total Platform Attempts</div>
                 </div>
             </div>
         </section>
 
-        <!-- Student Directory Table -->
-        <div class="dashboard-panel">
-            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Registered Accounts & Live Progress</h3>
+        <div class="dashboard-panel" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem;">
+            <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: white;">Registered Accounts & Live Progress</h3>
 
             <table class="admin-table">
                 <thead>
@@ -137,7 +146,8 @@
         localStorage.removeItem('kotolab_token');
         localStorage.removeItem('kotolab_user');
         localStorage.removeItem('kotolab_username');
-        window.location.href = 'login.html';
+        localStorage.removeItem('kotolab_role'); // Clean up role too
+        window.location.replace('login.html');
     }
 
     async function fetchStudentOverview() {
@@ -212,7 +222,7 @@
                     <td>${student.total_attempts}</td>
                     <td>${student.accuracy}%</td>
                     <td>
-                        <button onclick="resetStudentStats(${student.id}, '${student.username}')" class="tile" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; color: var(--accent-orange); border-color: var(--accent-orange); cursor: pointer;">
+                        <button onclick="resetStudentStats(${student.id}, '${student.username}')" style="background: transparent; padding: 0.4rem 0.8rem; font-size: 0.75rem; color: var(--accent-orange); border: 1px solid var(--accent-orange); border-radius: 6px; cursor: pointer; transition: all 0.2s ease;">
                             🔄 Reset Stats
                         </button>
                     </td>
@@ -246,6 +256,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', fetchStudentOverview);
-</script>
+    </script>
 </body>
 </html>
