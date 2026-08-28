@@ -12,19 +12,41 @@ const JWT_SECRET = process.env.JWT_SECRET || 'kotolab_secret_key_2026';
 router.post('/signup', async (req, res) => {
     try {
         const { username, email, password } = req.body;
+        
+        if (!username || !email || !password) {
+            return res.status(400).json({ error: "All fields are required for signup." });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const query = 'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id';
+        const query = 'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id, username, email, role, user_level, streak_count';
         const result = await pool.query(query, [username, email, hashedPassword]);
+        const newUser = result.rows[0];
         
+        // Generate JWT token immediately on signup so user gets logged in automatically
+        const token = jwt.sign(
+            { id: newUser.id, username: newUser.username, role: newUser.role || 'user' },
+            JWT_SECRET,
+            { expiresIn: '7d' }
+        );
+
         res.status(201).json({ 
+            success: true,
             message: "User created successfully", 
-            userId: result.rows[0].id 
+            token,
+            user: {
+                id: newUser.id,
+                username: newUser.username,
+                email: newUser.email,
+                role: newUser.role || 'user',
+                user_level: newUser.user_level || 1,
+                streak_count: newUser.streak_count || 0
+            }
         });
 
     } catch (error) {
         console.error("Signup error:", error);
-        res.status(500).json({ error: "Signup failed (Username/Email might already exist)" });
+        res.status(500).json({ error: "Signup failed (Username or Email might already exist)" });
     }
 });
 
@@ -41,34 +63,30 @@ router.post('/login', async (req, res) => {
             'SELECT * FROM users WHERE username = $1 OR email = $2',
             [username, username]
         );
-        const rows = result.rows; // Extracting data in PostgreSQL format
+        const rows = result.rows;
 
         console.log(`[LOGIN ATTEMPT] Username: "${username}" | Rows found: ${rows.length}`);
 
         if (rows.length === 0) {
-            return res.status(401).json({ error: 'Invalid credentials.' });
+            return res.status(401).json({ error: 'Invalid credentials. User not found.' });
         }
 
         const user = rows[0];
         let isValid = false;
 
-        // 1. Dev fallback check for admin bypass OR early student dev accounts
         if (user.role === 'admin' && password === 'admin123') {
             isValid = true;
         } else if (password === '123456' && !user.password_hash) {
             isValid = true;
-        }
-        // 2. Standard bcrypt hash comparison
-        else if (user.password_hash) {
+        } else if (user.password_hash) {
             isValid = await bcrypt.compare(password, user.password_hash);
         }
 
         if (!isValid) {
             console.log(`[LOGIN FAILED] Password mismatch for user: ${username}`);
-            return res.status(401).json({ error: 'Invalid credentials.' });
+            return res.status(401).json({ error: 'Invalid credentials. Incorrect password.' });
         }
 
-        // Generate JWT token
         const token = jwt.sign(
             { id: user.id, username: user.username, role: user.role },
             JWT_SECRET,
