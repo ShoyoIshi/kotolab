@@ -31,7 +31,6 @@
             overflow: hidden;
         }
 
-        /* Widescreen Split Layout Container */
         .login-container {
             display: grid;
             grid-template-columns: 1fr 480px;
@@ -39,7 +38,6 @@
             height: 100vh;
         }
 
-        /* LEFT BRANDING & FEATURE SHOWCASE SIDE */
         .brand-showcase {
             position: relative;
             background: linear-gradient(180deg, rgba(11, 15, 25, 0.4) 0%, rgba(11, 15, 25, 0.9) 100%), 
@@ -97,7 +95,6 @@
             margin-bottom: 2rem;
         }
 
-        /* Feature Mini-Cards Grid */
         .features-preview-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -150,7 +147,6 @@
             margin-top: 4px;
         }
 
-        /* RIGHT LOGIN / SIGNUP FORM SIDE */
         .login-form-side {
             background: var(--bg-card);
             padding: 3rem;
@@ -336,7 +332,6 @@
 
     <div class="login-container">
         
-        <!-- LEFT BRANDING & FEATURE SHOWCASE SIDE -->
         <div class="brand-showcase">
             <div class="brand-header">
                 <div class="brand-icon">⛩️</div>
@@ -376,7 +371,6 @@
             </div>
         </div>
 
-        <!-- RIGHT FORM SIDE -->
         <div class="login-form-side">
             <div class="login-header" id="formHeader">
                 <h2 id="formTitle">Welcome Back! 👋</h2>
@@ -481,29 +475,27 @@
                     body: JSON.stringify(payload)
                 });
 
-                // Agar 500 error aaya ya JSON parse nahi hua, toh seedha catch block me jayega
-                if (!response.ok) {
-                    throw new Error(`Server returned status ${response.status}`);
-                }
-
                 const data = await response.json();
 
-                // Check for either login success/token OR signup success (userId or message)
-                if (response.ok) {
-                    localStorage.setItem('kotolab_token', data.token || 'signup_token_success');
+                if (!response.ok) {
+                    throw new Error(data.error || data.message || `Server returned status ${response.status}`);
+                }
+
+                if (data.success || data.token) {
+                    localStorage.setItem('kotolab_token', data.token);
                     localStorage.setItem('kotolab_user', JSON.stringify(data.user || { username: usernameInput }));
                     localStorage.setItem('kotolab_username', usernameInput);
                     localStorage.setItem('kotolab_onboarding_done', 'true');
 
                     window.location.href = 'index.html';
                 } else {
-                    alert(data.error || data.message || "Authentication failed.");
+                    alert("Authentication failed.");
                     submitBtn.innerText = isSignUpMode ? "Sign Up" : "Sign In";
                     submitBtn.disabled = false;
                 }
             } catch (err) {
                 console.error("Auth Fetch Error:", err);
-                alert("❌ 500 Internal Server Error: Database me signup query fail ho rahi hai. Kripya apna backend check karein!");
+                alert("❌ Error: " + err.message);
                 submitBtn.innerText = isSignUpMode ? "Sign Up" : "Sign In";
                 submitBtn.disabled = false;
             }
