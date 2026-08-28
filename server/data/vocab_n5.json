@@ -1,0 +1,4636 @@
+[
+  {
+    "japanese_word": "毎朝",
+    "reading": "まいあさ",
+    "meaning": "every morning",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "問題",
+    "reading": "もんだい",
+    "meaning": "problem",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "お茶",
+    "reading": "おちゃ",
+    "meaning": "green tea",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "黒",
+    "reading": "くろ",
+    "meaning": "black",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "台所",
+    "reading": "だいどころ",
+    "meaning": "kitchen",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "葉書",
+    "reading": "はがき",
+    "meaning": "postcard",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ペン",
+    "reading": "ペン",
+    "meaning": "pen",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ニュース",
+    "reading": "ニュース",
+    "meaning": "news",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "花瓶",
+    "reading": "かびん",
+    "meaning": "a vase",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "フォーク",
+    "reading": "フォーク",
+    "meaning": "fork",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "引く",
+    "reading": "ひく",
+    "meaning": "to pull",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "フィルム",
+    "reading": "フィルム",
+    "meaning": "roll of film",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "磨く",
+    "reading": "みがく",
+    "meaning": "to brush teeth, to polish",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "押す",
+    "reading": "おす",
+    "meaning": "to push, to stamp something",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "売る",
+    "reading": "うる",
+    "meaning": "to sell",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "電気",
+    "reading": "でんき",
+    "meaning": "electricity, electric light",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "並ぶ",
+    "reading": "ならぶ",
+    "meaning": "to line up, to stand in a line",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "病気",
+    "reading": "びょうき",
+    "meaning": "illness",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ポケット",
+    "reading": "ポケット",
+    "meaning": "pocket",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "頭",
+    "reading": "あたま",
+    "meaning": "head",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "はし",
+    "reading": "はし",
+    "meaning": "chopsticks",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "英語",
+    "reading": "えいご",
+    "meaning": "English language",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "家",
+    "reading": "いえ",
+    "meaning": "house",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "一月",
+    "reading": "ひとつき",
+    "meaning": "one month",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "暑い",
+    "reading": "あつい",
+    "meaning": "hot",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "遊ぶ",
+    "reading": "あそぶ",
+    "meaning": "to play, to make a visit",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "取る",
+    "reading": "とる",
+    "meaning": "to take something",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "九",
+    "reading": "きゅう / く",
+    "meaning": "nine",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "閉める",
+    "reading": "しめる",
+    "meaning": "to close something",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "たいへん",
+    "reading": "たいへん",
+    "meaning": "very",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "奥さん",
+    "reading": "おくさん",
+    "meaning": "(honorable) wife",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "作文",
+    "reading": "さくぶん",
+    "meaning": "composition, writing",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "便利",
+    "reading": "べんり",
+    "meaning": "useful, convenient",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "右",
+    "reading": "みぎ",
+    "meaning": "right side",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "寒い",
+    "reading": "さむい",
+    "meaning": "cold",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "あびる",
+    "reading": "あびる",
+    "meaning": "to bathe, to shower",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "十",
+    "reading": "じゅう  とお",
+    "meaning": "ten",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "中",
+    "reading": "なか",
+    "meaning": "middle",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "消す",
+    "reading": "けす",
+    "meaning": "to erase, to turn off power",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "近く",
+    "reading": "ちかく",
+    "meaning": "near",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "七つ",
+    "reading": "ななつ",
+    "meaning": "seven",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "テープレコーダー",
+    "reading": "テープレコーダー",
+    "meaning": "tape recorder",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "目",
+    "reading": "め",
+    "meaning": "eye",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "空",
+    "reading": "そら",
+    "meaning": "sky",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "六日",
+    "reading": "むいか",
+    "meaning": "six days, sixth day of the month",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "座る",
+    "reading": "すわる",
+    "meaning": "to sit",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "年",
+    "reading": "とし",
+    "meaning": "year",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "男の子",
+    "reading": "おとこのこ",
+    "meaning": "boy",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "狭い",
+    "reading": "せまい",
+    "meaning": "narrow",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "冷蔵庫",
+    "reading": "れいぞうこ",
+    "meaning": "refrigerator",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "カメラ",
+    "reading": "カメラ",
+    "meaning": "camera",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "玄関",
+    "reading": "げんかん",
+    "meaning": "entry hall",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "違う",
+    "reading": "ちがう",
+    "meaning": "to differ",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "危ない",
+    "reading": "あぶない",
+    "meaning": "dangerous",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "分かる",
+    "reading": "わかる",
+    "meaning": "to be understood",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "言う",
+    "reading": "いう",
+    "meaning": "to say",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "飲む",
+    "reading": "のむ",
+    "meaning": "to drink",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "練習",
+    "reading": "れんしゅうする",
+    "meaning": "to practice",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "何",
+    "reading": "なん / なに",
+    "meaning": "what",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "厚い",
+    "reading": "あつい",
+    "meaning": "kind, deep, thick",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "毎月",
+    "reading": "まいげつ / まいつき",
+    "meaning": "every month",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "閉まる",
+    "reading": "しまる",
+    "meaning": "to close, to be closed",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "脱ぐ",
+    "reading": "ぬぐ",
+    "meaning": "to take off clothes",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "黒い",
+    "reading": "くろい",
+    "meaning": "black",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "登る",
+    "reading": "のぼる",
+    "meaning": "to climb",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "汚い",
+    "reading": "きたない",
+    "meaning": "dirty",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "雨",
+    "reading": "あめ",
+    "meaning": "rain",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "お皿",
+    "reading": "おさら",
+    "meaning": "plate, dish",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "速い",
+    "reading": "はやい",
+    "meaning": "quick",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "お風呂",
+    "reading": "おふろ",
+    "meaning": "bath",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "新しい",
+    "reading": "あたらしい",
+    "meaning": "new",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "廊下",
+    "reading": "ろうか",
+    "meaning": "corridor",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "茶色",
+    "reading": "ちゃいろ",
+    "meaning": "brown",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "コート",
+    "reading": "コート",
+    "meaning": "coat, tennis court",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "手紙",
+    "reading": "てがみ",
+    "meaning": "letter",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "要る",
+    "reading": "いる",
+    "meaning": "to need",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "こっち",
+    "reading": "こっち",
+    "meaning": "this person or way",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "スプーン",
+    "reading": "スプーン",
+    "meaning": "spoon",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "時々",
+    "reading": "ときどき",
+    "meaning": "sometimes",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "傘",
+    "reading": "かさ",
+    "meaning": "umbrella",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "いい / よい",
+    "reading": "いい / よい",
+    "meaning": "good",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "電話",
+    "reading": "でんわ",
+    "meaning": "telephone",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "勤める",
+    "reading": "つとめる",
+    "meaning": "to work for someone",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "安い",
+    "reading": "やすい",
+    "meaning": "cheap",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "どう",
+    "reading": "どう",
+    "meaning": "how, in what way",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "道",
+    "reading": "みち",
+    "meaning": "street",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "バス",
+    "reading": "バス",
+    "meaning": "bus",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "クラス",
+    "reading": "クラス",
+    "meaning": "class",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "差す",
+    "reading": "さす",
+    "meaning": "to stretch out hands, to raise an umbrella",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "スポーツ",
+    "reading": "スポーツ",
+    "meaning": "sport",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "どっち",
+    "reading": "どっち",
+    "meaning": "which",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "そば",
+    "reading": "そば",
+    "meaning": "near, beside",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "新聞",
+    "reading": "しんぶん",
+    "meaning": "newspaper",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "どうして",
+    "reading": "どうして",
+    "meaning": "for what reason",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "庭",
+    "reading": "にわ",
+    "meaning": "garden",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "大きな",
+    "reading": "おおきな",
+    "meaning": "big",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "辺",
+    "reading": "へん",
+    "meaning": "area",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "番号",
+    "reading": "ばんごう",
+    "meaning": "number",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "家族",
+    "reading": "かぞく",
+    "meaning": "family",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "下手",
+    "reading": "へた",
+    "meaning": "unskillful",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "料理",
+    "reading": "りょうり",
+    "meaning": "cuisine",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "カレー",
+    "reading": "カレー",
+    "meaning": "curry",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "六",
+    "reading": "ろく",
+    "meaning": "six",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "今年",
+    "reading": "ことし",
+    "meaning": "this year",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "初めて",
+    "reading": "はじめて",
+    "meaning": "for the first time",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "風邪",
+    "reading": "かぜ",
+    "meaning": "a cold",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "赤い",
+    "reading": "あかい",
+    "meaning": "red",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "甘い",
+    "reading": "あまい",
+    "meaning": "sweet",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "西",
+    "reading": "にし",
+    "meaning": "west",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "毎週",
+    "reading": "まいしゅう",
+    "meaning": "every week",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "いつも",
+    "reading": "いつも",
+    "meaning": "always",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "五つ",
+    "reading": "いつつ",
+    "meaning": "five",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "建物",
+    "reading": "たてもの",
+    "meaning": "building",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "なる",
+    "reading": "なる",
+    "meaning": "to become",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "まっすぐ",
+    "reading": "まっすぐ",
+    "meaning": "straight ahead, direct",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "作る",
+    "reading": "つくる",
+    "meaning": "to make",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "風",
+    "reading": "かぜ",
+    "meaning": "wind",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "少し",
+    "reading": "すこし",
+    "meaning": "few",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "大学",
+    "reading": "だいがく",
+    "meaning": "university",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "シャツ",
+    "reading": "シャツ",
+    "meaning": "shirt",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "病院",
+    "reading": "びょういん",
+    "meaning": "hospital",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "会社",
+    "reading": "かいしゃ",
+    "meaning": "company",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "無くす",
+    "reading": "なくす",
+    "meaning": "to lose something",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "スリッパ",
+    "reading": "スリッパ",
+    "meaning": "slippers",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "地下鉄",
+    "reading": "ちかてつ",
+    "meaning": "underground train",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ページ",
+    "reading": "ページ",
+    "meaning": "page",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "曇る",
+    "reading": "くもる",
+    "meaning": "to become cloudy, to become dim",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "辞書",
+    "reading": "じしょ",
+    "meaning": "dictionary",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "万年筆",
+    "reading": "まんねんひつ",
+    "meaning": "fountain pen",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "海",
+    "reading": "うみ",
+    "meaning": "sea",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "エレベーター",
+    "reading": "エレベーター",
+    "meaning": "elevator",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "たぶん",
+    "reading": "たぶん",
+    "meaning": "probably",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "夕方",
+    "reading": "ゆうがた",
+    "meaning": "evening",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "東",
+    "reading": "ひがし",
+    "meaning": "east",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "声",
+    "reading": "こえ",
+    "meaning": "voice",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "撮る",
+    "reading": "とる",
+    "meaning": "to take a photo or record a film",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "私",
+    "reading": "わたくし",
+    "meaning": "(humble) I, myself",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "両親",
+    "reading": "りょうしん",
+    "meaning": "both parents",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "きれい",
+    "reading": "きれい",
+    "meaning": "pretty, clean",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "どうぞ",
+    "reading": "どうぞ",
+    "meaning": "please",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "好き",
+    "reading": "すき",
+    "meaning": "likeable",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "静か",
+    "reading": "しずか",
+    "meaning": "quiet",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "お父さん",
+    "reading": "おとうさん",
+    "meaning": "(honorable) father",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "人",
+    "reading": "ひと",
+    "meaning": "person",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "覚える",
+    "reading": "おぼえる",
+    "meaning": "to remember",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "休み",
+    "reading": "やすみ",
+    "meaning": "rest, holiday",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "池",
+    "reading": "いけ",
+    "meaning": "pond",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "始まる",
+    "reading": "はじまる",
+    "meaning": "to begin",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "困る",
+    "reading": "こまる",
+    "meaning": "to be worried",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ほか",
+    "reading": "ほか",
+    "meaning": "other, the rest",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ちゃわん",
+    "reading": "ちゃわん",
+    "meaning": "rice bowl",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "疲れる",
+    "reading": "つかれる",
+    "meaning": "to get tired",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "掃除",
+    "reading": "そうじする",
+    "meaning": "to clean, to sweep",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "賑やか",
+    "reading": "にぎやか",
+    "meaning": "bustling, busy",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "一つ",
+    "reading": "ひとつ",
+    "meaning": "one",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "来週",
+    "reading": "らいしゅう",
+    "meaning": "next week",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "財布",
+    "reading": "さいふ",
+    "meaning": "wallet",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "知る",
+    "reading": "しる",
+    "meaning": "to know",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "教える",
+    "reading": "おしえる",
+    "meaning": "to teach, to tell",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "朝御飯",
+    "reading": "あさごはん",
+    "meaning": "breakfast",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "飛ぶ",
+    "reading": "とぶ",
+    "meaning": "to fly, to hop",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "言葉",
+    "reading": "ことば",
+    "meaning": "word, language",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "キロ / キログラム",
+    "reading": "キロ / キログラム",
+    "meaning": "kilogram",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "赤",
+    "reading": "あか",
+    "meaning": "red",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "自分",
+    "reading": "じぶん",
+    "meaning": "oneself",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "デパート",
+    "reading": "デパート",
+    "meaning": "department store",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "薄い",
+    "reading": "うすい",
+    "meaning": "thin, weak",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "高い",
+    "reading": "たかい",
+    "meaning": "tall, expensive",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "帰る",
+    "reading": "かえる",
+    "meaning": "to go back",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "はい",
+    "reading": "はい",
+    "meaning": "yes",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "卵",
+    "reading": "たまご",
+    "meaning": "egg",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "低い",
+    "reading": "ひくい",
+    "meaning": "short, low",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "なぜ",
+    "reading": "なぜ",
+    "meaning": "why",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "一日",
+    "reading": "いちにち",
+    "meaning": "(1) one day, (2) first of month",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "いいえ",
+    "reading": "いいえ",
+    "meaning": "no",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "小さな",
+    "reading": "ちいさな",
+    "meaning": "little",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "時間",
+    "reading": "じかん",
+    "meaning": "time",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "上げる",
+    "reading": "あげる",
+    "meaning": "to give",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ふろ",
+    "reading": "ふろ",
+    "meaning": "bath",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "生徒",
+    "reading": "せいと",
+    "meaning": "pupil",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "レストラン",
+    "reading": "レストラン",
+    "meaning": "restaurant",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "出す",
+    "reading": "だす",
+    "meaning": "to put out",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "かわいい",
+    "reading": "かわいい",
+    "meaning": "cute",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "音楽",
+    "reading": "おんがく",
+    "meaning": "music",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "歌",
+    "reading": "うた",
+    "meaning": "song",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "いちばん",
+    "reading": "いちばん",
+    "meaning": "best, first",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "咲く",
+    "reading": "さく",
+    "meaning": "to bloom",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "山",
+    "reading": "やま",
+    "meaning": "mountain",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "テレビ",
+    "reading": "テレビ",
+    "meaning": "television",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "授業",
+    "reading": "じゅぎょう",
+    "meaning": "lesson, class work",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "暖かい",
+    "reading": "あたたかい",
+    "meaning": "warm",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "セーター",
+    "reading": "セーター",
+    "meaning": "sweater, jumper",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "自転車",
+    "reading": "じてんしゃ",
+    "meaning": "bicycle",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ラジカセ / ラジオカセット",
+    "reading": "ラジカセ / ラジオカセット",
+    "meaning": "radio cassette player",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "つける",
+    "reading": "つける",
+    "meaning": "to turn on",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "さ来年",
+    "reading": "さらいねん",
+    "meaning": "year after next",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "学校",
+    "reading": "がっこう",
+    "meaning": "school",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "いくら",
+    "reading": "いくら",
+    "meaning": "how much?",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "四",
+    "reading": "し / よん",
+    "meaning": "four",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "入る",
+    "reading": "はいる",
+    "meaning": "to enter, to contain",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "曇り",
+    "reading": "くもり",
+    "meaning": "cloudy weather",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "外国",
+    "reading": "がいこく",
+    "meaning": "foreign country",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "温い",
+    "reading": "ぬるい",
+    "meaning": "luke warm",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "そうして / そして",
+    "reading": "そうして / そして",
+    "meaning": "and",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "どうも",
+    "reading": "どうも",
+    "meaning": "thanks",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "仕事",
+    "reading": "しごと",
+    "meaning": "job",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "窓",
+    "reading": "まど",
+    "meaning": "window",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "晩",
+    "reading": "ばん",
+    "meaning": "evening",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "難しい",
+    "reading": "むずかしい",
+    "meaning": "difficult",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "村",
+    "reading": "むら",
+    "meaning": "village",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "鉛筆",
+    "reading": "えんぴつ",
+    "meaning": "pencil",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "長い",
+    "reading": "ながい",
+    "meaning": "long",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "生まれる",
+    "reading": "うまれる",
+    "meaning": "to be born",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "雑誌",
+    "reading": "ざっし",
+    "meaning": "magazine",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "国",
+    "reading": "くに",
+    "meaning": "country",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "おまわりさん",
+    "reading": "おまわりさん",
+    "meaning": "friendly term for policeman",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "今朝",
+    "reading": "けさ",
+    "meaning": "this morning",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "晴れる",
+    "reading": "はれる",
+    "meaning": "to be sunny",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "夕飯",
+    "reading": "ゆうはん",
+    "meaning": "dinner",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "一緒",
+    "reading": "いっしょ",
+    "meaning": "together",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "どれ",
+    "reading": "どれ",
+    "meaning": "which (of three or more)",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "立つ",
+    "reading": "たつ",
+    "meaning": "to stand",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "元気",
+    "reading": "げんき",
+    "meaning": "health, vitality",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "天気",
+    "reading": "てんき",
+    "meaning": "weather",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "医者",
+    "reading": "いしゃ",
+    "meaning": "medical doctor",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "七",
+    "reading": "しち / なな",
+    "meaning": "seven",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "はく",
+    "reading": "はく",
+    "meaning": "to wear, to put on trousers",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "だんだん",
+    "reading": "だんだん",
+    "meaning": "gradually",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "戸",
+    "reading": "と",
+    "meaning": "Japanese style door",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ノート",
+    "reading": "ノート",
+    "meaning": "notebook, exercise book",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "また",
+    "reading": "また",
+    "meaning": "again, and",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "今日",
+    "reading": "きょう",
+    "meaning": "today",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "とても",
+    "reading": "とても",
+    "meaning": "very",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "一昨年",
+    "reading": "おととし",
+    "meaning": "year before last",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "文章",
+    "reading": "ぶんしょう",
+    "meaning": "sentence, text",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "公園",
+    "reading": "こうえん",
+    "meaning": "park",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "借りる",
+    "reading": "かりる",
+    "meaning": "to borrow",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "口",
+    "reading": "くち",
+    "meaning": "mouth, opening",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "持つ",
+    "reading": "もつ",
+    "meaning": "to hold",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "上着",
+    "reading": "うわぎ",
+    "meaning": "jacket",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "秋",
+    "reading": "あき",
+    "meaning": "autumn",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "悪い",
+    "reading": "わるい",
+    "meaning": "bad",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "青い",
+    "reading": "あおい",
+    "meaning": "blue",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "住む",
+    "reading": "すむ",
+    "meaning": "to live in",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "かける",
+    "reading": "かける",
+    "meaning": "to call by phone",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "木曜日",
+    "reading": "もくようび",
+    "meaning": "Thursday",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "忘れる",
+    "reading": "わすれる",
+    "meaning": "to forget",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "お手洗い",
+    "reading": "おてあらい",
+    "meaning": "bathroom",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "写真",
+    "reading": "しゃしん",
+    "meaning": "photograph",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ゼロ",
+    "reading": "ゼロ",
+    "meaning": "zero",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "いろいろ",
+    "reading": "いろいろ",
+    "meaning": "various",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "もう",
+    "reading": "もう",
+    "meaning": "already",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "会う",
+    "reading": "あう",
+    "meaning": "to meet",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "南",
+    "reading": "みなみ",
+    "meaning": "south",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "五日",
+    "reading": "いつか",
+    "meaning": "five days, fifth day",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "着る",
+    "reading": "きる",
+    "meaning": "to put on from the shoulders down",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "そこ",
+    "reading": "そこ",
+    "meaning": "that place",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "終る",
+    "reading": "おわる",
+    "meaning": "to finish",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "どの",
+    "reading": "どの",
+    "meaning": "which",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "読む",
+    "reading": "よむ",
+    "meaning": "to read",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "それでは",
+    "reading": "それでは",
+    "meaning": "in that situation",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "来月",
+    "reading": "らいげつ",
+    "meaning": "next month",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "果物",
+    "reading": "くだもの",
+    "meaning": "fruit",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "止まる",
+    "reading": "とまる",
+    "meaning": "to come to a halt",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "着く",
+    "reading": "つく",
+    "meaning": "to arrive at",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "大好き",
+    "reading": "だいすき",
+    "meaning": "to be very likeable",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "妹",
+    "reading": "いもうと",
+    "meaning": "(humble) younger sister",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "夏",
+    "reading": "なつ",
+    "meaning": "summer",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "今晩",
+    "reading": "こんばん",
+    "meaning": "this evening",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "塩",
+    "reading": "しお",
+    "meaning": "salt",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "先週",
+    "reading": "せんしゅう",
+    "meaning": "last week",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "欲しい",
+    "reading": "ほしい",
+    "meaning": "want",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "木",
+    "reading": "き",
+    "meaning": "tree, wood",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ほんとう",
+    "reading": "ほんとう",
+    "meaning": "truth",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "薬",
+    "reading": "くすり",
+    "meaning": "medicine",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "お菓子",
+    "reading": "おかし",
+    "meaning": "sweets, candy",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "金曜日",
+    "reading": "きんようび",
+    "meaning": "Friday",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "まずい",
+    "reading": "まずい",
+    "meaning": "unpleasant",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "お酒",
+    "reading": "おさけ",
+    "meaning": "alcohol, rice wine",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "多い",
+    "reading": "おおい",
+    "meaning": "many",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "動物",
+    "reading": "どうぶつ",
+    "meaning": "animal",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "切符",
+    "reading": "きっぷ",
+    "meaning": "ticket",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "キロ / キロメートル",
+    "reading": "キロ / キロメートル",
+    "meaning": "kilometre",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "呼ぶ",
+    "reading": "よぶ",
+    "meaning": "to call out, to invite",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "体",
+    "reading": "からだ",
+    "meaning": "body",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ゆっくりと",
+    "reading": "ゆっくりと",
+    "meaning": "slowly",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "二日",
+    "reading": "ふつか",
+    "meaning": "two days, second day of the month",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "大人",
+    "reading": "おとな",
+    "meaning": "adult",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "歯",
+    "reading": "は",
+    "meaning": "tooth",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "冬",
+    "reading": "ふゆ",
+    "meaning": "winter",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "所",
+    "reading": "ところ",
+    "meaning": "place",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "吹く",
+    "reading": "ふく",
+    "meaning": "to blow",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "足",
+    "reading": "あし",
+    "meaning": "foot, leg",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "箱",
+    "reading": "はこ",
+    "meaning": "box",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "八",
+    "reading": "はち",
+    "meaning": "eight",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "朝",
+    "reading": "あさ",
+    "meaning": "morning",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "一昨日",
+    "reading": "おととい",
+    "meaning": "day before yesterday",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "有名",
+    "reading": "ゆうめい",
+    "meaning": "famous",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "二十日",
+    "reading": "はつか",
+    "meaning": "twenty days, twentieth",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "近い",
+    "reading": "ちかい",
+    "meaning": "near",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ください",
+    "reading": "ください",
+    "meaning": "please",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "時計",
+    "reading": "とけい",
+    "meaning": "watch, clock",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "午後",
+    "reading": "ごご",
+    "meaning": "afternoon",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "食べ物",
+    "reading": "たべもの",
+    "meaning": "food",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "降る",
+    "reading": "ふる",
+    "meaning": "to fall, e.g. rain or snow",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "易しい",
+    "reading": "やさしい",
+    "meaning": "easy, simple",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "大使館",
+    "reading": "たいしかん",
+    "meaning": "embassy",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "誰",
+    "reading": "だれ",
+    "meaning": "who",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "上",
+    "reading": "うえ",
+    "meaning": "on top of",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "五",
+    "reading": "ご",
+    "meaning": "five",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "十日",
+    "reading": "とおか",
+    "meaning": "ten days, the tenth day",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "どちら",
+    "reading": "どちら",
+    "meaning": "which of two",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "プール",
+    "reading": "プール",
+    "meaning": "swimming pool",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "小さい",
+    "reading": "ちいさい",
+    "meaning": "little",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "今週",
+    "reading": "こんしゅう",
+    "meaning": "this week",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "肉",
+    "reading": "にく",
+    "meaning": "meat",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "零",
+    "reading": "れい",
+    "meaning": "zero",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "豚肉",
+    "reading": "ぶたにく",
+    "meaning": "pork",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "広い",
+    "reading": "ひろい",
+    "meaning": "spacious, wide",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "靴下",
+    "reading": "くつした",
+    "meaning": "socks",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "一人",
+    "reading": "ひとり",
+    "meaning": "one person",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "かぎ",
+    "reading": "かぎ",
+    "meaning": "key",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "向こう",
+    "reading": "むこう",
+    "meaning": "over there",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "上手",
+    "reading": "じょうず",
+    "meaning": "skillful",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "牛肉",
+    "reading": "ぎゅうにく",
+    "meaning": "beef",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "話",
+    "reading": "はなし",
+    "meaning": "talk, story",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "毎晩",
+    "reading": "まいばん",
+    "meaning": "every night",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "三つ",
+    "reading": "みっつ",
+    "meaning": "three",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "吸う",
+    "reading": "すう",
+    "meaning": "to smoke, to suck",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "銀行",
+    "reading": "ぎんこう",
+    "meaning": "bank",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "大切",
+    "reading": "たいせつ",
+    "meaning": "important",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "学生",
+    "reading": "がくせい",
+    "meaning": "student",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "部屋",
+    "reading": "へや",
+    "meaning": "room",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "昼御飯",
+    "reading": "ひるごはん",
+    "meaning": "midday meal",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "下",
+    "reading": "した",
+    "meaning": "below",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "二つ",
+    "reading": "ふたつ",
+    "meaning": "two",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "百",
+    "reading": "ひゃく",
+    "meaning": "hundred",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "地図",
+    "reading": "ちず",
+    "meaning": "map",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "八百屋",
+    "reading": "やおや",
+    "meaning": "greengrocer",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ネクタイ",
+    "reading": "ネクタイ",
+    "meaning": "tie, necktie",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "去年",
+    "reading": "きょねん",
+    "meaning": "last year",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "火曜日",
+    "reading": "かようび",
+    "meaning": "Tuesday",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "乗る",
+    "reading": "のる",
+    "meaning": "to get on, to ride",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "弟",
+    "reading": "おとうと",
+    "meaning": "younger brother",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "あなた",
+    "reading": "あなた",
+    "meaning": "you",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "千",
+    "reading": "せん",
+    "meaning": "thousand",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "緑",
+    "reading": "みどり",
+    "meaning": "green",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "とり肉",
+    "reading": "とりにく",
+    "meaning": "chicken meat",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "軽い",
+    "reading": "かるい",
+    "meaning": "light",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "あまり",
+    "reading": "あまり",
+    "meaning": "not very",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "帽子",
+    "reading": "ぼうし",
+    "meaning": "hat",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "丈夫",
+    "reading": "じょうぶ",
+    "meaning": "strong, durable",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "入れる",
+    "reading": "いれる",
+    "meaning": "to put in",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "二十歳",
+    "reading": "はたち",
+    "meaning": "20 years old, 20th year",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "三日",
+    "reading": "みっか",
+    "meaning": "three days, third day of the month",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "遠い",
+    "reading": "とおい",
+    "meaning": "far",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "夏休み",
+    "reading": "なつやすみ",
+    "meaning": "summer holiday",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "友達",
+    "reading": "ともだち",
+    "meaning": "friend",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "横",
+    "reading": "よこ",
+    "meaning": "beside, side, width",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "冷たい",
+    "reading": "つめたい",
+    "meaning": "cold to the touch",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "夜",
+    "reading": "よる",
+    "meaning": "evening, night",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "トイレ",
+    "reading": "トイレ",
+    "meaning": "toilet",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "おなか",
+    "reading": "おなか",
+    "meaning": "stomach",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "どこ",
+    "reading": "どこ",
+    "meaning": "where",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "暇",
+    "reading": "ひま",
+    "meaning": "free time",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "鳴く",
+    "reading": "なく",
+    "meaning": "animal noise. to chirp, roar or croak etc.",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "隣",
+    "reading": "となり",
+    "meaning": "next door to",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "先生",
+    "reading": "せんせい",
+    "meaning": "teacher, doctor",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "出口",
+    "reading": "でぐち",
+    "meaning": "exit",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "後ろ",
+    "reading": "うしろ",
+    "meaning": "behind",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "先月",
+    "reading": "せんげつ",
+    "meaning": "last month",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "テープ",
+    "reading": "テープ",
+    "meaning": "tape",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "お姉さん",
+    "reading": "おねえさん",
+    "meaning": "(honorable) older sister",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "じゃ / じゃあ",
+    "reading": "じゃ / じゃあ",
+    "meaning": "well then…",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "本",
+    "reading": "ほん",
+    "meaning": "book",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "泳ぐ",
+    "reading": "およぐ",
+    "meaning": "to swim",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "灰皿",
+    "reading": "はいざら",
+    "meaning": "ashtray",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "門",
+    "reading": "もん",
+    "meaning": "gate",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "荷物",
+    "reading": "にもつ",
+    "meaning": "luggage",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "この",
+    "reading": "この",
+    "meaning": "this",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "書く",
+    "reading": "かく",
+    "meaning": "to write",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "毎年",
+    "reading": "まいねん / まいとし",
+    "meaning": "every year",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "明日",
+    "reading": "あした",
+    "meaning": "tomorrow",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ホテル",
+    "reading": "ホテル",
+    "meaning": "hotel",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "降りる",
+    "reading": "おりる",
+    "meaning": "to get off, to descend",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "重い",
+    "reading": "おもい",
+    "meaning": "heavy",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "電車",
+    "reading": "でんしゃ",
+    "meaning": "electric train",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "痛い",
+    "reading": "いたい",
+    "meaning": "painful",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "話す",
+    "reading": "はなす",
+    "meaning": "to speak",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "りっぱ",
+    "reading": "りっぱ",
+    "meaning": "splendid",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "つまらない",
+    "reading": "つまらない",
+    "meaning": "boring",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "よく",
+    "reading": "よく",
+    "meaning": "often, well",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "嫌",
+    "reading": "いや",
+    "meaning": "unpleasant",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "宿題",
+    "reading": "しゅくだい",
+    "meaning": "homework",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "死ぬ",
+    "reading": "しぬ",
+    "meaning": "to die",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "みんな",
+    "reading": "みんな",
+    "meaning": "everyone",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "万",
+    "reading": "まん",
+    "meaning": "ten thousand",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "映画",
+    "reading": "えいが",
+    "meaning": "movie",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "遅い",
+    "reading": "おそい",
+    "meaning": "late, slow",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "耳",
+    "reading": "みみ",
+    "meaning": "ear",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "かかる",
+    "reading": "かかる",
+    "meaning": "to take time or money",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "でも",
+    "reading": "でも",
+    "meaning": "but",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "四つ",
+    "reading": "よっつ",
+    "meaning": "four",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "机",
+    "reading": "つくえ",
+    "meaning": "desk",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "あっち",
+    "reading": "あっち",
+    "meaning": "over there",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "買う",
+    "reading": "かう",
+    "meaning": "to buy",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "開く",
+    "reading": "あく",
+    "meaning": "to open, to become open",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "教室",
+    "reading": "きょうしつ",
+    "meaning": "classroom",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "かばん",
+    "reading": "かばん",
+    "meaning": "bag, basket",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "マッチ",
+    "reading": "マッチ",
+    "meaning": "match",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "短い",
+    "reading": "みじかい",
+    "meaning": "short",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "姉",
+    "reading": "あね",
+    "meaning": "(humble) older sister",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "大勢",
+    "reading": "おおぜい",
+    "meaning": "great number of people",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "開ける",
+    "reading": "あける",
+    "meaning": "to open",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "忙しい",
+    "reading": "いそがしい",
+    "meaning": "busy, irritated",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "おばあさん",
+    "reading": "おばあさん",
+    "meaning": "grandmother, female senior-citizen",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "店",
+    "reading": "みせ",
+    "meaning": "shop",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ワイシャツ",
+    "reading": "ワイシャツ",
+    "meaning": "business shirt",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "北",
+    "reading": "きた",
+    "meaning": "north",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ラジオ",
+    "reading": "ラジオ",
+    "meaning": "radio",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "すぐに",
+    "reading": "すぐに",
+    "meaning": "instantly",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ハンカチ",
+    "reading": "ハンカチ",
+    "meaning": "handkerchief",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "いつ",
+    "reading": "いつ",
+    "meaning": "when",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "全部",
+    "reading": "ぜんぶ",
+    "meaning": "all",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "橋",
+    "reading": "はし",
+    "meaning": "bridge",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "川 / 河",
+    "reading": "かわ",
+    "meaning": "river",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "バター",
+    "reading": "バター",
+    "meaning": "butter",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "もっと",
+    "reading": "もっと",
+    "meaning": "more",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "入口",
+    "reading": "いりぐち",
+    "meaning": "entrance",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "など",
+    "reading": "など",
+    "meaning": "et cetera",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "太い",
+    "reading": "ふとい",
+    "meaning": "fat",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "やる",
+    "reading": "やる",
+    "meaning": "to do",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "自動車",
+    "reading": "じどうしゃ",
+    "meaning": "automobile",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "昼",
+    "reading": "ひる",
+    "meaning": "noon, daytime",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "色",
+    "reading": "いろ",
+    "meaning": "colour",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "黄色",
+    "reading": "きいろ",
+    "meaning": "yellow",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "左",
+    "reading": "ひだり",
+    "meaning": "left hand side",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "野菜",
+    "reading": "やさい",
+    "meaning": "vegetable",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "シャワー",
+    "reading": "シャワー",
+    "meaning": "shower",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "散歩",
+    "reading": "さんぽする",
+    "meaning": "to stroll",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "三",
+    "reading": "さん",
+    "meaning": "three",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "消える",
+    "reading": "きえる",
+    "meaning": "to disappear",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "映画館",
+    "reading": "えいがかん",
+    "meaning": "cinema",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "いす",
+    "reading": "いす",
+    "meaning": "chair",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "誕生日",
+    "reading": "たんじょうび",
+    "meaning": "birthday",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "切る",
+    "reading": "きる",
+    "meaning": "to cut",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "七日",
+    "reading": "なのか",
+    "meaning": "seven days, the seventh day",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "洗う",
+    "reading": "あらう",
+    "meaning": "to wash",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "あれ",
+    "reading": "あれ",
+    "meaning": "that",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "グラム",
+    "reading": "グラム",
+    "meaning": "gram",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "習う",
+    "reading": "ならう",
+    "meaning": "to learn",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "後",
+    "reading": "あと",
+    "meaning": "afterwards",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "猫",
+    "reading": "ねこ",
+    "meaning": "cat",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "図書館",
+    "reading": "としょかん",
+    "meaning": "library",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "並べる",
+    "reading": "ならべる",
+    "meaning": "to line up, to set up",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "しかし",
+    "reading": "しかし",
+    "meaning": "however",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "大きい",
+    "reading": "おおきい",
+    "meaning": "big",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "八日",
+    "reading": "ようか",
+    "meaning": "eight days, eighth day of the month",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "歩く",
+    "reading": "あるく",
+    "meaning": "to walk",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ズボン",
+    "reading": "ズボン",
+    "meaning": "trousers",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "九日",
+    "reading": "ここのか",
+    "meaning": "nine days, ninth day",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "そっち",
+    "reading": "そっち",
+    "meaning": "over there",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "たて",
+    "reading": "たて",
+    "meaning": "length, height",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "カップ",
+    "reading": "カップ",
+    "meaning": "cup",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "あの",
+    "reading": "あの",
+    "meaning": "that over there",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "頼む",
+    "reading": "たのむ",
+    "meaning": "to ask",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "お兄さん",
+    "reading": "おにいさん",
+    "meaning": "(honorable) older brother",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "手",
+    "reading": "て",
+    "meaning": "hand",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ええ",
+    "reading": "ええ",
+    "meaning": "yes",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "毎日",
+    "reading": "まいにち",
+    "meaning": "every day",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "花",
+    "reading": "はな",
+    "meaning": "flower",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "一",
+    "reading": "いち",
+    "meaning": "one",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "居る",
+    "reading": "いる",
+    "meaning": "to be, to have (used for people and animals)",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "砂糖",
+    "reading": "さとう",
+    "meaning": "sugar",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "カレンダー",
+    "reading": "カレンダー",
+    "meaning": "calendar",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "今",
+    "reading": "いま",
+    "meaning": "now",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "旅行",
+    "reading": "りょこう",
+    "meaning": "travel",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "できる",
+    "reading": "できる",
+    "meaning": "to be able to",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "春",
+    "reading": "はる",
+    "meaning": "spring",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "する",
+    "reading": "する",
+    "meaning": "to do",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "八つ",
+    "reading": "やっつ",
+    "meaning": "eight",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "町",
+    "reading": "まち",
+    "meaning": "town, city",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "渡す",
+    "reading": "わたす",
+    "meaning": "to hand over",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "青",
+    "reading": "あお",
+    "meaning": "blue",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "白",
+    "reading": "しろ",
+    "meaning": "white",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ある",
+    "reading": "ある",
+    "meaning": "to be, to have (used for inanimate objects)",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ベッド",
+    "reading": "ベッド",
+    "meaning": "bed",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "水",
+    "reading": "みず",
+    "meaning": "water",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "いくつ",
+    "reading": "いくつ",
+    "meaning": "how many?, how old?",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "楽しい",
+    "reading": "たのしい",
+    "meaning": "enjoyable",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "御飯",
+    "reading": "ごはん",
+    "meaning": "cooked rice, meal",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "皆さん",
+    "reading": "みなさん",
+    "meaning": "everyone",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "おいしい",
+    "reading": "おいしい",
+    "meaning": "delicious",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ペット",
+    "reading": "ペット",
+    "meaning": "pet",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "外",
+    "reading": "そと",
+    "meaning": "outside",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "前",
+    "reading": "まえ",
+    "meaning": "before",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "来る",
+    "reading": "くる",
+    "meaning": "to come",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "おもしろい",
+    "reading": "おもしろい",
+    "meaning": "interesting",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "貸す",
+    "reading": "かす",
+    "meaning": "to lend",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "早い",
+    "reading": "はやい",
+    "meaning": "early",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "弱い",
+    "reading": "よわい",
+    "meaning": "weak",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "洗濯",
+    "reading": "せんたく",
+    "meaning": "washing",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "九つ",
+    "reading": "ここのつ",
+    "meaning": "nine",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "来年",
+    "reading": "らいねん",
+    "meaning": "next year",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "眼鏡",
+    "reading": "めがね",
+    "meaning": "glasses",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "背",
+    "reading": "せ",
+    "meaning": "height, stature",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "水曜日",
+    "reading": "すいようび",
+    "meaning": "Wednesday",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "お金",
+    "reading": "おかね",
+    "meaning": "money",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "同じ",
+    "reading": "おなじ",
+    "meaning": "same",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "弾く",
+    "reading": "ひく",
+    "meaning": "to play an instrument with strings, including piano",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "土曜日",
+    "reading": "どようび",
+    "meaning": "Saturday",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "階段",
+    "reading": "かいだん",
+    "meaning": "stairs",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "煩い",
+    "reading": "うるさい",
+    "meaning": "noisy, annoying",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "半分",
+    "reading": "はんぶん",
+    "meaning": "half minute",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "背広",
+    "reading": "せびろ",
+    "meaning": "business suit",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "晴れ",
+    "reading": "はれ",
+    "meaning": "clear weather",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "見せる",
+    "reading": "みせる",
+    "meaning": "to show",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "飲み物",
+    "reading": "のみもの",
+    "meaning": "a drink",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "雪",
+    "reading": "ゆき",
+    "meaning": "snow",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "買い物",
+    "reading": "かいもの",
+    "meaning": "shopping",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "交差点",
+    "reading": "こうさてん",
+    "meaning": "intersection",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "駅",
+    "reading": "えき",
+    "meaning": "station",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "大丈夫",
+    "reading": "だいじょうぶ",
+    "meaning": "all right",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ボールペン",
+    "reading": "ボールペン",
+    "meaning": "ball-point pen",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "勉強",
+    "reading": "べんきょうする",
+    "meaning": "to study",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "兄弟",
+    "reading": "きょうだい",
+    "meaning": "(humble) siblings",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "封筒",
+    "reading": "ふうとう",
+    "meaning": "envelope",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "レコード",
+    "reading": "レコード",
+    "meaning": "record",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "コーヒー",
+    "reading": "コーヒー",
+    "meaning": "coffee",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "漢字",
+    "reading": "かんじ",
+    "meaning": "Chinese character",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "喫茶店",
+    "reading": "きっさてん",
+    "meaning": "coffee lounge",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "その",
+    "reading": "その",
+    "meaning": "that",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "子供",
+    "reading": "こども",
+    "meaning": "child",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ちょっと",
+    "reading": "ちょっと",
+    "meaning": "somewhat",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "女の子",
+    "reading": "おんなのこ",
+    "meaning": "girl",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "紙",
+    "reading": "かみ",
+    "meaning": "paper",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "字引",
+    "reading": "じびき",
+    "meaning": "dictionary",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "あさって",
+    "reading": "あさって",
+    "meaning": "day after tomorrow",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "嫌い",
+    "reading": "きらい",
+    "meaning": "hate",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "先",
+    "reading": "さき",
+    "meaning": "the future, previous",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "答える",
+    "reading": "こたえる",
+    "meaning": "to answer",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "食堂",
+    "reading": "しょくどう",
+    "meaning": "dining hall",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "テーブル",
+    "reading": "テーブル",
+    "meaning": "table",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "コピーする",
+    "reading": "コピーする",
+    "meaning": "to copy",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "働く",
+    "reading": "はたらく",
+    "meaning": "to work",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "こんな",
+    "reading": "こんな",
+    "meaning": "such",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "たくさん",
+    "reading": "たくさん",
+    "meaning": "many",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ドア",
+    "reading": "ドア",
+    "meaning": "Western style door",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "見る  観る",
+    "reading": "みる",
+    "meaning": "to see, to watch",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "交番",
+    "reading": "こうばん",
+    "meaning": "police box",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ナイフ",
+    "reading": "ナイフ",
+    "meaning": "knife",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "辛い",
+    "reading": "からい",
+    "meaning": "spicy",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "洋服",
+    "reading": "ようふく",
+    "meaning": "western-style clothes",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "晩御飯",
+    "reading": "ばんごはん",
+    "meaning": "evening meal",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "車",
+    "reading": "くるま",
+    "meaning": "car, vehicle",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ちょうど",
+    "reading": "ちょうど",
+    "meaning": "exactly",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "もう一度",
+    "reading": "もういちど",
+    "meaning": "again",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ポスト",
+    "reading": "ポスト",
+    "meaning": "post",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "服",
+    "reading": "ふく",
+    "meaning": "clothes",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "メートル",
+    "reading": "メートル",
+    "meaning": "metre",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "パン",
+    "reading": "パン",
+    "meaning": "bread",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "半",
+    "reading": "はん",
+    "meaning": "half",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "若い",
+    "reading": "わかい",
+    "meaning": "young",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "食べる",
+    "reading": "たべる",
+    "meaning": "to eat",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "四日",
+    "reading": "よっか",
+    "meaning": "four days, fouth day of the month",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "警官",
+    "reading": "けいかん",
+    "meaning": "policeman",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "伯父 / 叔父",
+    "reading": "おじいさん",
+    "meaning": "grandfather, male senior citizen",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "これ",
+    "reading": "これ",
+    "meaning": "this",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "アパート",
+    "reading": "アパート",
+    "meaning": "apartment",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "鳥",
+    "reading": "とり",
+    "meaning": "bird",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ここ",
+    "reading": "ここ",
+    "meaning": "here",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "方",
+    "reading": "かた",
+    "meaning": "person, way of doing",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "タクシー",
+    "reading": "タクシー",
+    "meaning": "taxi",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "では",
+    "reading": "では",
+    "meaning": "with that...",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "しょうゆ",
+    "reading": "しょうゆ",
+    "meaning": "soy sauce",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "少ない",
+    "reading": "すくない",
+    "meaning": "a few",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "白い",
+    "reading": "しろい",
+    "meaning": "white",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "待つ",
+    "reading": "まつ",
+    "meaning": "to wait",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "次",
+    "reading": "つぎ",
+    "meaning": "next",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "行く",
+    "reading": "いく",
+    "meaning": "to go",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "角",
+    "reading": "かど",
+    "meaning": "a corner",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "男",
+    "reading": "おとこ",
+    "meaning": "man",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ギター",
+    "reading": "ギター",
+    "meaning": "guitar",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "聞く",
+    "reading": "きく",
+    "meaning": "to hear, to listen to, to ask",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "走る",
+    "reading": "はしる",
+    "meaning": "to run",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "お母さん",
+    "reading": "おかあさん",
+    "meaning": "(honorable) mother",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "意味",
+    "reading": "いみ",
+    "meaning": "meaning",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "物",
+    "reading": "もの",
+    "meaning": "thing",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "強い",
+    "reading": "つよい",
+    "meaning": "powerful",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "魚",
+    "reading": "さかな",
+    "meaning": "fish",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "切手",
+    "reading": "きって",
+    "meaning": "postage stamp",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "暗い",
+    "reading": "くらい",
+    "meaning": "gloomy",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "出る",
+    "reading": "でる",
+    "meaning": "to appear, to leave",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "犬",
+    "reading": "いぬ",
+    "meaning": "dog",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "女",
+    "reading": "おんな",
+    "meaning": "woman",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "飛行機",
+    "reading": "ひこうき",
+    "meaning": "aeroplane",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "日曜日",
+    "reading": "にちようび",
+    "meaning": "Sunday",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "より、ほう",
+    "reading": "より、ほう",
+    "meaning": "Used for comparison.",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "午前",
+    "reading": "ごぜん",
+    "meaning": "morning",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "名前",
+    "reading": "なまえ",
+    "meaning": "name",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "丸い / 円い",
+    "reading": "まるい",
+    "meaning": "round, circular",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "曲る",
+    "reading": "まがる",
+    "meaning": "to turn, to bend",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "鼻",
+    "reading": "はな",
+    "meaning": "nose",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "お弁当",
+    "reading": "おべんとう",
+    "meaning": "boxed lunch",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "コップ",
+    "reading": "コップ",
+    "meaning": "a glass",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "結婚",
+    "reading": "けっこん",
+    "meaning": "marriage",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "置く",
+    "reading": "おく",
+    "meaning": "to put",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "渡る",
+    "reading": "わたる",
+    "meaning": "to go across",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "伯母さん / 叔母さん",
+    "reading": "おばさん",
+    "meaning": "aunt",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "それから",
+    "reading": "それから",
+    "meaning": "after that",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "明い",
+    "reading": "あかるい",
+    "meaning": "bright",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "家庭",
+    "reading": "かてい",
+    "meaning": "household",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "パーティー",
+    "reading": "パーティー",
+    "meaning": "party",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "あちら",
+    "reading": "あちら",
+    "meaning": "there",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "スカート",
+    "reading": "スカート",
+    "meaning": "skirt",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "靴",
+    "reading": "くつ",
+    "meaning": "shoes",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ボタン",
+    "reading": "ボタン",
+    "meaning": "button",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "今月",
+    "reading": "こんげつ",
+    "meaning": "this month",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "返す",
+    "reading": "かえす",
+    "meaning": "to return something",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "いかが",
+    "reading": "いかが",
+    "meaning": "how",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "ストーブ",
+    "reading": "ストーブ",
+    "meaning": "heater",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "二人",
+    "reading": "ふたり",
+    "meaning": "two people",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "起きる",
+    "reading": "おきる",
+    "meaning": "to get up",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "さあ",
+    "reading": "さあ",
+    "meaning": "well…",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "あそこ",
+    "reading": "あそこ",
+    "meaning": "over there",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "古い",
+    "reading": "ふるい",
+    "meaning": "old (not used for people)",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "黄色い",
+    "reading": "きいろい",
+    "meaning": "yellow",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "まだ",
+    "reading": "まだ",
+    "meaning": "yet, still",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "歌う",
+    "reading": "うたう",
+    "meaning": "to sing",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "飴",
+    "reading": "あめ",
+    "meaning": "candy",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "寝る",
+    "reading": "ねる",
+    "meaning": "to go to bed, to sleep",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "それ",
+    "reading": "それ",
+    "meaning": "that",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "質問",
+    "reading": "しつもん",
+    "meaning": "question",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "どなた",
+    "reading": "どなた",
+    "meaning": "who",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "牛乳",
+    "reading": "ぎゅうにゅう",
+    "meaning": "milk",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "二",
+    "reading": "に",
+    "meaning": "two",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "紅茶",
+    "reading": "こうちゃ",
+    "meaning": "black tea",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "そちら",
+    "reading": "そちら",
+    "meaning": "over there",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "出かける",
+    "reading": "でかける",
+    "meaning": "to go out",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "兄",
+    "reading": "あに",
+    "meaning": "(humble) older brother",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "留学生",
+    "reading": "りゅうがくせい",
+    "meaning": "overseas student",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "月曜日",
+    "reading": "げつようび",
+    "meaning": "Monday",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "締める",
+    "reading": "しめる",
+    "meaning": "to tie",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "熱い",
+    "reading": "あつい",
+    "meaning": "hot to the touch",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "郵便局",
+    "reading": "ゆうびんきょく",
+    "meaning": "post office",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "細い",
+    "reading": "ほそい",
+    "meaning": "thin",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "六つ",
+    "reading": "むっつ",
+    "meaning": "six",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "本棚",
+    "reading": "ほんだな",
+    "meaning": "bookshelves",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "結構",
+    "reading": "けっこう",
+    "meaning": "splendid, enough",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "こちら",
+    "reading": "こちら",
+    "meaning": "this person or way",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "昨夜",
+    "reading": "ゆうべ",
+    "meaning": "last night",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "外国人",
+    "reading": "がいこくじん",
+    "meaning": "foreigner",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "絵",
+    "reading": "え",
+    "meaning": "picture",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "使う",
+    "reading": "つかう",
+    "meaning": "to use",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "休む",
+    "reading": "やすむ",
+    "meaning": "to rest",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "テスト",
+    "reading": "テスト",
+    "meaning": "test",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "貼る",
+    "reading": "はる",
+    "meaning": "to stick",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "たばこ",
+    "reading": "たばこ",
+    "meaning": "tobacco, cigarettes",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "涼しい",
+    "reading": "すずしい",
+    "meaning": "refreshing",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "昨日",
+    "reading": "きのう",
+    "meaning": "yesterday",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "せっけん",
+    "reading": "せっけん",
+    "meaning": "economy",
+    "category": "general",
+    "jlpt_level": "N5"
+  },
+  {
+    "japanese_word": "初め / 始め",
+    "reading": "はじめ",
+    "meaning": "beginning",
+    "category": "general",
+    "jlpt_level": "N5"
+  }
+]

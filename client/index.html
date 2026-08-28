@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KotoLab - JLPT N5 Learning Dashboard</title>
+
+    <!-- Auth Guard -->
+    <script>
+        const token = localStorage.getItem('kotolab_token');
+        if (!token) { window.location.href = 'login.html'; }
+    </script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #151e33;
+            --border-color: #263552;
+            --accent-indigo: #6366f1;
+            --accent-blue: #38bdf8;
+            --accent-green: #10b981;
+            --accent-orange: #f97316;
+            --text-muted: #8fa0bd;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: #ffffff;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Canonical Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #090d16;
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding-left: 0.5rem;
+        }
+
+        .brand-icon-box {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #38bdf8, #6366f1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.65rem 0.85rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .nav-link.active {
+            color: white;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            box-shadow: 0 6px 16px -2px rgba(99, 102, 241, 0.45);
+        }
+
+        .user-profile-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 0.85rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            margin-bottom: 0.65rem;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #6366f1;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .user-name { font-weight: 700; font-size: 0.85rem; color: white; }
+        .user-level { font-size: 0.7rem; color: var(--text-muted); }
+
+        .user-stats-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Main Content Layout */
+        .main-wrapper {
+            flex: 1;
+            padding: 2rem 2.5rem;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        .learning-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .learning-card {
+            position: relative;
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .learning-card:hover {
+            transform: translateY(-4px);
+            border-color: #6366f1;
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.18);
+        }
+
+        .card-image {
+            position: relative;
+            height: 125px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(8, 15, 30, 0.05), rgba(8, 15, 30, 0.85));
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            z-index: 3;
+            font-size: 18px;
+        }
+
+        .grammar-badge { background: rgba(99, 102, 241, 0.3); }
+        .character-badge { background: rgba(16, 185, 129, 0.3); }
+        .exam-badge { background: rgba(249, 115, 22, 0.3); }
+
+        .card-content {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-content h3 {
+            margin: 0 0 5px;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .card-content p {
+            margin: 0 0 18px;
+            color: #8fa0bd;
+            font-size: 13px;
+        }
+
+        .progress-container { margin-bottom: 16px; }
+
+        .progress-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 7px;
+            color: #a8b4ca;
+            font-size: 12px;
+        }
+
+        .progress-row strong { color: #ffffff; font-size: 13px; }
+
+        .progress-bar {
+            width: 100%;
+            height: 7px;
+            background: #29344c;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: inherit;
+            transition: width 0.3s ease;
+        }
+
+        .grammar-progress { background: linear-gradient(90deg, #6366f1, #8b5cf6); }
+        .character-progress { background: linear-gradient(90deg, #10b981, #22d3ee); }
+        .exam-progress { background: linear-gradient(90deg, #f97316, #fb923c); }
+
+        .continue-btn {
+            width: 100%;
+            border: none;
+            padding: 11px 15px;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            box-sizing: border-box;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .continue-btn:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        .grammar-btn { background: linear-gradient(135deg, #6366f1, #7c3aed); }
+        .character-btn { background: linear-gradient(135deg, #10b981, #059669); }
+        .exam-btn { background: linear-gradient(135deg, #f97316, #ea580c); }
+
+        .stat-card-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 1100px) {
+            .learning-grid { grid-template-columns: 1fr; }
+            .bottom-dashboard-grid { grid-template-columns: 1fr !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div>
+            <div class="brand">
+                <div class="brand-icon-box">⛩️</div>
+                <div>
+                    <div style="font-weight: 800; font-size: 1.25rem; color: white;">KotoLab</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600;">JLPT N5 Learning</div>
+                </div>
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">🏠 Dashboard</a></li>
+                <li><a href="sandbox.html" class="nav-link">🧩 Sandbox</a></li>
+                <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
+                <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
+                <li><a href="exam.html" class="nav-link">📝 Exams</a></li>
+                <li><a href="analytics.html" class="nav-link">📈 Analytics</a></li>
+                <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
+                <li id="admin-nav-item" style="display: none;">
+                    <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            <!-- User Profile Card -->
+            <div class="user-profile-card">
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <div>
+                        <div class="user-name" id="user-display-name">User</div>
+                        <div class="user-level" id="user-display-level">N5 Explorer • Level 1</div>
+                    </div>
+                </div>
+                <div class="user-stats-row">
+                    <span>❤️ <strong id="user-lives">5</strong></span>
+                    <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
+                </div>
+            </div>
+
+            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">
+                © 2026 KotoLab. All rights reserved.
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-wrapper">
+        <header class="top-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div class="header-title">
+                <h1 style="font-size: 1.6rem; font-weight: 800; color: white; margin: 0;">おはようございます、<span id="header-greeting-name">User</span>! 👋</h1>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Let's continue your journey in Japanese learning today.</p>
+            </div>
+
+            <!-- Top Bar Interactive Badges -->
+            <div class="top-bar-badges" style="display: flex; align-items: center; gap: 0.75rem;">
+                <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">
+                    ⚡ <span id="xpCountDisplay">0</span> XP
+                </div>
+
+                <div class="badge-item" onclick="openNotifications()" title="Check notifications" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24; transition: border-color 0.2s;">
+                    🔔
+                </div>
+
+                <div class="badge-item" onclick="goToSettings()" title="Go to Account Settings" style="cursor: pointer; background: #6366f1; border: 1px solid #818cf8; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; transition: transform 0.2s;">
+                    <span id="userInitialDisplay">U</span>
+                </div>
+
+                <div class="badge-item" title="Current system date" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #8fa0bd;">
+                    📅 <span id="currentDateDisplay">Aug 26, 2026</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- KPI 4-Card Overview -->
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-bottom: 2rem;">
+            <div class="stat-card-box" style="display: flex; flex-direction: row; align-items: center; gap: 1rem;">
+                <div style="width: 52px; height: 52px; background: rgba(99, 102, 241, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;">📖</div>
+                <div>
+                    <div id="stat-lessons" style="font-size: 1.8rem; font-weight: 800; color: white; line-height: 1;">0</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 0.35rem;">Lessons Completed</div>
+                </div>
+            </div>
+
+            <div class="stat-card-box" style="display: flex; flex-direction: row; align-items: center; gap: 1rem;">
+                <div style="width: 52px; height: 52px; background: rgba(16, 185, 129, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;">🎯</div>
+                <div>
+                    <div id="stat-accuracy" style="font-size: 1.8rem; font-weight: 800; color: white; line-height: 1;">0%</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 0.35rem;">Overall Accuracy</div>
+                </div>
+            </div>
+
+            <div class="stat-card-box" style="display: flex; flex-direction: row; align-items: center; gap: 1rem;">
+                <div style="width: 52px; height: 52px; background: rgba(245, 158, 11, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;">⏱️</div>
+                <div>
+                    <div id="stat-time" style="font-size: 1.8rem; font-weight: 800; color: white; line-height: 1;">0h 0m</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 0.35rem;">Study Time</div>
+                </div>
+            </div>
+
+            <div class="stat-card-box" style="display: flex; flex-direction: row; align-items: center; gap: 1rem;">
+                <div style="width: 52px; height: 52px; background: rgba(239, 68, 68, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;">🏆</div>
+                <div>
+                    <div id="stat-correct" style="font-size: 1.8rem; font-weight: 800; color: white; line-height: 1;">0</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 0.35rem;">Total Correct</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Continue Learning Row -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h2 style="font-size: 1.2rem; font-weight: 800; color: white; margin: 0;">Continue Learning</h2>
+            <a href="sandbox.html" style="font-size: 0.85rem; color: #a5b4fc; font-weight: 700; text-decoration: none;">View All ➔</a>
+        </div>
+
+        <div class="learning-grid">
+            <div class="learning-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?q=80&w=800&auto=format&fit=crop" alt="Grammar Sandbox">
+                    <div class="image-overlay"></div>
+                    <div class="card-badge grammar-badge">🧩</div>
+                </div>
+                <div class="card-content">
+                    <h3>Grammar Sandbox</h3>
+                    <p>Sentence building & particles</p>
+                    <div class="progress-container">
+                        <div class="progress-row">
+                            <span>Progress</span>
+                            <strong id="prog-sandbox">0%</strong>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill grammar-progress" id="fill-sandbox" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <a href="sandbox.html" class="continue-btn grammar-btn">Continue →</a>
+                </div>
+            </div>
+
+            <div class="learning-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?q=80&w=800&auto=format&fit=crop" alt="Character Drills">
+                    <div class="image-overlay"></div>
+                    <div class="card-badge character-badge">⚡</div>
+                </div>
+                <div class="card-content">
+                    <h3>Character Drills</h3>
+                    <p>Hiragana, Katakana, N5 Kanji</p>
+                    <div class="progress-container">
+                        <div class="progress-row">
+                            <span>Progress</span>
+                            <strong id="prog-drills">0%</strong>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill character-progress" id="fill-drills" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <a href="drills.html" class="continue-btn character-btn">Continue →</a>
+                </div>
+            </div>
+
+            <div class="learning-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop" alt="Mock Exam">
+                    <div class="image-overlay"></div>
+                    <div class="card-badge exam-badge">📝</div>
+                </div>
+                <div class="card-content">
+                    <h3>Mock Exam</h3>
+                    <p>Timed JLPT N5 practice test</p>
+                    <div class="progress-container">
+                        <div class="progress-row">
+                            <span>Progress</span>
+                            <strong id="prog-exam">0%</strong>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill exam-progress" id="fill-exam" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <a href="exam.html" class="continue-btn exam-btn">Continue →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom 3-Column Visualized Analytics Row -->
+        <div class="bottom-dashboard-grid" style="display: grid; grid-template-columns: 2fr 1.2fr 1.4fr; gap: 1.25rem; align-items: stretch; margin-bottom: 2rem;">
+            
+            <!-- Column 1: Progress Line Chart -->
+            <div class="stat-card-box">
+                <div style="font-size: 0.85rem; font-weight: 800; color: white; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                    <span>Your Progress <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500; margin-left: 4px;">(Last 7 Days)</span></span>
+                </div>
+                <div style="height: 200px; width: 100%; position: relative;">
+                    <canvas id="progressLineChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Column 2: Skill Mastery Doughnut -->
+            <div class="stat-card-box">
+                <div style="font-size: 0.85rem; font-weight: 800; color: white; margin-bottom: 0.75rem;">Skill Mastery</div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex: 1;">
+                    <div style="width: 120px; height: 120px; position: relative; flex-shrink: 0;">
+                        <canvas id="skillDoughnutChart"></canvas>
+                        <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none;">
+                            <span style="font-size: 0.65rem; color: var(--text-muted); line-height: 1;">Overall</span>
+                            <strong id="stat-overall-doughnut" style="font-size: 1.15rem; color: white; font-weight: 800; margin-top: 2px;">0%</strong>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.75rem; flex: 1;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #6366f1; font-weight: 600;">● Hiragana</span>
+                            <strong id="mastery-hiragana">0%</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #38bdf8; font-weight: 600;">● Katakana</span>
+                            <strong id="mastery-katakana">0%</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #10b981; font-weight: 600;">● Kanji</span>
+                            <strong id="mastery-kanji">0%</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #ef4444; font-weight: 600;">● Grammar</span>
+                            <strong id="mastery-grammar">0%</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 3: Accuracy By Category Bars -->
+            <div class="stat-card-box">
+                <div style="font-size: 0.85rem; font-weight: 800; color: white; margin-bottom: 0.85rem; display: flex; justify-content: space-between; align-items: center;">
+                    <span>Accuracy by Category</span>
+                    <span style="font-size: 0.7rem; color: var(--text-muted); cursor: pointer;">This Week ▾</span>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.75rem; width: 100%; flex: 1; justify-content: center;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; color: white; margin-bottom: 0.2rem;">
+                            <span>⛩️ Hiragana</span>
+                            <strong id="acc-hiragana">0%</strong>
+                        </div>
+                        <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
+                            <div id="fill-acc-hiragana" style="width: 0%; height: 100%; background: #6366f1;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style="display: flex; justify-content: space-between; color: white; margin-bottom: 0.2rem;">
+                            <span>🈸 Katakana</span>
+                            <strong id="acc-katakana">0%</strong>
+                        </div>
+                        <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
+                            <div id="fill-acc-katakana" style="width: 0%; height: 100%; background: #38bdf8;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style="display: flex; justify-content: space-between; color: white; margin-bottom: 0.2rem;">
+                            <span>漢字 Kanji</span>
+                            <strong id="acc-kanji">0%</strong>
+                        </div>
+                        <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
+                            <div id="fill-acc-kanji" style="width: 0%; height: 100%; background: #10b981;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style="display: flex; justify-content: space-between; color: white; margin-bottom: 0.2rem;">
+                            <span>📚 Vocabulary</span>
+                            <strong id="acc-vocab">0%</strong>
+                        </div>
+                        <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
+                            <div id="fill-acc-vocab" style="width: 0%; height: 100%; background: #f97316;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style="display: flex; justify-content: space-between; color: white; margin-bottom: 0.2rem;">
+                            <span>🧩 Grammar</span>
+                            <strong id="acc-grammar">0%</strong>
+                        </div>
+                        <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
+                            <div id="fill-acc-grammar" style="width: 0%; height: 100%; background: #ef4444;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="js/speech.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- REAL DATABASE SYNC SCRIPT (Beats app.js Mock Data) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(async () => {
+                let userId = 3; 
+                try {
+                    const storedUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
+                    if (storedUser && storedUser.id) { userId = storedUser.id; }
+                } catch(err) {}
+
+                try {
+                    const res = await fetch(`/api/user/progress?userId=${userId}`);
+                    const data = await res.json();
+                    
+                    if (data && !data.error) {
+                        const p = data;
+                        const lessons = p.lessons_completed || 0;
+                        const acc = Number(p.overall_accuracy || 0).toFixed(0); 
+                        const studyMins = p.study_time_minutes || 0;
+                        const correct = p.total_correct || 0;
+                        const totalXP = correct * 10;
+
+                        if(document.getElementById('stat-lessons')) document.getElementById('stat-lessons').innerText = lessons;
+                        if(document.getElementById('stat-accuracy')) document.getElementById('stat-accuracy').innerText = `${acc}%`;
+                        if(document.getElementById('stat-time')) document.getElementById('stat-time').innerText = `${Math.floor(studyMins / 60)}h ${studyMins % 60}m`;
+                        if(document.getElementById('stat-correct')) document.getElementById('stat-correct').innerText = correct;
+
+                        document.querySelectorAll('.user-xp-display, #stat-total-xp, #xpCountDisplay').forEach(el => {
+                            if (el) el.innerText = el.innerText.includes('XP') ? `${totalXP} XP` : totalXP;
+                        });
+
+                        const gProg = Number(p.grammar_mastery || 0).toFixed(0);
+                        const hProg = Number(p.hiragana_mastery || 0).toFixed(0);
+                        const kProg = Number(p.katakana_mastery || 0).toFixed(0);
+                        const kanProg = Number(p.kanji_mastery || 0).toFixed(0);
+                        const vProg = Number(p.vocabulary_mastery || 0).toFixed(0); 
+                        
+                        const drillProg = Math.max(hProg, kProg, kanProg); 
+                        const examProg = acc; 
+
+                        if(document.getElementById('prog-sandbox')) document.getElementById('prog-sandbox').innerText = `${gProg}%`;
+                        if(document.getElementById('fill-sandbox')) document.getElementById('fill-sandbox').style.width = `${gProg}%`;
+
+                        if(document.getElementById('prog-drills')) document.getElementById('prog-drills').innerText = `${drillProg}%`;
+                        if(document.getElementById('fill-drills')) document.getElementById('fill-drills').style.width = `${drillProg}%`;
+
+                        if(document.getElementById('prog-exam')) document.getElementById('prog-exam').innerText = `${examProg}%`;
+                        if(document.getElementById('fill-exam')) document.getElementById('fill-exam').style.width = `${examProg}%`;
+
+                        if(document.getElementById('acc-hiragana')) document.getElementById('acc-hiragana').innerText = `${hProg}%`;
+                        if(document.getElementById('fill-acc-hiragana')) document.getElementById('fill-acc-hiragana').style.width = `${hProg}%`;
+                        if(document.getElementById('mastery-hiragana')) document.getElementById('mastery-hiragana').innerText = `${hProg}%`;
+
+                        if(document.getElementById('acc-katakana')) document.getElementById('acc-katakana').innerText = `${kProg}%`;
+                        if(document.getElementById('fill-acc-katakana')) document.getElementById('fill-acc-katakana').style.width = `${kProg}%`;
+                        if(document.getElementById('mastery-katakana')) document.getElementById('mastery-katakana').innerText = `${kProg}%`;
+
+                        if(document.getElementById('acc-kanji')) document.getElementById('acc-kanji').innerText = `${kanProg}%`;
+                        if(document.getElementById('fill-acc-kanji')) document.getElementById('fill-acc-kanji').style.width = `${kanProg}%`;
+                        if(document.getElementById('mastery-kanji')) document.getElementById('mastery-kanji').innerText = `${kanProg}%`;
+
+                        if(document.getElementById('acc-vocab')) document.getElementById('acc-vocab').innerText = `${vProg}%`;
+                        if(document.getElementById('fill-acc-vocab')) document.getElementById('fill-acc-vocab').style.width = `${vProg}%`;
+
+                        if(document.getElementById('acc-grammar')) document.getElementById('acc-grammar').innerText = `${gProg}%`;
+                        if(document.getElementById('fill-acc-grammar')) document.getElementById('fill-acc-grammar').style.width = `${gProg}%`;
+                        if(document.getElementById('mastery-grammar')) document.getElementById('mastery-grammar').innerText = `${gProg}%`;
+
+                        const overallMastery = Math.round((Number(hProg) + Number(kProg) + Number(kanProg) + Number(gProg)) / 4) || 0;
+                        if(document.getElementById('stat-overall-doughnut')) document.getElementById('stat-overall-doughnut').innerText = `${overallMastery}%`;
+
+                        Chart.defaults.color = '#8fa0bd';
+                        Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+
+                        const lineCanvas = document.getElementById('progressLineChart');
+                        if (lineCanvas) {
+                            const existingLine = Chart.getChart(lineCanvas);
+                            if (existingLine) existingLine.destroy(); 
+                            new Chart(lineCanvas.getContext('2d'), {
+                                type: 'line',
+                                data: { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], datasets: [{ label: 'Lessons', data: [0,0,0,0,0,0,lessons], borderColor: '#38bdf8', backgroundColor: 'rgba(56, 189, 248, 0.12)', borderWidth: 2.5, fill: true, tension: 0.35 }] },
+                                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, min: 0 }, x: { grid: { display: false } } } }
+                            });
+                        }
+
+                        const doughnutCanvas = document.getElementById('skillDoughnutChart');
+                        if (doughnutCanvas) {
+                            const existingDoughnut = Chart.getChart(doughnutCanvas);
+                            if (existingDoughnut) existingDoughnut.destroy(); 
+                            new Chart(doughnutCanvas.getContext('2d'), {
+                                type: 'doughnut',
+                                data: { labels: ['Hiragana', 'Katakana', 'Kanji', 'Grammar'], datasets: [{ data: [hProg, kProg, kanProg, gProg], backgroundColor: ['#6366f1', '#38bdf8', '#10b981', '#ef4444'], borderWidth: 0 }] },
+                                options: { responsive: true, maintainAspectRatio: false, cutout: '72%', plugins: { legend: { display: false } } }
+                            });
+                        }
+                    }
+                } catch (e) {
+                    console.error("Dashboard live fetch error:", e);
+                }
+
+                const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
+                const uname = currentUser.username || localStorage.getItem('kotolab_username') || 'Shoyo';
+                document.querySelectorAll('#user-display-name, #header-greeting-name').forEach(el => el && (el.innerText = uname));
+                document.querySelectorAll('#user-avatar, #userInitialDisplay').forEach(el => el && (el.innerText = uname.charAt(0).toUpperCase()));
+                
+            }, 600);
+        });
+
+        function openNotifications() { alert("🔔 Notifications:\n• Welcome to KotoLab! Check out your daily goals."); }
+        function goToSettings() { window.location.href = 'settings.html'; }
+    </script>
+</body>
+</html>

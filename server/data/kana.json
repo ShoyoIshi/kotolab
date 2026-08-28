@@ -1,0 +1,113 @@
+[
+  { "id": "h_a", "char": "あ", "romaji": "a", "type": "hiragana", "group": "vowels", "stroke_count": 3 },
+  { "id": "h_i", "char": "い", "romaji": "i", "type": "hiragana", "group": "vowels", "stroke_count": 2 },
+  { "id": "h_u", "char": "う", "romaji": "u", "type": "hiragana", "group": "vowels", "stroke_count": 2 },
+  { "id": "h_e", "char": "え", "romaji": "e", "type": "hiragana", "group": "vowels", "stroke_count": 2 },
+  { "id": "h_o", "char": "お", "romaji": "o", "type": "hiragana", "group": "vowels", "stroke_count": 3 },
+
+  { "id": "h_ka", "char": "か", "romaji": "ka", "type": "hiragana", "group": "ka-row", "stroke_count": 3 },
+  { "id": "h_ki", "char": "き", "romaji": "ki", "type": "hiragana", "group": "ka-row", "stroke_count": 4 },
+  { "id": "h_ku", "char": "く", "romaji": "ku", "type": "hiragana", "group": "ka-row", "stroke_count": 1 },
+  { "id": "h_ke", "char": "け", "romaji": "ke", "type": "hiragana", "group": "ka-row", "stroke_count": 3 },
+  { "id": "h_ko", "char": "こ", "romaji": "ko", "type": "hiragana", "group": "ka-row", "stroke_count": 2 },
+
+  { "id": "h_sa", "char": "さ", "romaji": "sa", "type": "hiragana", "group": "sa-row", "stroke_count": 3 },
+  { "id": "h_shi", "char": "し", "romaji": "shi", "type": "hiragana", "group": "sa-row", "stroke_count": 1 },
+  { "id": "h_su", "char": "す", "romaji": "su", "type": "hiragana", "group": "sa-row", "stroke_count": 2 },
+  { "id": "h_se", "char": "せ", "romaji": "se", "type": "hiragana", "group": "sa-row", "stroke_count": 3 },
+  { "id": "h_so", "char": "そ", "romaji": "so", "type": "hiragana", "group": "sa-row", "stroke_count": 1 },
+
+  { "id": "h_ta", "char": "た", "romaji": "ta", "type": "hiragana", "group": "ta-row", "stroke_count": 4 },
+  { "id": "h_chi", "char": "ち", "romaji": "chi", "type": "hiragana", "group": "ta-row", "stroke_count": 2 },
+  { "id": "h_tsu", "char": "つ", "romaji": "tsu", "type": "hiragana", "group": "ta-row", "stroke_count": 1 },
+  { "id": "h_te", "char": "て", "romaji": "te", "type": "hiragana", "group": "ta-row", "stroke_count": 1 },
+  { "id": "h_to", "char": "と", "romaji": "to", "type": "hiragana", "group": "ta-row", "stroke_count": 2 },
+
+  { "id": "h_na", "char": "な", "romaji": "na", "type": "hiragana", "group": "na-row", "stroke_count": 4 },
+  { "id": "h_ni", "char": "に", "romaji": "ni", "type": "hiragana", "group": "na-row", "stroke_count": 3 },
+  { "id": "h_nu", "char": "ぬ", "romaji": "nu", "type": "hiragana", "group": "na-row", "stroke_count": 2 },
+  { "id": "h_ne", "char": "ね", "romaji": "ne", "type": "hiragana", "group": "na-row", "stroke_count": 2 },
+  { "id": "h_no", "char": "の", "romaji": "no", "type": "hiragana", "group": "na-row", "stroke_count": 1 },
+
+  { "id": "h_ha", "char": "は", "romaji": "ha", "type": "hiragana", "group": "ha-row", "stroke_count": 3 },
+  { "id": "h_hi", "char": "ひ", "romaji": "hi", "type": "hiragana", "group": "ha-row", "stroke_count": 1 },
+  { "id": "h_fu", "char": "ふ", "romaji": "fu", "type": "hiragana", "group": "ha-row", "stroke_count": 4 },
+  { "id": "h_he", "char": "へ", "romaji": "he", "type": "hiragana", "group": "ha-row", "stroke_count": 1 },
+  { "id": "h_ho", "char": "ほ", "romaji": "ho", "type": "hiragana", "group": "ha-row", "stroke_count": 4 },
+
+  { "id": "h_ma", "char": "ま", "romaji": "ma", "type": "hiragana", "group": "ma-row", "stroke_count": 3 },
+  { "id": "h_mi", "char": "み", "romaji": "mi", "type": "hiragana", "group": "ma-row", "stroke_count": 2 },
+  { "id": "h_mu", "char": "む", "romaji": "mu", "type": "hiragana", "group": "ma-row", "stroke_count": 3 },
+  { "id": "h_me", "char": "め", "romaji": "me", "type": "hiragana", "group": "ma-row", "stroke_count": 2 },
+  { "id": "h_mo", "char": "も", "romaji": "mo", "type": "hiragana", "group": "ma-row", "stroke_count": 3 },
+
+  { "id": "h_ya", "char": "や", "romaji": "ya", "type": "hiragana", "group": "ya-row", "stroke_count": 3 },
+  { "id": "h_yu", "char": "ゆ", "romaji": "yu", "type": "hiragana", "group": "ya-row", "stroke_count": 2 },
+  { "id": "h_yo", "char": "よ", "romaji": "yo", "type": "hiragana", "group": "ya-row", "stroke_count": 2 },
+
+  { "id": "h_ra", "char": "ら", "romaji": "ra", "type": "hiragana", "group": "ra-row", "stroke_count": 2 },
+  { "id": "h_ri", "char": "り", "romaji": "ri", "type": "hiragana", "group": "ra-row", "stroke_count": 2 },
+  { "id": "h_ru", "char": "る", "romaji": "ru", "type": "hiragana", "group": "ra-row", "stroke_count": 1 },
+  { "id": "h_re", "char": "れ", "romaji": "re", "type": "hiragana", "group": "ra-row", "stroke_count": 2 },
+  { "id": "h_ro", "char": "ろ", "romaji": "ro", "type": "hiragana", "group": "ra-row", "stroke_count": 1 },
+
+  { "id": "h_wa", "char": "わ", "romaji": "wa", "type": "hiragana", "group": "wa-row", "stroke_count": 2 },
+  { "id": "h_wo", "char": "を", "romaji": "wo", "type": "hiragana", "group": "wa-row", "stroke_count": 3 },
+  { "id": "h_n",  "char": "ん", "romaji": "n",  "type": "hiragana", "group": "n-row",  "stroke_count": 1 },
+
+  { "id": "k_a", "char": "ア", "romaji": "a", "type": "katakana", "group": "vowels", "stroke_count": 2 },
+  { "id": "k_i", "char": "イ", "romaji": "i", "type": "katakana", "group": "vowels", "stroke_count": 2 },
+  { "id": "k_u", "char": "ウ", "romaji": "u", "type": "katakana", "group": "vowels", "stroke_count": 3 },
+  { "id": "k_e", "char": "エ", "romaji": "e", "type": "katakana", "group": "vowels", "stroke_count": 3 },
+  { "id": "k_o", "char": "オ", "romaji": "o", "type": "katakana", "group": "vowels", "stroke_count": 3 },
+
+  { "id": "k_ka", "char": "カ", "romaji": "ka", "type": "katakana", "group": "ka-row", "stroke_count": 2 },
+  { "id": "k_ki", "char": "キ", "romaji": "ki", "type": "katakana", "group": "ka-row", "stroke_count": 3 },
+  { "id": "k_ku", "char": "ク", "romaji": "ku", "type": "katakana", "group": "ka-row", "stroke_count": 2 },
+  { "id": "k_ke", "char": "ケ", "romaji": "ke", "type": "katakana", "group": "ka-row", "stroke_count": 3 },
+  { "id": "k_ko", "char": "コ", "romaji": "ko", "type": "katakana", "group": "ka-row", "stroke_count": 2 },
+
+  { "id": "k_sa", "char": "サ", "romaji": "sa", "type": "katakana", "group": "sa-row", "stroke_count": 3 },
+  { "id": "k_shi", "char": "シ", "romaji": "shi", "type": "katakana", "group": "sa-row", "stroke_count": 3 },
+  { "id": "k_su", "char": "ス", "romaji": "su", "type": "katakana", "group": "sa-row", "stroke_count": 2 },
+  { "id": "k_se", "char": "セ", "romaji": "se", "type": "katakana", "group": "sa-row", "stroke_count": 2 },
+  { "id": "k_so", "char": "ソ", "romaji": "so", "type": "katakana", "group": "sa-row", "stroke_count": 2 },
+
+  { "id": "k_ta", "char": "タ", "romaji": "ta", "type": "katakana", "group": "ta-row", "stroke_count": 3 },
+  { "id": "k_chi", "char": "チ", "romaji": "chi", "type": "katakana", "group": "ta-row", "stroke_count": 3 },
+  { "id": "k_tsu", "char": "ツ", "romaji": "tsu", "type": "katakana", "group": "ta-row", "stroke_count": 3 },
+  { "id": "k_te", "char": "テ", "romaji": "te", "type": "katakana", "group": "ta-row", "stroke_count": 3 },
+  { "id": "k_to", "char": "ト", "romaji": "to", "type": "katakana", "group": "ta-row", "stroke_count": 2 },
+
+  { "id": "k_na", "char": "ナ", "romaji": "na", "type": "katakana", "group": "na-row", "stroke_count": 2 },
+  { "id": "k_ni", "char": "ニ", "romaji": "ni", "type": "katakana", "group": "na-row", "stroke_count": 2 },
+  { "id": "k_nu", "char": "ヌ", "romaji": "nu", "type": "katakana", "group": "na-row", "stroke_count": 2 },
+  { "id": "k_ne", "char": "ネ", "romaji": "ne", "type": "katakana", "group": "na-row", "stroke_count": 4 },
+  { "id": "k_no", "char": "ノ", "romaji": "no", "type": "katakana", "group": "na-row", "stroke_count": 1 },
+
+  { "id": "k_ha", "char": "ハ", "romaji": "ha", "type": "katakana", "group": "ha-row", "stroke_count": 2 },
+  { "id": "k_hi", "char": "ヒ", "romaji": "hi", "type": "katakana", "group": "ha-row", "stroke_count": 2 },
+  { "id": "k_fu", "char": "フ", "romaji": "fu", "type": "katakana", "group": "ha-row", "stroke_count": 1 },
+  { "id": "k_he", "char": "ヘ", "romaji": "he", "type": "katakana", "group": "ha-row", "stroke_count": 1 },
+  { "id": "k_ho", "char": "ホ", "romaji": "ho", "type": "katakana", "group": "ha-row", "stroke_count": 4 },
+
+  { "id": "k_ma", "char": "マ", "romaji": "ma", "type": "katakana", "group": "ma-row", "stroke_count": 2 },
+  { "id": "k_mi", "char": "ミ", "romaji": "mi", "type": "katakana", "group": "ma-row", "stroke_count": 3 },
+  { "id": "k_mu", "char": "ム", "romaji": "mu", "type": "katakana", "group": "ma-row", "stroke_count": 2 },
+  { "id": "k_me", "char": "メ", "romaji": "me", "type": "katakana", "group": "ma-row", "stroke_count": 2 },
+  { "id": "k_mo", "char": "モ", "romaji": "mo", "type": "katakana", "group": "ma-row", "stroke_count": 3 },
+
+  { "id": "k_ya", "char": "ヤ", "romaji": "ya", "type": "katakana", "group": "ya-row", "stroke_count": 2 },
+  { "id": "k_yu", "char": "ユ", "romaji": "yu", "type": "katakana", "group": "ya-row", "stroke_count": 2 },
+  { "id": "k_yo", "char": "ヨ", "romaji": "yo", "type": "katakana", "group": "ya-row", "stroke_count": 3 },
+
+  { "id": "k_ra", "char": "ラ", "romaji": "ra", "type": "katakana", "group": "ra-row", "stroke_count": 2 },
+  { "id": "k_ri", "char": "リ", "romaji": "ri", "type": "katakana", "group": "ra-row", "stroke_count": 2 },
+  { "id": "k_ru", "char": "ル", "romaji": "ru", "type": "katakana", "group": "ra-row", "stroke_count": 2 },
+  { "id": "k_re", "char": "レ", "romaji": "re", "type": "katakana", "group": "ra-row", "stroke_count": 1 },
+  { "id": "k_ro", "char": "ロ", "romaji": "ro", "type": "katakana", "group": "ra-row", "stroke_count": 3 },
+
+  { "id": "k_wa", "char": "ワ", "romaji": "wa", "type": "katakana", "group": "wa-row", "stroke_count": 2 },
+  { "id": "k_wo", "char": "ヲ", "romaji": "wo", "type": "katakana", "group": "wa-row", "stroke_count": 3 },
+  { "id": "k_n",  "char": "ン", "romaji": "n",  "type": "katakana", "group": "n-row",  "stroke_count": 2 }
+]

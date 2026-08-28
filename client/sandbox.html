@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KotoLab — Sandbox</title>
+
+    <!-- Auth Guard -->
+    <script>
+        const token = localStorage.getItem('kotolab_token');
+        if (!token) { window.location.href = 'login.html'; }
+    </script>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-purple: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --accent-red: #ef4444; --accent-gold: #f59e0b; --text-main: #f8fafc; --text-muted: #8fa0bd; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        .sidebar { width: 260px; background: #090d16; border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; height: 100vh; position: fixed; left: 0; top: 0; z-index: 100; }
+        .brand { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; padding-left: 0.5rem; }
+        .brand-icon-box { width: 40px; height: 40px; background: linear-gradient(135deg, #38bdf8, #6366f1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+        .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; border-radius: 10px; transition: all 0.2s ease; }
+        .nav-link:hover { color: white; background: rgba(255, 255, 255, 0.04); }
+        .nav-link.active { color: white; background: linear-gradient(135deg, #6366f1, #7c3aed); box-shadow: 0 6px 16px -2px rgba(99, 102, 241, 0.45); }
+        .user-profile-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 0.85rem; }
+        .user-info { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.65rem; }
+        .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: #6366f1; color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; }
+        .user-name { font-weight: 700; font-size: 0.85rem; color: white; }
+        .user-level { font-size: 0.7rem; color: var(--text-muted); }
+        .user-stats-row { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+
+        .main-wrapper { margin-left: 260px; flex: 1; padding: 2rem 2.5rem; overflow-y: auto; max-height: 100vh; }
+        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 2rem; }
+        @media (max-width: 1200px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 850px) { .cards-grid { grid-template-columns: 1fr; } }
+        .lesson-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 1.25rem; display: flex; flex-direction: column; position: relative; transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); }
+        .lesson-card:hover { transform: translateY(-4px); border-color: var(--accent-indigo); box-shadow: 0 12px 30px rgba(99, 102, 241, 0.18); }
+        .card-image-box { position: relative; width: 100%; height: 130px; border-radius: 14px; overflow: hidden; margin-bottom: 1rem; border: 1px solid var(--border-color); background: #111827; }
+        .card-image-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .card-progress-bar-bg { width: 100%; height: 6px; background: #111827; border-radius: 3px; overflow: hidden; margin-bottom: 0.75rem; }
+        .card-progress-fill { height: 100%; border-radius: 3px; transition: width 0.3s ease; }
+        .dash-btn { width: 100%; margin-top: auto; padding: 0.65rem; border-radius: 10px; font-size: 0.85rem; font-weight: 700; border: none; cursor: pointer; text-align: center; color: white; transition: opacity 0.2s, transform 0.2s; }
+        .dash-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+        .tile-btn { background: #1e293b !important; border: 1px solid #334155 !important; color: var(--text-main) !important; padding: 0.65rem 1rem; border-radius: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; text-align: center; }
+        .tile-btn:hover { border-color: var(--accent-indigo) !important; background: rgba(99, 102, 241, 0.25) !important; color: #ffffff !important; }
+        .jp-hover-term { position: relative; cursor: pointer; display: inline-block; transition: color 0.2s ease; }
+        .jp-hover-term .tooltip-text { visibility: hidden; width: max-content; max-width: 240px; background-color: #0f172a; color: #38bdf8; text-align: center; border-radius: 8px; padding: 0.35rem 0.65rem; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.2s ease, visibility 0.2s ease; font-size: 0.75rem; font-weight: 600; border: 1px solid #38bdf8; box-shadow: 0 4px 15px rgba(0,0,0,0.5); pointer-events: none; }
+        .jp-hover-term:hover .tooltip-text { visibility: visible; opacity: 1; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 1rem; }
+        .modal-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; width: 820px; max-width: 95vw; padding: 2rem; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); max-height: 92vh; overflow-y: auto; }
+        .dropped-tile-item { background: var(--accent-indigo); color: white; padding: 0.4rem 0.85rem; border-radius: 10px; font-size: 0.9rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+        .option-correct { border-color: var(--accent-green) !important; background: rgba(16, 185, 129, 0.25) !important; color: #22c55e !important; }
+        .option-incorrect { border-color: var(--accent-red) !important; background: rgba(239, 68, 68, 0.25) !important; color: #f87171 !important; }
+        .ai-coach-banner { background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(15, 23, 42, 0.8)); border: 1px solid var(--accent-indigo); border-radius: 14px; padding: 1rem; margin-top: 1rem; }
+        .reading-box { background: #111827; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.25rem; font-size: 1.15rem; line-height: 2.2; color: var(--text-main); margin-bottom: 1rem; }
+        .dialogue-bubble { background: #111827; border: 1px solid var(--border-color); border-radius: 14px; padding: 0.85rem 1rem; margin-bottom: 0.75rem; }
+        .ai-chat-input-row { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+        .ai-chat-input { flex: 1; background: #090d16; border: 1px solid #334155; border-radius: 10px; padding: 0.55rem 0.85rem; color: white; font-size: 0.82rem; outline: none; }
+        .ai-chat-input:focus { border-color: var(--accent-indigo); }
+        .grammar-notes-box { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 1rem; margin-top: 0.75rem; font-size: 0.8rem; color: #e2e8f0; line-height: 1.7; white-space: pre-line; max-height: 220px; overflow-y: auto; display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Canonical Sidebar Navigation -->
+    <aside class="sidebar">
+        <div>
+            <div class="brand">
+                <div class="brand-icon-box">⛩️</div>
+                <div>
+                    <div style="font-weight: 800; font-size: 1.25rem; color: white;">KotoLab</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600;">JLPT N5 Learning</div>
+                </div>
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
+                <li><a href="sandbox.html" class="nav-link active">🧩 Sandbox</a></li>
+                <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
+                <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
+                <li><a href="exam.html" class="nav-link">📝 Exams</a></li>
+                <li><a href="analytics.html" class="nav-link">📈 Analytics</a></li>
+                <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
+                <li id="admin-nav-item" style="display: none;">
+                    <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            <div class="user-profile-card">
+                <div class="user-info">
+                    <div class="user-avatar" id="sidebar-user-initial">S</div>
+                    <div>
+                        <div class="user-name" id="sidebar-user-name">Shoyo</div>
+                        <div class="user-level" id="sidebar-user-level">N5 Explorer • Level 1</div>
+                    </div>
+                </div>
+                <div class="user-stats-row">
+                    <span>❤️ <strong id="user-lives">5</strong></span>
+                    <span>⚡ <strong id="stat-total-xp" class="user-xp-display">0</strong> XP</span>
+                </div>
+            </div>
+
+            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">
+                © 2026 KotoLab. All rights reserved.
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <main class="main-wrapper">
+        <header class="top-header">
+            <div class="header-title">
+                <h1 style="font-size: 1.6rem; font-weight: 800; color: white; margin: 0;">Grammar Sandbox 🧩</h1>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Learn through interactive lessons, particle building, and vocabulary drills.</p>
+            </div>
+
+            <div class="top-bar-badges" style="display: flex; align-items: center; gap: 0.75rem;">
+                <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">
+                    ⚡ <span id="xpCountDisplay" class="user-xp-display">0</span> XP
+                </div>
+                <div class="badge-item" onclick="openNotifications()" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24;">
+                    🔔
+                </div>
+                <div class="badge-item" onclick="goToSettings()" style="cursor: pointer; background: #6366f1; border: 1px solid #818cf8; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;">
+                    <span id="userInitialDisplay">S</span>
+                </div>
+            </div>
+        </header>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div style="font-size: 0.95rem; font-weight: 700; color: white;">Interactive Learning Labs</div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <select class="small-dropdown" style="background: #151e33; border: 1px solid #263552; color: white; padding: 0.5rem 1rem; border-radius: 12px; font-size: 0.85rem; font-weight: 600;">
+                    <option>N5 Level</option>
+                    <option>N4 Level</option>
+                </select>
+                <button class="btn-primary" style="background: #6366f1; border: none; padding: 0.55rem 1.25rem; border-radius: 12px; color: white; font-weight: 700; cursor: pointer;" onclick="launchRandomScenario()">
+                    🎲 Random Scenario
+                </button>
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="lesson-card">
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: white; margin: 0 0 0.2rem 0;">Particles Basics</h3>
+                <div style="font-size: 0.8rem; color: var(--accent-blue); margin-bottom: 0.85rem;">は・が・を・に・で</div>
+                <div class="card-image-box">
+                    <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?q=80&w=400&auto=format&fit=crop" alt="Particles Basics">
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">
+                    <span>Progress</span>
+                    <strong>0%</strong>
+                </div>
+                <div class="card-progress-bar-bg"><div class="card-progress-fill" style="width: 0%; background: var(--accent-indigo);"></div></div>
+                <button class="dash-btn" style="background: var(--accent-indigo);" onclick="launchModuleSession('1')">Continue →</button>
+            </div>
+
+            <div class="lesson-card">
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: white; margin: 0 0 0.2rem 0;">Basic Sentences</h3>
+                <div style="font-size: 0.8rem; color: var(--accent-blue); margin-bottom: 0.85rem;">SOV Order & です/ます</div>
+                <div class="card-image-box">
+                    <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=400&auto=format&fit=crop" alt="Basic Sentences">
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">
+                    <span>Progress</span>
+                    <strong>0%</strong>
+                </div>
+                <div class="card-progress-bar-bg"><div class="card-progress-fill" style="width: 0%; background: #3b82f6;"></div></div>
+                <button class="dash-btn" style="background: #3b82f6;" onclick="launchModuleSession('2')">Continue →</button>
+            </div>
+
+            <div class="lesson-card">
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: white; margin: 0 0 0.2rem 0;">Daily Expressions</h3>
+                <div style="font-size: 0.8rem; color: var(--accent-green); margin-bottom: 0.85rem;">Greetings & Phrases</div>
+                <div class="card-image-box">
+                    <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=400&auto=format&fit=crop" alt="Daily Expressions">
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">
+                    <span>Progress</span>
+                    <strong>0%</strong>
+                </div>
+                <div class="card-progress-bar-bg"><div class="card-progress-fill" style="width: 0%; background: var(--accent-green);"></div></div>
+                <button class="dash-btn" style="background: var(--accent-green);" onclick="launchModuleSession('3')">Continue →</button>
+            </div>
+
+            <div class="lesson-card">
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: white; margin: 0 0 0.2rem 0;">Listening & Speech</h3>
+                <div style="font-size: 0.8rem; color: #c084fc; margin-bottom: 0.85rem;">Script & Voice Test</div>
+                <div class="card-image-box">
+                    <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400&auto=format&fit=crop" alt="Listening & Speech">
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">
+                    <span>Progress</span>
+                    <strong>0%</strong>
+                </div>
+                <div class="card-progress-bar-bg"><div class="card-progress-fill" style="width: 0%; background: #a855f7;"></div></div>
+                <button class="dash-btn" style="background: #a855f7;" onclick="launchModuleSession('4')">Continue →</button>
+            </div>
+
+            <div class="lesson-card" style="border-color: var(--accent-orange);">
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: white; margin: 0 0 0.2rem 0;">Reading Practice</h3>
+                <div style="font-size: 0.8rem; color: #fbbf24; margin-bottom: 0.85rem;">JLPT N5 Passages</div>
+                <div class="card-image-box">
+                    <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=400&auto=format&fit=crop" alt="Reading Practice">
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">
+                    <span>Progress</span>
+                    <strong>0%</strong>
+                </div>
+                <div class="card-progress-bar-bg"><div class="card-progress-fill" style="width: 0%; background: var(--accent-orange);"></div></div>
+                <button class="dash-btn" style="background: var(--accent-orange); color: black; font-weight: 800;" onclick="launchModuleSession('5')">Read Passages →</button>
+            </div>
+
+            <div class="lesson-card" style="border-color: var(--accent-gold);">
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: white; margin: 0 0 0.2rem 0;">Vocabulary Essentials</h3>
+                <div style="font-size: 0.8rem; color: var(--accent-gold); margin-bottom: 0.85rem;">N5 Nouns & Essential Verbs</div>
+                <div class="card-image-box">
+                    <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?q=80&w=400&auto=format&fit=crop" alt="Vocabulary Essentials">
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem;">
+                    <span>Progress</span>
+                    <strong>0%</strong>
+                </div>
+                <div class="card-progress-bar-bg"><div class="card-progress-fill" style="width: 0%; background: var(--accent-gold);"></div></div>
+                <button class="dash-btn" style="background: var(--accent-gold); color: black; font-weight: 800;" onclick="launchModuleSession('6')">Build Vocabulary →</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Interactive Practice Modal -->
+    <div id="practiceModal" class="modal-overlay">
+        <div class="modal-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div>
+                    <span style="background: var(--accent-indigo); color: white; font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 6px;" id="modal-module-tag">Module</span>
+                    <h2 id="modal-module-title" style="color: white; margin: 0.4rem 0 0 0; font-size: 1.25rem;">Practice Module</h2>
+                </div>
+                <button onclick="closeLessonModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.75rem; cursor: pointer;">&times;</button>
+            </div>
+
+            <div id="modal-dynamic-content" style="background: #111827; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem;"></div>
+
+            <div class="ai-coach-banner" id="ai-coach-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.1rem;">🤖</span>
+                        <strong style="color: white; font-size: 0.85rem;">Shoyo-Kun (Live AI Tutor)</strong>
+                        <span style="background: #064e3b; color: #34d399; font-size: 0.55rem; font-weight: 700; padding: 0.1rem 0.4rem; border-radius: 4px;">Active</span>
+                    </div>
+                    <button onclick="fetchContextGrammarNotes()" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 6px; cursor: pointer;">
+                        📖 View Grammar Notes
+                    </button>
+                </div>
+
+                <div id="ai-coach-feedback" style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.5;">
+                    Select an answer, build a sentence, or ask Sensei any question below!
+                </div>
+
+                <div id="dynamic-grammar-notes" class="grammar-notes-box"></div>
+
+                <div class="ai-chat-input-row">
+                    <input type="text" id="ai-user-ask-input" class="ai-chat-input" placeholder="Ask Shoyo-Kun a question (e.g. 'Why particle に instead of で?')..." onkeydown="if(event.key==='Enter') askGeminiSensei()">
+                    <button onclick="askGeminiSensei()" style="background: var(--accent-indigo); border: none; color: white; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 700; font-size: 0.75rem; cursor: pointer;">
+                        Ask ➔
+                    </button>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem;">
+                <button class="tile-btn" style="background: #1e293b; font-size: 0.75rem;" onclick="playFullScriptAudio()">🔊 Listen Script</button>
+                <button class="btn-primary" style="background: var(--accent-indigo); color: white; border: none; padding: 0.65rem 1.25rem; border-radius: 12px; font-weight: 700; cursor: pointer;" id="modal-next-btn" onclick="advanceNextQuestion()">Next Question →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Master Data Scripts -->
+    <script src="js/speech.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>

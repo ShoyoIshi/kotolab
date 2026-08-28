@@ -1,0 +1,634 @@
+[
+  {
+    "kanji_char": "一",
+    "meaning": "one, one radical (no.1)",
+    "onyomi": "イチ, イツ",
+    "kunyomi": "ひと-, ひと.つ",
+    "jlpt_level": "N5",
+    "stroke_count": 1
+  },
+  {
+    "kanji_char": "七",
+    "meaning": "seven",
+    "onyomi": "シチ",
+    "kunyomi": "なな, なな.つ, なの",
+    "jlpt_level": "N5",
+    "stroke_count": 2
+  },
+  {
+    "kanji_char": "万",
+    "meaning": "10,000, ten thousand",
+    "onyomi": "バン, マン",
+    "kunyomi": "よろず",
+    "jlpt_level": "N5",
+    "stroke_count": 3
+  },
+  {
+    "kanji_char": "三",
+    "meaning": "three",
+    "onyomi": "サン, ゾウ",
+    "kunyomi": "み, み.つ, みっ.つ",
+    "jlpt_level": "N5",
+    "stroke_count": 3
+  },
+  {
+    "kanji_char": "上",
+    "meaning": "above, up",
+    "onyomi": "シャン, ショウ, ジョウ",
+    "kunyomi": "-あ.がり, -あ.がる, -あ.げる, -うえ, あ.がり, あ.がる, あ.げる, うえ, うわ-, かみ, たてまつ.る, のぼ.す, のぼ.せる, のぼ.り, のぼ.る",
+    "jlpt_level": "N5",
+    "stroke_count": 3
+  },
+  {
+    "kanji_char": "下",
+    "meaning": "below, descend, down",
+    "onyomi": "カ, ゲ",
+    "kunyomi": "-くだ.す, お.りる, お.ろす, くだ.さる, くだ.す, くだ.り, くだ.る, さ.がる, さ.げる, した, しも, もと",
+    "jlpt_level": "N5",
+    "stroke_count": 3
+  },
+  {
+    "kanji_char": "中",
+    "meaning": "center, in, inside",
+    "onyomi": "チュウ",
+    "kunyomi": "あた.る, うち, なか",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "九",
+    "meaning": "nine",
+    "onyomi": "キュウ, ク",
+    "kunyomi": "ここの, ここの.つ",
+    "jlpt_level": "N5",
+    "stroke_count": 2
+  },
+  {
+    "kanji_char": "二",
+    "meaning": "two, two radical (no. 7)",
+    "onyomi": "ジ, ニ",
+    "kunyomi": "ふた, ふた.つ, ふたたび",
+    "jlpt_level": "N5",
+    "stroke_count": 2
+  },
+  {
+    "kanji_char": "五",
+    "meaning": "five",
+    "onyomi": "ゴ",
+    "kunyomi": "いつ, いつ.つ",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "人",
+    "meaning": "person",
+    "onyomi": "ジン, ニン",
+    "kunyomi": "-と, -り, ひと",
+    "jlpt_level": "N5",
+    "stroke_count": 2
+  },
+  {
+    "kanji_char": "今",
+    "meaning": "now",
+    "onyomi": "キン, コン",
+    "kunyomi": "いま",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "休",
+    "meaning": "day off, rest, retire",
+    "onyomi": "キュウ",
+    "kunyomi": "やす.まる, やす.む, やす.める",
+    "jlpt_level": "N5",
+    "stroke_count": 6
+  },
+  {
+    "kanji_char": "何",
+    "meaning": "what",
+    "onyomi": "カ",
+    "kunyomi": "なに, なに-, なん, なん-",
+    "jlpt_level": "N5",
+    "stroke_count": 7
+  },
+  {
+    "kanji_char": "先",
+    "meaning": "ahead, before, future",
+    "onyomi": "セン",
+    "kunyomi": "さき, ま.ず",
+    "jlpt_level": "N5",
+    "stroke_count": 6
+  },
+  {
+    "kanji_char": "入",
+    "meaning": "enter, insert",
+    "onyomi": "ジュ, ニュウ",
+    "kunyomi": "-い.り, -い.る, -い.れ, い.る, い.れる, はい.る",
+    "jlpt_level": "N5",
+    "stroke_count": 2
+  },
+  {
+    "kanji_char": "八",
+    "meaning": "eight, eight radical (no. 12)",
+    "onyomi": "ハチ, ハツ",
+    "kunyomi": "や, や.つ, やっ.つ, よう",
+    "jlpt_level": "N5",
+    "stroke_count": 2
+  },
+  {
+    "kanji_char": "六",
+    "meaning": "six",
+    "onyomi": "リク, ロク",
+    "kunyomi": "む, む.つ, むい, むっ.つ",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "円",
+    "meaning": "circle, round, yen",
+    "onyomi": "エン",
+    "kunyomi": "まど, まど.か, まる, まる.い, まろ.やか",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "出",
+    "meaning": "come out, exit, go out",
+    "onyomi": "シュツ, スイ",
+    "kunyomi": "-だ.す, -で, い.だす, い.でる, だ.す, で.る",
+    "jlpt_level": "N5",
+    "stroke_count": 5
+  },
+  {
+    "kanji_char": "前",
+    "meaning": "before, in front",
+    "onyomi": "ゼン",
+    "kunyomi": "-まえ, まえ",
+    "jlpt_level": "N5",
+    "stroke_count": 9
+  },
+  {
+    "kanji_char": "北",
+    "meaning": "north",
+    "onyomi": "ホク",
+    "kunyomi": "きた",
+    "jlpt_level": "N5",
+    "stroke_count": 5
+  },
+  {
+    "kanji_char": "十",
+    "meaning": "ten",
+    "onyomi": "ジッ, ジュウ, ジュッ",
+    "kunyomi": "そ, と, とお",
+    "jlpt_level": "N5",
+    "stroke_count": 2
+  },
+  {
+    "kanji_char": "千",
+    "meaning": "thousand",
+    "onyomi": "セン",
+    "kunyomi": "ち",
+    "jlpt_level": "N5",
+    "stroke_count": 3
+  },
+  {
+    "kanji_char": "午",
+    "meaning": "11AM-1PM, noon, seventh sign of Chinese zodiac",
+    "onyomi": "ゴ",
+    "kunyomi": "うま",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "半",
+    "meaning": "half, middle, odd number",
+    "onyomi": "ハン",
+    "kunyomi": "なか.ば",
+    "jlpt_level": "N5",
+    "stroke_count": 5
+  },
+  {
+    "kanji_char": "南",
+    "meaning": "south",
+    "onyomi": "ナ, ナン",
+    "kunyomi": "みなみ",
+    "jlpt_level": "N5",
+    "stroke_count": 9
+  },
+  {
+    "kanji_char": "友",
+    "meaning": "friend",
+    "onyomi": "ユウ",
+    "kunyomi": "とも",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "右",
+    "meaning": "right",
+    "onyomi": "ウ, ユウ",
+    "kunyomi": "みぎ",
+    "jlpt_level": "N5",
+    "stroke_count": 5
+  },
+  {
+    "kanji_char": "名",
+    "meaning": "distinguished, name, noted",
+    "onyomi": "ミョウ, メイ",
+    "kunyomi": "-な, な",
+    "jlpt_level": "N5",
+    "stroke_count": 6
+  },
+  {
+    "kanji_char": "四",
+    "meaning": "four",
+    "onyomi": "シ",
+    "kunyomi": "よ, よ.つ, よっ.つ, よん",
+    "jlpt_level": "N5",
+    "stroke_count": 5
+  },
+  {
+    "kanji_char": "国",
+    "meaning": "country",
+    "onyomi": "コク",
+    "kunyomi": "くに",
+    "jlpt_level": "N5",
+    "stroke_count": 8
+  },
+  {
+    "kanji_char": "土",
+    "meaning": "Turkey, earth, ground",
+    "onyomi": "ト, ド",
+    "kunyomi": "つち",
+    "jlpt_level": "N5",
+    "stroke_count": 3
+  },
+  {
+    "kanji_char": "外",
+    "meaning": "outside",
+    "onyomi": "ガイ, ゲ",
+    "kunyomi": "そと, と-, はず.す, はず.れる, ほか",
+    "jlpt_level": "N5",
+    "stroke_count": 5
+  },
+  {
+    "kanji_char": "大",
+    "meaning": "big, large",
+    "onyomi": "タイ, ダイ",
+    "kunyomi": "-おお.いに, おお-, おお.きい",
+    "jlpt_level": "N5",
+    "stroke_count": 3
+  },
+  {
+    "kanji_char": "天",
+    "meaning": "heavens, imperial, sky",
+    "onyomi": "テン",
+    "kunyomi": "あま-, あまつ, あめ",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "女",
+    "meaning": "female, woman",
+    "onyomi": "ジョ, ニョ, ニョウ",
+    "kunyomi": "おんな, め",
+    "jlpt_level": "N5",
+    "stroke_count": 3
+  },
+  {
+    "kanji_char": "子",
+    "meaning": "11PM-1AM, child, first sign of Chinese zodiac",
+    "onyomi": "シ, ス, ツ",
+    "kunyomi": "-こ, こ, ね",
+    "jlpt_level": "N5",
+    "stroke_count": 3
+  },
+  {
+    "kanji_char": "学",
+    "meaning": "learning, science, study",
+    "onyomi": "ガク",
+    "kunyomi": "まな.ぶ",
+    "jlpt_level": "N5",
+    "stroke_count": 8
+  },
+  {
+    "kanji_char": "小",
+    "meaning": "little, small",
+    "onyomi": "ショウ",
+    "kunyomi": "お-, こ-, さ-, ちい.さい",
+    "jlpt_level": "N5",
+    "stroke_count": 3
+  },
+  {
+    "kanji_char": "山",
+    "meaning": "mountain",
+    "onyomi": "サン, セン",
+    "kunyomi": "やま",
+    "jlpt_level": "N5",
+    "stroke_count": 3
+  },
+  {
+    "kanji_char": "川",
+    "meaning": "river, river or three-stroke river radical (no. 47), stream",
+    "onyomi": "セン",
+    "kunyomi": "かわ",
+    "jlpt_level": "N5",
+    "stroke_count": 3
+  },
+  {
+    "kanji_char": "左",
+    "meaning": "left",
+    "onyomi": "サ, シャ",
+    "kunyomi": "ひだり",
+    "jlpt_level": "N5",
+    "stroke_count": 5
+  },
+  {
+    "kanji_char": "年",
+    "meaning": "counter for years, year",
+    "onyomi": "ネン",
+    "kunyomi": "とし",
+    "jlpt_level": "N5",
+    "stroke_count": 6
+  },
+  {
+    "kanji_char": "後",
+    "meaning": "back, behind, later",
+    "onyomi": "コウ, ゴ",
+    "kunyomi": "あと, うし.ろ, うしろ, おく.れる, のち",
+    "jlpt_level": "N5",
+    "stroke_count": 9
+  },
+  {
+    "kanji_char": "日",
+    "meaning": "Japan, counter for days, day",
+    "onyomi": "ジツ, ニチ",
+    "kunyomi": "-か, -び, ひ",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "時",
+    "meaning": "hour, time",
+    "onyomi": "ジ",
+    "kunyomi": "-どき, とき",
+    "jlpt_level": "N5",
+    "stroke_count": 10
+  },
+  {
+    "kanji_char": "書",
+    "meaning": "write",
+    "onyomi": "ショ",
+    "kunyomi": "-が.き, -がき, か.く",
+    "jlpt_level": "N5",
+    "stroke_count": 10
+  },
+  {
+    "kanji_char": "月",
+    "meaning": "month, moon",
+    "onyomi": "ガツ, ゲツ",
+    "kunyomi": "つき",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "木",
+    "meaning": "tree, wood",
+    "onyomi": "ボク, モク",
+    "kunyomi": "き, こ-",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "本",
+    "meaning": "book, counter for long cylindrical things, main",
+    "onyomi": "ホン",
+    "kunyomi": "もと",
+    "jlpt_level": "N5",
+    "stroke_count": 5
+  },
+  {
+    "kanji_char": "来",
+    "meaning": "become, cause, come",
+    "onyomi": "タイ, ライ",
+    "kunyomi": "き, き.たす, き.たる, きた.す, きた.る, く.る, こ",
+    "jlpt_level": "N5",
+    "stroke_count": 7
+  },
+  {
+    "kanji_char": "東",
+    "meaning": "east",
+    "onyomi": "トウ",
+    "kunyomi": "ひがし",
+    "jlpt_level": "N5",
+    "stroke_count": 8
+  },
+  {
+    "kanji_char": "校",
+    "meaning": "correction, exam, printing",
+    "onyomi": "キョウ, コウ",
+    "kunyomi": "",
+    "jlpt_level": "N5",
+    "stroke_count": 10
+  },
+  {
+    "kanji_char": "母",
+    "meaning": "mother",
+    "onyomi": "ボ",
+    "kunyomi": "はは, も",
+    "jlpt_level": "N5",
+    "stroke_count": 5
+  },
+  {
+    "kanji_char": "毎",
+    "meaning": "every",
+    "onyomi": "マイ",
+    "kunyomi": "-ごと.に, ごと",
+    "jlpt_level": "N5",
+    "stroke_count": 6
+  },
+  {
+    "kanji_char": "気",
+    "meaning": "air, atmosphere, mind",
+    "onyomi": "キ, ケ",
+    "kunyomi": "き",
+    "jlpt_level": "N5",
+    "stroke_count": 6
+  },
+  {
+    "kanji_char": "水",
+    "meaning": "water",
+    "onyomi": "スイ",
+    "kunyomi": "みず, みず-",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "火",
+    "meaning": "fire",
+    "onyomi": "カ",
+    "kunyomi": "-び, ひ, ほ-",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "父",
+    "meaning": "father",
+    "onyomi": "フ",
+    "kunyomi": "ちち",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "生",
+    "meaning": "birth, genuine, life",
+    "onyomi": "ショウ, セイ",
+    "kunyomi": "-う, い.かす, い.きる, い.ける, う.まれ, う.まれる, う.む, うま.れる, うまれ, お.う, き, な.す, な.る, なま, なま-, は.える, は.やす, む.す",
+    "jlpt_level": "N5",
+    "stroke_count": 5
+  },
+  {
+    "kanji_char": "男",
+    "meaning": "male",
+    "onyomi": "ダン, ナン",
+    "kunyomi": "お, おとこ",
+    "jlpt_level": "N5",
+    "stroke_count": 7
+  },
+  {
+    "kanji_char": "白",
+    "meaning": "white",
+    "onyomi": "ハク, ビャク",
+    "kunyomi": "しら-, しろ, しろ.い",
+    "jlpt_level": "N5",
+    "stroke_count": 5
+  },
+  {
+    "kanji_char": "百",
+    "meaning": "hundred",
+    "onyomi": "ヒャク, ビャク",
+    "kunyomi": "もも",
+    "jlpt_level": "N5",
+    "stroke_count": 6
+  },
+  {
+    "kanji_char": "聞",
+    "meaning": "ask, hear, listen",
+    "onyomi": "ブン, モン",
+    "kunyomi": "き.く, き.こえる",
+    "jlpt_level": "N5",
+    "stroke_count": 14
+  },
+  {
+    "kanji_char": "行",
+    "meaning": "act, bank, carry out",
+    "onyomi": "アン, ギョウ, コウ",
+    "kunyomi": "-い.き, -いき, -ゆ.き, -ゆき, い.く, おこ.なう, おこな.う, ゆ.く",
+    "jlpt_level": "N5",
+    "stroke_count": 6
+  },
+  {
+    "kanji_char": "西",
+    "meaning": "Spain, west",
+    "onyomi": "サイ, ス, セイ",
+    "kunyomi": "にし",
+    "jlpt_level": "N5",
+    "stroke_count": 6
+  },
+  {
+    "kanji_char": "見",
+    "meaning": "chances, hopes, idea",
+    "onyomi": "ケン",
+    "kunyomi": "み.える, み.せる, み.る",
+    "jlpt_level": "N5",
+    "stroke_count": 7
+  },
+  {
+    "kanji_char": "話",
+    "meaning": "tale, talk",
+    "onyomi": "ワ",
+    "kunyomi": "はな.す, はなし",
+    "jlpt_level": "N5",
+    "stroke_count": 13
+  },
+  {
+    "kanji_char": "語",
+    "meaning": "language, speech, word",
+    "onyomi": "ゴ",
+    "kunyomi": "かた.らう, かた.る",
+    "jlpt_level": "N5",
+    "stroke_count": 14
+  },
+  {
+    "kanji_char": "読",
+    "meaning": "read",
+    "onyomi": "トウ, トク, ドク",
+    "kunyomi": "-よ.み, よ.む",
+    "jlpt_level": "N5",
+    "stroke_count": 14
+  },
+  {
+    "kanji_char": "車",
+    "meaning": "car",
+    "onyomi": "シャ",
+    "kunyomi": "くるま",
+    "jlpt_level": "N5",
+    "stroke_count": 7
+  },
+  {
+    "kanji_char": "金",
+    "meaning": "gold",
+    "onyomi": "キン, コン, ゴン",
+    "kunyomi": "-がね, かな-, かね",
+    "jlpt_level": "N5",
+    "stroke_count": 8
+  },
+  {
+    "kanji_char": "長",
+    "meaning": "leader, long, senior",
+    "onyomi": "チョウ",
+    "kunyomi": "おさ, なが.い",
+    "jlpt_level": "N5",
+    "stroke_count": 8
+  },
+  {
+    "kanji_char": "間",
+    "meaning": "interval, space",
+    "onyomi": "カン, ケン",
+    "kunyomi": "あい, あいだ, ま",
+    "jlpt_level": "N5",
+    "stroke_count": 12
+  },
+  {
+    "kanji_char": "雨",
+    "meaning": "rain",
+    "onyomi": "ウ",
+    "kunyomi": "-さめ, あま-, あめ",
+    "jlpt_level": "N5",
+    "stroke_count": 8
+  },
+  {
+    "kanji_char": "電",
+    "meaning": "electricity",
+    "onyomi": "デン",
+    "kunyomi": "",
+    "jlpt_level": "N5",
+    "stroke_count": 13
+  },
+  {
+    "kanji_char": "食",
+    "meaning": "eat, food",
+    "onyomi": "ショク, ジキ",
+    "kunyomi": "く.う, く.らう, た.べる, は.む",
+    "jlpt_level": "N5",
+    "stroke_count": 9
+  },
+  {
+    "kanji_char": "高",
+    "meaning": "expensive, high, tall",
+    "onyomi": "コウ",
+    "kunyomi": "-だか, たか, たか.い, たか.まる, たか.める",
+    "jlpt_level": "N5",
+    "stroke_count": 10
+  }
+]

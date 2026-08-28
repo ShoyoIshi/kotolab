@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KotoLab - Login & Welcome</title>
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #151e33;
+            --border-color: #263552;
+            --accent-purple: #6366f1;
+            --text-main: #ffffff;
+            --text-muted: #8fa0bd;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Widescreen Split Layout Container */
+        .login-container {
+            display: grid;
+            grid-template-columns: 1fr 480px;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* LEFT BRANDING & FEATURE SHOWCASE SIDE */
+        .brand-showcase {
+            position: relative;
+            background: linear-gradient(180deg, rgba(11, 15, 25, 0.4) 0%, rgba(11, 15, 25, 0.9) 100%), 
+                        url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1600&auto=format&fit=crop') no-repeat center center;
+            background-size: cover;
+            padding: 3rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .brand-hero-content {
+            max-width: 650px;
+        }
+
+        .brand-hero-content h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-hero-content h1 span {
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-hero-content p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        /* Feature Mini-Cards Grid */
+        .features-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-mini-card {
+            background: rgba(21, 30, 51, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 1rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .feature-mini-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .feature-mini-card h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+
+        .feature-mini-card p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .quote-box {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            border-left: 3px solid var(--accent-purple);
+            background: rgba(15, 23, 42, 0.4);
+            padding: 0.75rem 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .quote-box span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: normal;
+            margin-top: 4px;
+        }
+
+        /* RIGHT LOGIN / SIGNUP FORM SIDE */
+        .login-form-side {
+            background: var(--bg-card);
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4);
+            z-index: 2;
+        }
+
+        .login-header {
+            margin-bottom: 2rem;
+        }
+
+        .login-header h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.4rem;
+        }
+
+        .login-header p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #cbd5e1;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .checkbox-container input {
+            accent-color: var(--accent-purple);
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+
+        .forgot-link {
+            color: #818cf8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+            transition: transform 0.2s ease, filter 0.2s ease;
+            margin-bottom: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.1);
+        }
+
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 1.25rem 0;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 42%;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+
+        .btn-guest {
+            width: 100%;
+            padding: 0.8rem;
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background 0.2s ease, border-color 0.2s ease;
+            margin-bottom: 0.75rem;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+
+        .btn-guest:hover {
+            background: #1e293b;
+            border-color: #475569;
+        }
+
+        .signup-prompt {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 1.5rem;
+        }
+
+        .signup-prompt a {
+            color: #818cf8;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .signup-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 1100px) {
+            .login-container {
+                grid-template-columns: 1fr;
+            }
+            .brand-showcase {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        
+        <!-- LEFT BRANDING & FEATURE SHOWCASE SIDE -->
+        <div class="brand-showcase">
+            <div class="brand-header">
+                <div class="brand-icon">⛩️</div>
+                <div>
+                    <div style="font-weight: 800; font-size: 1.25rem; color: white;">KotoLab</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600;">JLPT N5 Learning Platform</div>
+                </div>
+            </div>
+
+            <div class="brand-hero-content">
+                <h1>Master JLPT N5 Japanese<br>The <span>Fun & Interactive</span> Way</h1>
+                <p>Practice characters, build sentences, test your skills, and get AI-powered feedback to improve faster every day.</p>
+
+                <div class="features-preview-grid">
+                    <div class="feature-mini-card">
+                        <h4>⚡ Character Drills</h4>
+                        <p>Hiragana, Katakana & N5 Kanji tracking.</p>
+                    </div>
+                    <div class="feature-mini-card">
+                        <h4>🧩 Grammar Sandbox</h4>
+                        <p>Sentence building & particle logic.</p>
+                    </div>
+                    <div class="feature-mini-card">
+                        <h4>📝 Mock Exams</h4>
+                        <p>Timed JLPT N5 practice tests.</p>
+                    </div>
+                </div>
+
+                <div class="quote-box">
+                    "Small steps every day lead to big results."
+                    <span>毎日の小さな努力が、大きな成果につながります。</span>
+                </div>
+            </div>
+
+            <div style="font-size: 0.75rem; color: var(--text-muted);">
+                © 2026 KotoLab Research Initiative. All rights reserved.
+            </div>
+        </div>
+
+        <!-- RIGHT FORM SIDE -->
+        <div class="login-form-side">
+            <div class="login-header" id="formHeader">
+                <h2 id="formTitle">Welcome Back! 👋</h2>
+                <p id="formSubtitle">Login to continue your Japanese learning journey.</p>
+            </div>
+
+            <form id="authForm" onsubmit="handleAuth(event)">
+                <div class="form-group" id="emailGroup" style="display: none;">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="emailInput" class="form-input" placeholder="e.g. shoyo@kotolab.com">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" id="userInputLabel">Username</label>
+                    <input type="text" id="usernameInput" class="form-input" placeholder="e.g. Shoyo" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="passwordInput" class="form-input" placeholder="Enter your password" required>
+                </div>
+
+                <div class="form-row" id="loginOptionsRow">
+                    <label class="checkbox-container">
+                        <input type="checkbox" checked> Remember me
+                    </label>
+                    <a href="#" class="forgot-link">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">Sign In</button>
+
+                <div class="divider">or</div>
+
+                <button type="button" class="btn-guest" onclick="handleGuestLogin()">
+                    👤 Continue as Guest
+                </button>
+            </form>
+
+            <div class="signup-prompt" id="switchPrompt">
+                Don't have an account? <a href="#" onclick="toggleAuthMode(event)">Sign Up</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let isSignUpMode = false;
+
+        function toggleAuthMode(event) {
+            event.preventDefault();
+            isSignUpMode = !isSignUpMode;
+
+            const formTitle = document.getElementById('formTitle');
+            const formSubtitle = document.getElementById('formSubtitle');
+            const submitBtn = document.getElementById('submitBtn');
+            const emailGroup = document.getElementById('emailGroup');
+            const userInputLabel = document.getElementById('userInputLabel');
+            const usernameInput = document.getElementById('usernameInput');
+            const loginOptionsRow = document.getElementById('loginOptionsRow');
+            const switchPrompt = document.getElementById('switchPrompt');
+
+            if (isSignUpMode) {
+                formTitle.innerText = "Create Account 🚀";
+                formSubtitle.innerText = "Join KotoLab and start mastering Japanese.";
+                submitBtn.innerText = "Sign Up";
+                emailGroup.style.display = 'block';
+                userInputLabel.innerText = "Username";
+                usernameInput.placeholder = "Choose a username (e.g. Shoyo)";
+                loginOptionsRow.style.display = 'none';
+                switchPrompt.innerHTML = `Already have an account? <a href="#" onclick="toggleAuthMode(event)">Sign In</a>`;
+            } else {
+                formTitle.innerText = "Welcome Back! 👋";
+                formSubtitle.innerText = "Login to continue your Japanese learning journey.";
+                submitBtn.innerText = "Sign In";
+                emailGroup.style.display = 'none';
+                userInputLabel.innerText = "Username";
+                usernameInput.placeholder = "e.g. Shoyo";
+                loginOptionsRow.style.display = 'flex';
+                switchPrompt.innerHTML = `Don't have an account? <a href="#" onclick="toggleAuthMode(event)">Sign Up</a>`;
+            }
+        }
+
+        async function handleAuth(event) {
+            event.preventDefault();
+            const usernameInput = document.getElementById('usernameInput').value.trim();
+            const passwordInput = document.getElementById('passwordInput').value.trim();
+            const emailInput = document.getElementById('emailInput').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+
+            submitBtn.innerText = isSignUpMode ? "Creating account..." : "Signing in...";
+            submitBtn.disabled = true;
+
+            const endpoint = isSignUpMode ? '/api/auth/signup' : '/api/auth/login';
+            const payload = isSignUpMode 
+                ? { username: usernameInput, email: emailInput, password: passwordInput }
+                : { username: usernameInput, password: passwordInput };
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                // Agar 500 error aaya ya JSON parse nahi hua, toh seedha catch block me jayega
+                if (!response.ok) {
+                    throw new Error(`Server returned status ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Check for either login success/token OR signup success (userId or message)
+                if (response.ok) {
+                    localStorage.setItem('kotolab_token', data.token || 'signup_token_success');
+                    localStorage.setItem('kotolab_user', JSON.stringify(data.user || { username: usernameInput }));
+                    localStorage.setItem('kotolab_username', usernameInput);
+                    localStorage.setItem('kotolab_onboarding_done', 'true');
+
+                    window.location.href = 'index.html';
+                } else {
+                    alert(data.error || data.message || "Authentication failed.");
+                    submitBtn.innerText = isSignUpMode ? "Sign Up" : "Sign In";
+                    submitBtn.disabled = false;
+                }
+            } catch (err) {
+                console.error("Auth Fetch Error:", err);
+                alert("❌ 500 Internal Server Error: Database me signup query fail ho rahi hai. Kripya apna backend check karein!");
+                submitBtn.innerText = isSignUpMode ? "Sign Up" : "Sign In";
+                submitBtn.disabled = false;
+            }
+        }
+
+        function handleGuestLogin() {
+            localStorage.setItem('kotolab_token', 'guest_token_999');
+            localStorage.setItem('kotolab_user', JSON.stringify({ id: 999, username: 'Guest User', role: 'student' }));
+            localStorage.setItem('kotolab_username', 'Guest User');
+            localStorage.setItem('kotolab_onboarding_done', 'true');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

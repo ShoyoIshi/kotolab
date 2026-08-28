@@ -1,0 +1,148 @@
+{
+  "stories": [
+    {
+      "id": 1,
+      "title": "学校の一日 (A Day at School)",
+      "difficulty": "N5",
+      "summary": "Follow a student's daily routine from morning to study time.",
+      "sentences": [
+        {
+          "id": 1,
+          "japanese": "わたしは がくせいです。",
+          "furigana_html": "<ruby>私<rt>わたし</rt></ruby>は <ruby>学生<rt>がくせい</rt></ruby>です。",
+          "english": "I am a student."
+        },
+        {
+          "id": 2,
+          "japanese": "まいあさ ７じにおきます。",
+          "furigana_html": "<ruby>毎朝<rt>まいあさ</rt></ruby> 7<ruby>時<rt>じ</rt></ruby>に<ruby>起<rt>お</rt></ruby>きます。",
+          "english": "I wake up at 7 o'clock every morning."
+        },
+        {
+          "id": 3,
+          "japanese": "あさごはんを たべて、がっこうへ いきます。",
+          "furigana_html": "朝ごはんを 食べて、学校へ 行きます。",
+          "english": "I eat breakfast and go to school."
+        },
+        {
+          "id": 4,
+          "japanese": "としょかんで ともだちと べんきょうします。",
+          "furigana_html": "<ruby>図書館<rt>としょかん</rt></ruby>で <ruby>友達<rt>ともだち</rt></ruby>と <ruby>勉強<rt>べんきょう</rt></ruby>します。",
+          "english": "I study with my friends at the library."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "カフェで注文する (Ordering at a Café)",
+      "difficulty": "N5",
+      "summary": "A practical conversation ordering food and drink at a Japanese café.",
+      "sentences": [
+        {
+          "id": 1,
+          "japanese": "いらっしゃいませ！なににしますか。",
+          "furigana_html": "いらっしゃいませ！何にしますか。",
+          "english": "Welcome! What would you like?"
+        },
+        {
+          "id": 2,
+          "japanese": "すみません、おちゃと パンを ください。",
+          "furigana_html": "すみません、お<ruby>茶<rt>ちゃ</rt></ruby>と パンを ください。",
+          "english": "Excuse me, green tea and bread please."
+        },
+        {
+          "id": 3,
+          "japanese": "ぜんぶで ５００えんです。",
+          "furigana_html": "全部で 500<ruby>円<rt>えん</rt></ruby>です。",
+          "english": "That will be 500 yen in total."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "週末の買い物 (Weekend Shopping)",
+      "difficulty": "N5",
+      "summary": "A short story about buying fresh fruit and groceries on Saturday.",
+      "sentences": [
+        {
+          "id": 1,
+          "japanese": "どようびに デパートへ いきました。",
+          "furigana_html": "<ruby>土曜日<rt>どようび</rt></ruby>に デパートへ <ruby>行<rt>い</rt></ruby>きました。",
+          "english": "On Saturday, I went to the department store."
+        },
+        {
+          "id": 2,
+          "japanese": "あかい りんごを よっつ かいました。",
+          "furigana_html": "<ruby>赤<rt>あか</rt></ruby>い りんごを 四つ <ruby>買<rt>か</rt></ruby>いました。",
+          "english": "I bought four red apples."
+        },
+        {
+          "id": 3,
+          "japanese": "それから、でんしゃで うちへ かえりました。",
+          "furigana_html": "それから、<ruby>電車<rt>でんしゃ</rt></ruby>で うちへ <ruby>帰<rt>かえ</rt></ruby>りました。",
+          "english": "After that, I returned home by train."
+        }
+      ]
+    }
+  ],
+  "drills": [
+    {
+      "id": 1,
+      "type": "notice_comprehension",
+      "passage": "アパートの皆さんへ\n来週の月曜日と火曜日の午前１０時から午後５時までエレベーターを使わないでください。階段を使ってください。",
+      "question": "アパートの人は、来週の月曜日と火曜日には、外に出る時、どうしますか。",
+      "options": [
+        "来週の月曜日の午前１１時には、階段を使います。",
+        "来週の月曜日の午後３時には、エレベーターを使います。",
+        "来週の火曜日の午前１１時には、エレベーターを使います。",
+        "来週の火曜日の午後３時には、階段を使いません。"
+      ],
+      "correct": 0,
+      "explanation": "午前１０時から午後５時まではエレベーターが使えないため、その時間帯（月曜日の午前１１時など）に外に出る場合は階段を使います。"
+    },
+    {
+      "id": 2,
+      "type": "situation_comprehension",
+      "passage": "きのうのよる１０時に友だちのうちに電話をしましたが、友だちはいませんでした。１時間あとでもういちどかけました。でも友だちはまだかえっていませんでした。わたしは１１時ごろねました。",
+      "question": "昨日の夜の状況として正しいものはどれですか。",
+      "options": [
+        "わたしはきのうのよる友だちと話したあとでねました。",
+        "わたしはきのうのよる友だちに１かいしか電話しませんでした。",
+        "わたしはきのうのよる友だちと２かい電話で話しました。",
+        "わたしはきのうのよる友だちと電話で話しませんでした。"
+      ],
+      "correct": 3,
+      "explanation": "友達はいなかったため、2回とも電話がつながらず、話せませんでした。"
+    },
+    {
+      "id": 3,
+      "type": "cloze_test",
+      "passage": "先月わたしは学校の友達といっしょに、おきなわへ旅行に行きました。わたしたちは、旅行の前に、おきなわから来た日本人の友達にいろいろ（ア）。",
+      "target": "（ア）",
+      "question": "（ア）には何を入れますか。",
+      "options": ["話しました", "答えました", "呼びました", "聞きました"],
+      "correct": 3,
+      "explanation": "沖縄から来た友達に旅行の前に情報を「聞きました（尋ねました）」という文脈になります。"
+    },
+    {
+      "id": 4,
+      "type": "cloze_test",
+      "passage": "友達は、「おきなわはとうきょうよりずっと南だから、とても暑いよ。（イ）、夏の服をたくさん持っていったほうがいい」と言いました。",
+      "target": "（イ）",
+      "question": "（イ）には何を入れますか。",
+      "options": ["だから", "それから", "すると", "だけど"],
+      "correct": 0,
+      "explanation": "前文の「とても暑いよ」という理由を受けて、結論・アドバイス（夏の服を持っていったほうがいい）に繋げるため「だから」が入ります。"
+    },
+    {
+      "id": 5,
+      "type": "cloze_test",
+      "passage": "そのころとうきょうはまだ４月だったので、きおんが１４どぐらいでした。（ウ）、わたしはおしいれのおくから、夏の洋服を出して、かばんにいっぱい入れて出かけることにしました。",
+      "target": "（ウ）",
+      "question": "（ウ）には何を入れますか。",
+      "options": ["そうすると", "ところが", "それで", "それに"],
+      "correct": 2,
+      "explanation": "「沖縄が暑いので夏の服を持っていったほうがいい」という理由から、「（その結果として）夏の洋服を出した」という順接の因果関係を表す「それで」が入ります。"
+    }
+  ]
+}

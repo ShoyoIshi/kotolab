@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KotoLab — JLPT N5 Standardized Examination</title>
+
+    <!-- Auth Guard -->
+    <script>
+        const token = localStorage.getItem('kotolab_token');
+        if (!token) { window.location.href = 'login.html'; }
+    </script>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --accent-red: #ef4444; --accent-gold: #f59e0b; --text-main: #f8fafc; --text-muted: #8fa0bd; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        /* Canonical Sidebar */
+        .sidebar { width: 260px; background: #090d16; border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; height: 100vh; position: fixed; left: 0; top: 0; z-index: 100; }
+        .brand { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; padding-left: 0.5rem; }
+        .brand-icon-box { width: 40px; height: 40px; background: linear-gradient(135deg, #38bdf8, #6366f1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+        .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; border-radius: 10px; transition: all 0.2s ease; }
+        .nav-link:hover { color: white; background: rgba(255, 255, 255, 0.04); }
+        .nav-link.active { color: white; background: linear-gradient(135deg, #6366f1, #7c3aed); box-shadow: 0 6px 16px -2px rgba(99, 102, 241, 0.45); }
+        .user-profile-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 0.85rem; }
+        .user-info { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.65rem; }
+        .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: #6366f1; color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; }
+        .user-name { font-weight: 700; font-size: 0.85rem; color: white; }
+        .user-level { font-size: 0.7rem; color: var(--text-muted); }
+        .user-stats-row { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+
+        .main-wrapper { margin-left: 260px; flex: 1; padding: 2rem 2.5rem; overflow-y: auto; max-height: 100vh; }
+        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+
+        /* Lobby Card */
+        .exam-lobby-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); }
+        .info-pill-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 0.5rem 0; }
+        .info-pill { background: #090d16; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.25rem; text-align: center; }
+        .sections-overview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 0.5rem; }
+        .sec-card { background: #090d16; border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; }
+
+        /* Live Exam Layout */
+        .exam-active-layout { display: grid; grid-template-columns: 1fr 320px; gap: 1.5rem; margin-top: 1rem; }
+        .question-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+        .passage-box { background: #090d16; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.25rem; font-size: 1.05rem; line-height: 1.9; color: #f1f5f9; white-space: pre-line; border-left: 4px solid var(--accent-blue); }
+        .listening-audio-box { background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(15, 23, 42, 0.9)); border: 1px solid var(--accent-indigo); border-radius: 14px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+        .options-list { display: flex; flex-direction: column; gap: 0.85rem; }
+        .option-tile { background: #090d16; border: 1px solid var(--border-color); border-radius: 14px; padding: 1rem 1.25rem; color: var(--text-main); font-size: 0.95rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 1rem; transition: all 0.2s ease; }
+        .option-tile:hover { border-color: var(--accent-indigo); background: rgba(99, 102, 241, 0.1); }
+        .option-tile.selected { border-color: var(--accent-indigo); background: rgba(99, 102, 241, 0.25); color: white; box-shadow: 0 0 15px rgba(99, 102, 241, 0.3); }
+        .option-index-badge { width: 28px; height: 28px; border-radius: 8px; background: #1e293b; color: #94a3b8; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; }
+        .option-tile.selected .option-index-badge { background: var(--accent-indigo); color: white; }
+
+        /* Palette Navigator */
+        .exam-palette-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; height: fit-content; position: sticky; top: 2rem; }
+        .palette-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.65rem; }
+        .palette-num-btn { height: 44px; border-radius: 12px; border: 1px solid #334155; background: #090d16; color: #94a3b8; font-weight: 800; font-size: 0.88rem; cursor: pointer; transition: all 0.2s ease; }
+        .palette-num-btn:hover { border-color: #6366f1; color: white; }
+        .palette-num-btn.active { border-color: #38bdf8; background: rgba(56, 189, 248, 0.2); color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
+        .palette-num-btn.answered { background: #064e3b; border-color: #10b981; color: #34d399; }
+
+        /* Results Screen */
+        .results-container { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 2.5rem; display: flex; flex-direction: column; gap: 2rem; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4); }
+        .review-item { background: #090d16; border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Canonical Sidebar Navigation -->
+    <aside class="sidebar">
+        <div>
+            <div class="brand">
+                <div class="brand-icon-box">⛩️</div>
+                <div>
+                    <div style="font-weight: 800; font-size: 1.25rem; color: white;">KotoLab</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600;">JLPT N5 Learning</div>
+                </div>
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
+                <li><a href="sandbox.html" class="nav-link">🧩 Sandbox</a></li>
+                <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
+                <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
+                <li><a href="exam.html" class="nav-link active">📝 Exams</a></li>
+                <li><a href="analytics.html" class="nav-link">📈 Analytics</a></li>
+                <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
+                <li id="admin-nav-item" style="display: none;">
+                    <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            <!-- User Profile Card -->
+            <div class="user-profile-card">
+                <div class="user-info">
+                    <div class="user-avatar" id="sidebar-user-initial">S</div>
+                    <div>
+                        <div class="user-name" id="sidebar-user-name">Shoyo</div>
+                        <div class="user-level" id="sidebar-user-level">N5 Explorer • Level 1</div>
+                    </div>
+                </div>
+                <div class="user-stats-row">
+                    <span>❤️ <strong id="user-lives">5</strong></span>
+                    <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
+                </div>
+            </div>
+
+            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">
+                © 2026 KotoLab. All rights reserved.
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-wrapper">
+        <header class="top-header">
+            <div class="header-title">
+                <h1 style="font-size: 1.6rem; font-weight: 800; color: white; margin: 0;">Standardized Examination Hall 📝</h1>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Official Diagnostic JLPT Benchmark Assessment.</p>
+            </div>
+
+            <!-- Top Bar Badges -->
+            <div class="top-bar-badges" style="display: flex; align-items: center; gap: 0.75rem;">
+                <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">
+                    ⚡ <span id="xpCountDisplay">0</span> XP
+                </div>
+                <div class="badge-item" onclick="openNotifications()" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24;">
+                    🔔
+                </div>
+                <div class="badge-item" onclick="goToSettings()" style="cursor: pointer; background: #6366f1; border: 1px solid #818cf8; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;">
+                    <span id="userInitialDisplay">S</span>
+                </div>
+                <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #8fa0bd;">
+                    📅 <span id="currentDateDisplay">Aug 12, 2026</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- VIEW 1: EXAM LOBBY SCREEN -->
+        <div id="exam-lobby-view">
+            <div class="exam-lobby-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <span style="background: rgba(99, 102, 241, 0.2); color: #818cf8; font-size: 0.75rem; font-weight: 800; padding: 0.3rem 0.85rem; border-radius: 20px; border: 1px solid rgba(99, 102, 241, 0.4);">Official Open Paper 01</span>
+                        <h2 style="font-size: 1.6rem; font-weight: 800; color: white; margin: 0.75rem 0 0.25rem 0;">JLPT N5 Standard Comprehensive Benchmark</h2>
+                        <p style="color: var(--text-muted); font-size: 0.88rem;">Complete test covering Kanji, Vocabulary, Grammar, Reading, and Spoken Listening Comprehension.</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Standard Benchmark</span>
+                        <div style="font-size: 1.4rem; font-weight: 900; color: #10b981;">N5 Official Format</div>
+                    </div>
+                </div>
+
+                <!-- Info Metrics -->
+                <div class="info-pill-grid">
+                    <div class="info-pill">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">TOTAL QUESTIONS</div>
+                        <div style="font-size: 1.4rem; font-weight: 900; color: white; margin-top: 0.25rem;">12 Items</div>
+                    </div>
+                    <div class="info-pill">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">TIME ALLOCATED</div>
+                        <div style="font-size: 1.4rem; font-weight: 900; color: #38bdf8; margin-top: 0.25rem;">20:00 Min</div>
+                    </div>
+                    <div class="info-pill">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">PASSING CRITERIA</div>
+                        <div style="font-size: 1.4rem; font-weight: 900; color: #f59e0b; margin-top: 0.25rem;">60% (8/12)</div>
+                    </div>
+                    <div class="info-pill">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">SECTION COVERAGE</div>
+                        <div style="font-size: 1.4rem; font-weight: 900; color: #10b981; margin-top: 0.25rem;">4 Sections</div>
+                    </div>
+                </div>
+
+                <!-- Section Structure -->
+                <div class="sections-overview-grid">
+                    <div class="sec-card">
+                        <strong style="color: #38bdf8; font-size: 0.82rem;">1. 文字・語彙 (Kanji & Vocab)</strong>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem;">3 Questions (Readings & Usage)</div>
+                    </div>
+                    <div class="sec-card">
+                        <strong style="color: #818cf8; font-size: 0.82rem;">2. 文法 (Grammar & Syntax)</strong>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem;">4 Questions (Particles & Conjugation)</div>
+                    </div>
+                    <div class="sec-card">
+                        <strong style="color: #f97316; font-size: 0.82rem;">3. 読解 (Reading Passages)</strong>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem;">2 Questions (Notices & Letters)</div>
+                    </div>
+                    <div class="sec-card">
+                        <strong style="color: #10b981; font-size: 0.82rem;">4. 聴解 (Listening Audio)</strong>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem;">3 Questions (Spoken Dialogue)</div>
+                    </div>
+                </div>
+
+                <div style="background: #090d16; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.25rem; font-size: 0.85rem; color: #cbd5e1; line-height: 1.6;">
+                    <strong style="color: white; display: block; margin-bottom: 0.4rem;">📋 Instructions:</strong>
+                    • In the <strong>Listening section</strong>, click <strong>"🔊 Play Dialogue Audio"</strong> to listen to the Japanese conversation before answering.<br>
+                    • Use the Question Palette to jump between questions.<br>
+                    • Detailed score analysis and grammar breakdown will be generated upon submission.
+                </div>
+
+                <div style="display: flex; justify-content: flex-end;">
+                    <button onclick="startOfficialExam()" style="background: #6366f1; border: none; padding: 0.9rem 2.5rem; border-radius: 12px; color: white; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);">
+                        Start Official Examination ➔
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: LIVE RUNNING EXAMINATION -->
+        <div id="exam-live-view" style="display: none;">
+            
+            <!-- Exam Sticky Top Bar -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <div>
+                    <span id="active-section-badge" style="background: #4f46e5; color: white; font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.65rem; border-radius: 6px;">SECTION 1: KANJI & VOCABULARY</span>
+                    <h2 style="font-size: 1.15rem; color: white; margin: 0.35rem 0 0 0; font-weight: 800;">JLPT N5 Benchmark Paper 01</h2>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; background: #090d16; border: 1px solid #334155; padding: 0.5rem 1rem; border-radius: 12px;">
+                        <span style="font-size: 1.1rem;">⏰</span>
+                        <div>
+                            <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700;">TIME REMAINING</div>
+                            <div id="exam-timer" style="font-size: 1.15rem; font-weight: 900; color: #f97316; font-family: monospace;">20:00</div>
+                        </div>
+                    </div>
+
+                    <button onclick="promptSubmitExam()" style="background: #10b981; border: none; padding: 0.65rem 1.5rem; border-radius: 12px; color: white; font-weight: 800; font-size: 0.85rem; cursor: pointer;">
+                        Finish & Submit ➔
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Layout: Question Card (Left) + Palette (Right) -->
+            <div class="exam-active-layout">
+                
+                <!-- Main Question Box -->
+                <div class="question-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.85rem;">
+                        <span style="color: var(--accent-blue); font-weight: 800; font-size: 0.9rem;" id="q-index-label">Question 1 of 12</span>
+                        <button onclick="playCurrentPromptSpeech()" style="background: #090d16; border: 1px solid #334155; color: white; padding: 0.35rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer;">🔊 Audio</button>
+                    </div>
+
+                    <!-- Listening Dialogue Audio Player Box (Only for Section 4) -->
+                    <div id="q-listening-container" class="listening-audio-box" style="display: none;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="font-size: 1.25rem;">🎧</span>
+                                <strong style="color: white; font-size: 0.88rem;">Listening Task Dialogue</strong>
+                            </div>
+                            <button id="btn-play-dialogue" onclick="playListeningDialogue()" style="background: var(--accent-green); border: none; padding: 0.45rem 1rem; border-radius: 8px; color: white; font-weight: 800; font-size: 0.78rem; cursor: pointer;">
+                                🔊 Play Dialogue Audio
+                            </button>
+                        </div>
+                        <div id="q-listening-script" style="font-size: 0.82rem; color: #cbd5e1; font-style: italic; background: rgba(0,0,0,0.3); padding: 0.65rem 0.85rem; border-radius: 8px;">
+                            (Click button to listen to the dialogue in Japanese)
+                        </div>
+                    </div>
+
+                    <!-- Reading Passage Container (Only for Section 3) -->
+                    <div id="q-passage-container" class="passage-box" style="display: none;"></div>
+
+                    <!-- Question Prompt -->
+                    <div id="q-prompt-text" style="font-size: 1.25rem; font-weight: 800; color: white; line-height: 1.5;">
+                        この「山」は 高いです。
+                    </div>
+                    <div id="q-sub-text" style="font-size: 0.85rem; color: var(--text-muted); margin-top: -0.85rem;">
+                        Select the correct Hiragana reading for the word in quotes.
+                    </div>
+
+                    <!-- 4 Multiple Choice Options -->
+                    <div class="options-list" id="q-options-container">
+                    </div>
+
+                    <!-- Navigation Footer -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+                        <button id="btn-prev-q" onclick="navigateQuestion(-1)" style="background: #090d16; border: 1px solid #334155; color: white; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer;">
+                            ← Previous
+                        </button>
+                        <button id="btn-next-q" onclick="navigateQuestion(1)" style="background: #6366f1; border: none; color: white; padding: 0.6rem 1.5rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer;">
+                            Next Question →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Question Navigator Palette -->
+                <aside class="exam-palette-card">
+                    <div style="font-size: 0.9rem; font-weight: 800; color: white; display: flex; justify-content: space-between;">
+                        <span>Question Palette</span>
+                        <span id="answered-counter" style="color: #10b981;">0 / 12 Answered</span>
+                    </div>
+
+                    <!-- Question Buttons Grid -->
+                    <div class="palette-grid" id="palette-grid-container">
+                    </div>
+
+                    <!-- Legend -->
+                    <div style="border-top: 1px solid var(--border-color); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="width: 14px; height: 14px; background: #064e3b; border: 1px solid #10b981; border-radius: 4px;"></div>
+                            <span>Answered Question</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="width: 14px; height: 14px; background: #090d16; border: 1px solid #38bdf8; border-radius: 4px;"></div>
+                            <span>Current Active Question</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="width: 14px; height: 14px; background: #090d16; border: 1px solid #334155; border-radius: 4px;"></div>
+                            <span>Unanswered</span>
+                        </div>
+                    </div>
+                </aside>
+
+            </div>
+        </div>
+
+        <!-- VIEW 3: COMPREHENSIVE SCORE & REVIEW DASHBOARD -->
+        <div id="exam-results-view" style="display: none;">
+            <div class="results-container">
+                
+                <!-- Score Header Banner -->
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+                    <div>
+                        <span id="result-status-badge" style="background: #064e3b; color: #34d399; font-weight: 800; font-size: 0.8rem; padding: 0.3rem 0.85rem; border-radius: 20px; border: 1px solid #10b981;">PASSED • 合格</span>
+                        <h1 style="font-size: 1.8rem; font-weight: 900; color: white; margin: 0.65rem 0 0.2rem 0;">Exam Performance Summary</h1>
+                        <p style="color: var(--text-muted); font-size: 0.85rem;">Official Diagnostic Result logged to Learning Analytics Database.</p>
+                    </div>
+
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">TOTAL BENCHMARK SCORE</div>
+                        <div id="result-score-big" style="font-size: 2.5rem; font-weight: 900; color: #38bdf8; line-height: 1.1;">92%</div>
+                        <div id="result-fraction" style="font-size: 0.85rem; color: #94a3b8;">(11 of 12 Correct)</div>
+                    </div>
+                </div>
+
+                <!-- 4 Section Scores Matrix -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                    <div style="background: #090d16; border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem;">
+                        <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">1. KANJI & VOCAB</div>
+                        <div id="score-vocab" style="font-size: 1.35rem; font-weight: 800; color: white; margin: 0.35rem 0;">3 / 3</div>
+                        <div style="font-size: 0.72rem; color: #10b981;">100% Accuracy</div>
+                    </div>
+                    <div style="background: #090d16; border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem;">
+                        <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">2. GRAMMAR & SYNTAX</div>
+                        <div id="score-grammar" style="font-size: 1.35rem; font-weight: 800; color: white; margin: 0.35rem 0;">4 / 4</div>
+                        <div style="font-size: 0.72rem; color: #10b981;">100% Accuracy</div>
+                    </div>
+                    <div style="background: #090d16; border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem;">
+                        <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">3. READING COMPREHENSION</div>
+                        <div id="score-reading" style="font-size: 1.35rem; font-weight: 800; color: white; margin: 0.35rem 0;">2 / 2</div>
+                        <div style="font-size: 0.72rem; color: #38bdf8;">100% Accuracy</div>
+                    </div>
+                    <div style="background: #090d16; border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem;">
+                        <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">4. LISTENING (CHŌKAI)</div>
+                        <div id="score-listening" style="font-size: 1.35rem; font-weight: 800; color: white; margin: 0.35rem 0;">2 / 3</div>
+                        <div style="font-size: 0.72rem; color: #f59e0b;">67% Accuracy</div>
+                    </div>
+                </div>
+
+                <!-- Answer Review Section -->
+                <div>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: white; margin-bottom: 1rem;">Detailed Solution & Explanations:</h3>
+                    <div id="detailed-review-container">
+                    </div>
+                </div>
+
+                <!-- Action Controls -->
+                <div style="display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                    <a href="index.html" style="background: #090d16; border: 1px solid #334155; padding: 0.75rem 1.5rem; border-radius: 12px; color: white; text-decoration: none; font-weight: 700; font-size: 0.9rem;">
+                        ← Return to Dashboard
+                    </a>
+                    <button onclick="retakeExam()" style="background: #6366f1; border: none; padding: 0.75rem 2rem; border-radius: 12px; color: white; font-weight: 800; font-size: 0.9rem; cursor: pointer;">
+                        🔄 Retake Examination
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/speech.js"></script>
+
+    <script>
+        // Official Standardized JLPT N5 Benchmark Paper (12 Questions Across 4 Sections)
+        const fullJlptN5Paper = [
+            // ==========================================
+            // SECTION 1: 文字・語彙 (Kanji & Vocabulary)
+            // ==========================================
+            {
+                section: "SECTION 1: 文字・語彙 (KANJI & VOCABULARY)",
+                category: "vocab",
+                prompt: "この「車」は 新しいです。",
+                sub: "Select the correct Hiragana reading for the Kanji in quotes.",
+                options: ["くるま (kuruma)", "でんしゃ (densha)", "じてんしゃ (jitensha)", "ひこうき (hikouki)"],
+                correct: 0,
+                explanation: "「車」 is read as 「くるま」 (kuruma), meaning car / automobile."
+            },
+            {
+                section: "SECTION 1: 文字・語彙 (KANJI & VOCABULARY)",
+                category: "vocab",
+                prompt: "きのう、冷たい「みず」を 飲みました。",
+                sub: "Select the correct Kanji for the word in quotes.",
+                options: ["火", "水", "木", "金"],
+                correct: 1,
+                explanation: "「みず」 (water) is written as Kanji 「水」."
+            },
+            {
+                section: "SECTION 1: 文字・語彙 (KANJI & VOCABULARY)",
+                category: "vocab",
+                prompt: "まいあさ ７時に（ ）。",
+                sub: "Choose the verb that best fits the morning routine.",
+                options: ["ねます (sleep)", "おきます (wake up)", "たべます (eat)", "よみます (read)"],
+                correct: 1,
+                explanation: "「７時におきます」 means 'I wake up at 7 o'clock'."
+            },
+
+            // ==========================================
+            // SECTION 2: 文法 (Grammar & Sentence Syntax)
+            // ==========================================
+            {
+                section: "SECTION 2: 文法 (GRAMMAR & PARTICLES)",
+                category: "grammar",
+                prompt: "わたしは まいあさ パン（ ）たべます。",
+                sub: "Select the correct particle for the direct object of the verb.",
+                options: ["を (o)", "が (ga)", "に (ni)", "で (de)"],
+                correct: 0,
+                explanation: "Particle 「を」 marks the direct object (パン) receiving the action of eating."
+            },
+            {
+                section: "SECTION 2: 文法 (GRAMMAR & PARTICLES)",
+                category: "grammar",
+                prompt: "あした 友達（ ）映画を 見に行きます。",
+                sub: "Select the particle meaning 'together with'.",
+                options: ["に (ni)", "で (de)", "と (to)", "へ (e)"],
+                correct: 2,
+                explanation: "Particle 「と」 expresses 'with' someone when taking an action together."
+            },
+            {
+                section: "SECTION 2: 文法 (GRAMMAR & PARTICLES)",
+                category: "grammar",
+                prompt: "ここで 写真を（ ）はいけません。",
+                sub: "Select the correct verb form for prohibition (〜てはいけません).",
+                options: ["とる", "とって", "とります", "とらない"],
+                correct: 1,
+                explanation: "Prohibition uses the verb て-form + はいけません: 「撮ってはいけません」 (You must not take photos)."
+            },
+            {
+                section: "SECTION 2: 文法 (GRAMMAR & PARTICLES)",
+                category: "grammar",
+                prompt: "テーブルの上に りんごが（ ）あります。",
+                sub: "Select the correct counter for 3 pieces of fruit.",
+                options: ["ひとつ (hitotsu)", "ふたつ (futatsu)", "みっつ (mittsu)", "よっつ (yottsu)"],
+                correct: 2,
+                explanation: "Three general round items/fruits is counted as 「みっつ」 (mittsu)."
+            },
+
+            // ==========================================
+            // SECTION 3: 読解 (Reading Comprehension)
+            // ==========================================
+            {
+                section: "SECTION 3: 読解 (READING COMPREHENSION)",
+                category: "reading",
+                passage: "【図書館の お知らせ】\n図書館の中で 食べ物を 食べないでください。\n飲み物は 水とお茶だけ 飲んでもいいです。\n本は 一人に ３冊まで ２週間 借りることができます。",
+                prompt: "図書館の ルールについて、正しいものは どれですか。",
+                sub: "Read the library announcement and select the correct statement.",
+                options: [
+                    "図書館の中で パンを食べてもいいです。",
+                    "図書館の中で 水を飲んでもいいです。",
+                    "本は 一人に ５冊まで 借りることができます。",
+                    "本は １か月 借りることができます。"
+                ],
+                correct: 1,
+                explanation: "The notice states: 「飲み物は 水とお茶だけ 飲んでもいいです」 (You may drink water and tea)."
+            },
+            {
+                section: "SECTION 3: 読解 (READING COMPREHENSION)",
+                category: "reading",
+                passage: "田中さんへ\n土曜日の パーティーの 時間は 午後６時からです。\n場所は 駅の 前の レストランです。\n６時までに 来てください。\n山田より",
+                prompt: "田中さんは 土曜日に 何時に どこへ 行きますか。",
+                sub: "Read Yamada's note and select the correct meeting details.",
+                options: [
+                    "午後６時までに 駅の前のレストランへ 行きます。",
+                    "午後６時半に 田中さんの家へ 行きます。",
+                    "午前６時に 駅の前のレストランへ 行きます。",
+                    "土曜日の朝に 図書館へ 行きます。"
+                ],
+                correct: 0,
+                explanation: "Party begins at 6 PM at the restaurant in front of the station (駅の前のレストラン)."
+            },
+
+            // ==========================================
+            // SECTION 4: 聴解 (Listening Comprehension - Chōkai)
+            // ==========================================
+            {
+                section: "SECTION 4: 聴解 (LISTENING COMPREHENSION)",
+                category: "listening",
+                dialogueText: "先生：皆さん、宿題は 明日の 朝 出してください。学生：はい、わかりました。",
+                prompt: "問題：学生は いつ 宿題を 出しますか。",
+                sub: "Click 'Play Dialogue Audio' above, then select when the student must submit homework.",
+                options: [
+                    "きょうの ゆうがた (Today evening)",
+                    "あしたの あさ (Tomorrow morning)",
+                    "あさって (Day Day after tomorrow)",
+                    "らいしゅう (Next week)"
+                ],
+                correct: 1,
+                explanation: "The teacher explicitly says: 「宿題は明日の朝出してください」 (Please submit homework tomorrow morning)."
+            },
+            {
+                section: "SECTION 4: 聴解 (LISTENING COMPREHENSION)",
+                category: "listening",
+                dialogueText: "男の人：すみません、コーヒーを ひとつ お願いします。店員：はい、ホットですか、アイスですか。男の人：ホットを お願いします。",
+                prompt: "問題：男の人は 何を 注文しましたか。",
+                sub: "Listen to the cafe order dialogue and choose what the man ordered.",
+                options: [
+                    "アイスコーヒー (Iced coffee)",
+                    "ホットコーヒー (Hot coffee)",
+                    "おちゃ (Green tea)",
+                    "ジュース (Juice)"
+                ],
+                correct: 1,
+                explanation: "The customer specifies: 「ホットをお願いします」 (Hot coffee, please)."
+            },
+            {
+                section: "SECTION 4: 聴解 (LISTENING COMPREHENSION)",
+                category: "listening",
+                dialogueText: "女の人：明日、何時に 会いましょうか。男の人：ええと、１０時は どうですか。女の人：１０時は ちょっと忙しいです。１１時に しましょう。男の人：いいですね。",
+                prompt: "問題：二人は 明日 何時に 会いますか。",
+                sub: "Listen to the meeting arrangement dialogue and select the agreed meeting time.",
+                options: [
+                    "９時 (9:00)",
+                    "１０時 (10:00)",
+                    "１１時 (11:00)",
+                    "１２時 (12:00)"
+                ],
+                correct: 2,
+                explanation: "The woman rejects 10:00 and proposes 11:00: 「１１時にしましょう」, which the man agrees to."
+            }
+        ];
+
+        let activeQuestionIndex = 0;
+        let userResponses = new Array(fullJlptN5Paper.length).fill(null);
+        let timeRemainingSeconds = 20 * 60; // 20 Minutes
+        let timerInterval = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('kotolab_username') || "Shoyo";
+            if (document.getElementById('sidebar-user-name')) document.getElementById('sidebar-user-name').innerText = username;
+            if (document.getElementById('sidebar-user-initial')) document.getElementById('sidebar-user-initial').innerText = username.charAt(0).toUpperCase();
+            if (document.getElementById('userInitialDisplay')) document.getElementById('userInitialDisplay').innerText = username.charAt(0).toUpperCase();
+        });
+
+        function startOfficialExam() {
+            document.getElementById('exam-lobby-view').style.display = 'none';
+            document.getElementById('exam-results-view').style.display = 'none';
+            document.getElementById('exam-live-view').style.display = 'block';
+
+            activeQuestionIndex = 0;
+            userResponses = new Array(fullJlptN5Paper.length).fill(null);
+            timeRemainingSeconds = 20 * 60;
+
+            renderPaletteGrid();
+            renderQuestion(0);
+            startCountdownClock();
+            playAudioChime(600);
+        }
+
+        function startCountdownClock() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeRemainingSeconds--;
+                const mins = Math.floor(timeRemainingSeconds / 60);
+                const secs = timeRemainingSeconds % 60;
+                document.getElementById('exam-timer').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+                if (timeRemainingSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    calculateAndDisplayResults();
+                }
+            }, 1000);
+        }
+
+        function renderPaletteGrid() {
+            const container = document.getElementById('palette-grid-container');
+            container.innerHTML = fullJlptN5Paper.map((_, idx) => `
+                <button class="palette-num-btn" id="pal-btn-${idx}" onclick="jumpToQuestion(${idx})">${idx + 1}</button>
+            `).join('');
+            updatePaletteStatus();
+        }
+
+        function updatePaletteStatus() {
+            let answeredCount = 0;
+            fullJlptN5Paper.forEach((_, idx) => {
+                const btn = document.getElementById(`pal-btn-${idx}`);
+                if (!btn) return;
+
+                btn.className = 'palette-num-btn';
+                if (userResponses[idx] !== null) {
+                    btn.classList.add('answered');
+                    answeredCount++;
+                }
+                if (idx === activeQuestionIndex) {
+                    btn.classList.add('active');
+                }
+            });
+
+            document.getElementById('answered-counter').innerText = `${answeredCount} / ${fullJlptN5Paper.length} Answered`;
+        }
+
+        function renderQuestion(index) {
+            activeQuestionIndex = index;
+            const q = fullJlptN5Paper[index];
+
+            document.getElementById('active-section-badge').innerText = q.section;
+            document.getElementById('q-index-label').innerText = `Question ${index + 1} of ${fullJlptN5Paper.length}`;
+            document.getElementById('q-prompt-text').innerText = q.prompt;
+            document.getElementById('q-sub-text').innerText = q.sub;
+
+            // Reading Passage Container
+            const passageBox = document.getElementById('q-passage-container');
+            if (q.passage) {
+                passageBox.innerText = q.passage;
+                passageBox.style.display = 'block';
+            } else {
+                passageBox.style.display = 'none';
+            }
+
+            // Listening Audio Box
+            const listeningBox = document.getElementById('q-listening-container');
+            if (q.category === 'listening') {
+                listeningBox.style.display = 'flex';
+                document.getElementById('q-listening-script').innerText = "🔊 Click 'Play Dialogue Audio' to listen to the dialogue in Japanese.";
+            } else {
+                listeningBox.style.display = 'none';
+            }
+
+            // Options rendering
+            const optionsContainer = document.getElementById('q-options-container');
+            optionsContainer.innerHTML = q.options.map((opt, optIdx) => `
+                <div class="option-tile ${userResponses[index] === optIdx ? 'selected' : ''}" onclick="selectAnswer(${optIdx})">
+                    <div class="option-index-badge">${String.fromCharCode(65 + optIdx)}</div>
+                    <div>${opt}</div>
+                </div>
+            `).join('');
+
+            // Button controls
+            document.getElementById('btn-prev-q').style.visibility = index === 0 ? 'hidden' : 'visible';
+            document.getElementById('btn-next-q').innerText = index === fullJlptN5Paper.length - 1 ? 'Review All →' : 'Next Question →';
+
+            updatePaletteStatus();
+        }
+
+        function selectAnswer(optionIndex) {
+            userResponses[activeQuestionIndex] = optionIndex;
+            renderQuestion(activeQuestionIndex);
+            playAudioChime(700);
+        }
+
+        function navigateQuestion(direction) {
+            const nextIdx = activeQuestionIndex + direction;
+            if (nextIdx >= 0 && nextIdx < fullJlptN5Paper.length) {
+                renderQuestion(nextIdx);
+            } else if (nextIdx >= fullJlptN5Paper.length) {
+                promptSubmitExam();
+            }
+        }
+
+        function jumpToQuestion(idx) {
+            renderQuestion(idx);
+        }
+
+        function playListeningDialogue() {
+            const q = fullJlptN5Paper[activeQuestionIndex];
+            if (q && q.dialogueText) {
+                playAudioSpeech(q.dialogueText, 0.85);
+                document.getElementById('q-listening-script').innerText = `Playing dialogue: "${q.dialogueText}"`;
+            }
+        }
+
+        function playCurrentPromptSpeech() {
+            const q = fullJlptN5Paper[activeQuestionIndex];
+            const textToSpeak = q.prompt.replace(/[「」【】]/g, '');
+            playAudioSpeech(textToSpeak, 0.85);
+        }
+
+        function playAudioSpeech(text, rate = 0.85) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.lang = 'ja-JP';
+                utter.rate = rate;
+                window.speechSynthesis.speak(utter);
+            }
+        }
+
+        function promptSubmitExam() {
+            const unanswered = userResponses.filter(r => r === null).length;
+            let confirmMsg = "Are you ready to submit your exam?";
+            if (unanswered > 0) {
+                confirmMsg = `You have ${unanswered} unanswered question(s). Are you sure you want to submit now?`;
+            }
+
+            if (confirm(confirmMsg)) {
+                if (timerInterval) clearInterval(timerInterval);
+                calculateAndDisplayResults();
+            }
+        }
+
+        function calculateAndDisplayResults() {
+            document.getElementById('exam-live-view').style.display = 'none';
+            document.getElementById('exam-results-view').style.display = 'block';
+
+            let totalCorrect = 0;
+            let vocabCorrect = 0, vocabTotal = 3;
+            let grammarCorrect = 0, grammarTotal = 4;
+            let readingCorrect = 0, readingTotal = 2;
+            let listeningCorrect = 0, listeningTotal = 3;
+
+            fullJlptN5Paper.forEach((q, idx) => {
+                const isCorrect = userResponses[idx] === q.correct;
+                if (isCorrect) {
+                    totalCorrect++;
+                    if (q.category === 'vocab') vocabCorrect++;
+                    if (q.category === 'grammar') grammarCorrect++;
+                    if (q.category === 'reading') readingCorrect++;
+                    if (q.category === 'listening') listeningCorrect++;
+                }
+            });
+
+            const scorePercent = Math.round((totalCorrect / fullJlptN5Paper.length) * 100);
+            const isPassed = scorePercent >= 60;
+
+            document.getElementById('result-score-big').innerText = `${scorePercent}%`;
+            document.getElementById('result-fraction').innerText = `(${totalCorrect} of ${fullJlptN5Paper.length} Correct)`;
+            
+            const statusBadge = document.getElementById('result-status-badge');
+            if (isPassed) {
+                statusBadge.innerText = "PASSED • 合格 🎉";
+                statusBadge.style.background = "#064e3b";
+                statusBadge.style.color = "#34d399";
+                statusBadge.style.borderColor = "#10b981";
+                playFanfareSound();
+            } else {
+                statusBadge.innerText = "NEEDS REVISION • 不合格";
+                statusBadge.style.background = "#450a0a";
+                statusBadge.style.color = "#f87171";
+                statusBadge.style.borderColor = "#ef4444";
+            }
+
+            document.getElementById('score-vocab').innerText = `${vocabCorrect} / ${vocabTotal}`;
+            document.getElementById('score-grammar').innerText = `${grammarCorrect} / ${grammarTotal}`;
+            document.getElementById('score-reading').innerText = `${readingCorrect} / ${readingTotal}`;
+            document.getElementById('score-listening').innerText = `${listeningCorrect} / ${listeningTotal}`;
+
+            const reviewContainer = document.getElementById('detailed-review-container');
+            reviewContainer.innerHTML = fullJlptN5Paper.map((q, idx) => {
+                const userAns = userResponses[idx];
+                const isCorrect = userAns === q.correct;
+                return `
+                    <div class="review-item" style="border-left: 4px solid ${isCorrect ? '#10b981' : '#ef4444'};">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 800;">
+                            <span style="color: var(--accent-blue);">Q${idx + 1}. ${q.section}</span>
+                            <span style="color: ${isCorrect ? '#10b981' : '#ef4444'};">${isCorrect ? '✔ Correct (+8.3 pts)' : '✖ Incorrect'}</span>
+                        </div>
+                        <div style="font-weight: 800; color: white; font-size: 0.95rem;">${q.prompt}</div>
+                        ${q.dialogueText ? `<div style="font-size: 0.8rem; color: #38bdf8; font-style: italic;">🎧 Dialogue: "${q.dialogueText}"</div>` : ''}
+                        <div style="font-size: 0.82rem; color: #cbd5e1;">
+                            Your Choice: <strong style="color: ${isCorrect ? '#10b981' : '#ef4444'};">${userAns !== null ? q.options[userAns] : 'Not Answered'}</strong> | 
+                            Correct: <strong style="color: #10b981;">${q.options[q.correct]}</strong>
+                        </div>
+                        <div style="background: #151e33; padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.78rem; color: #94a3b8; line-height: 1.4;">
+                            💡 <strong>Explanation:</strong> ${q.explanation}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            if(typeof submitUserScore === 'function') {
+                submitUserScore(totalCorrect, fullJlptN5Paper.length);
+            }
+        }
+
+        function retakeExam() { startOfficialExam(); }
+
+        function playAudioChime(freq) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.12);
+            } catch(e) {}
+        }
+
+        function playFanfareSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, ctx.currentTime + (i * 0.08));
+                    gain.gain.setValueAtTime(0.12, ctx.currentTime + (i * 0.08));
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + (i * 0.08));
+                    osc.stop(ctx.currentTime + (i * 0.08) + 0.25);
+                });
+            } catch(e) {}
+        }
+
+        function openNotifications() { alert("🔔 No unread notifications."); }
+        function goToSettings() { window.location.href = 'settings.html'; }
+    </script>
+</body>
+</html>

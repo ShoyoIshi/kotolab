@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KotoLab - Account Settings</title>
+
+    <!-- Auth Guard -->
+    <script>
+        const token = localStorage.getItem('kotolab_token');
+        if (!token) window.location.href = 'login.html';
+    </script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #151e33;
+            --border-color: #263552;
+            --accent-indigo: #6366f1;
+            --accent-blue: #38bdf8;
+            --accent-green: #10b981;
+            --accent-orange: #f97316;
+            --accent-red: #ef4444;
+            --accent-gold: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #8fa0bd;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Canonical Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #090d16;
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding-left: 0.5rem;
+        }
+
+        .brand-icon-box {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #38bdf8, #6366f1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.65rem 0.85rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .nav-link.active {
+            color: white;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            box-shadow: 0 6px 16px -2px rgba(99, 102, 241, 0.45);
+        }
+
+        .user-profile-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 0.85rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            margin-bottom: 0.65rem;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #6366f1;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .user-name { font-weight: 700; font-size: 0.85rem; color: white; }
+        .user-level { font-size: 0.7rem; color: var(--text-muted); }
+
+        .user-stats-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Main Workspace */
+        .main-wrapper {
+            margin-left: 260px;
+            flex: 1;
+            padding: 2rem 2.5rem;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .settings-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-input {
+            width: 100%;
+            background: #090d16;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: #6366f1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Canonical Sidebar Navigation -->
+    <aside class="sidebar">
+        <div>
+            <div class="brand">
+                <div class="brand-icon-box">⛩️</div>
+                <div>
+                    <div style="font-weight: 800; font-size: 1.25rem; color: white;">KotoLab</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600;">JLPT N5 Learning</div>
+                </div>
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
+                <li><a href="sandbox.html" class="nav-link">🧩 Sandbox</a></li>
+                <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
+                <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
+                <li><a href="exam.html" class="nav-link">📝 Exams</a></li>
+                <li><a href="analytics.html" class="nav-link">📈 Analytics</a></li>
+                <li><a href="settings.html" class="nav-link active">⚙️ Settings</a></li>
+                <li id="admin-nav-item" style="display: none;">
+                    <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            <!-- User Profile Card -->
+            <div class="user-profile-card">
+                <div class="user-info">
+                    <div class="user-avatar" id="sidebar-user-initial">S</div>
+                    <div>
+                        <div class="user-name" id="sidebar-user-name">Shoyo</div>
+                        <div class="user-level" id="user-display-level">Level 1 Learner</div>
+                    </div>
+                </div>
+                <div class="user-stats-row">
+                    <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
+                    <span style="color: var(--accent-indigo); font-weight: 800;" id="user-display-role">STUDENT</span>
+                </div>
+            </div>
+
+            <button onclick="handleLogout()" style="width: 100%; margin-top: 0.85rem; padding: 0.65rem; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); border-radius: 10px; color: var(--accent-red); font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: background 0.2s;">
+                🚪 Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-wrapper">
+        <header class="top-header">
+            <div class="header-title">
+                <h1 style="font-size: 1.6rem; font-weight: 800; color: white; margin: 0;">Account Settings ⚙️</h1>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Manage your profile information, password, and learning preferences.</p>
+            </div>
+
+            <!-- Top Bar Badges -->
+            <div class="top-bar-badges" style="display: flex; align-items: center; gap: 0.75rem;">
+                <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">
+                    ⚡ <span id="xpCountDisplay">0</span> XP
+                </div>
+                <div class="badge-item" onclick="openNotifications()" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24;">
+                    🔔
+                </div>
+                <div class="badge-item" onclick="goToSettings()" style="cursor: pointer; background: #6366f1; border: 1px solid #818cf8; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;">
+                    <span id="userInitialDisplay">S</span>
+                </div>
+            </div>
+        </header>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+            
+            <!-- Profile Information Card -->
+            <div class="settings-card">
+                <h3 style="font-size: 1.1rem; color: white; margin-bottom: 1.25rem;">👤 Profile Information</h3>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" id="setting-username" class="form-input" placeholder="e.g. Shoyo" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" id="setting-email" class="form-input" placeholder="user@example.com">
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="background: #6366f1; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; color: white; font-weight: 700; cursor: pointer;">Save Profile Changes</button>
+                    <div id="profile-msg" style="margin-top: 0.75rem; font-size: 0.85rem;"></div>
+                </form>
+            </div>
+
+            <!-- Security / Password Card -->
+            <div class="settings-card">
+                <h3 style="font-size: 1.1rem; color: white; margin-bottom: 1.25rem;">🔒 Security & Password</h3>
+                <form id="password-form">
+                    <div class="form-group">
+                        <label class="form-label">Current Password</label>
+                        <input type="password" id="setting-current-pass" class="form-input" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label class="form-label">New Password</label>
+                        <input type="password" id="setting-new-pass" class="form-input" placeholder="••••••••" required minlength="6">
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="background: #f97316; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; color: white; font-weight: 700; cursor: pointer;">Update Password</button>
+                    <div id="password-msg" style="margin-top: 0.75rem; font-size: 0.85rem;"></div>
+                </form>
+            </div>
+
+            <!-- Learning Preferences -->
+            <div class="settings-card" style="grid-column: 1 / -1;">
+                <h3 style="font-size: 1.1rem; color: white; margin-bottom: 1.25rem;">🎯 Learning Preferences</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+                    <div>
+                        <label class="form-label">Daily Study Goal</label>
+                        <select class="form-input">
+                            <option>10 Minutes / Day</option>
+                            <option selected>20 Minutes / Day (Recommended)</option>
+                            <option>45 Minutes / Day</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Audio Pronunciation Voice</label>
+                        <select class="form-input">
+                            <option selected>Native Japanese Female (Kyoko)</option>
+                            <option>Native Japanese Male (Otoya)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Furigana Reading Aids</label>
+                        <select class="form-input">
+                            <option selected>Always Show Romaji + Kana</option>
+                            <option>Kana Only</option>
+                            <option>Hide Reading Aids (Kanji Only)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="js/speech.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- Functions & API Handlers (Preserved Exact Logic) -->
+    <script>
+        function handleLogout() {
+            localStorage.removeItem('kotolab_token');
+            localStorage.removeItem('kotolab_user');
+            window.location.href = 'login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cachedUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
+            const username = cachedUser.username || localStorage.getItem('kotolab_username') || 'Shoyo';
+
+            if (document.getElementById('setting-username')) {
+                document.getElementById('setting-username').value = username;
+            }
+            if (document.getElementById('setting-email') && cachedUser.email) {
+                document.getElementById('setting-email').value = cachedUser.email;
+            }
+            if (document.getElementById('sidebar-user-name')) {
+                document.getElementById('sidebar-user-name').innerText = username;
+            }
+            if (document.getElementById('user-display-name')) {
+                document.getElementById('user-display-name').innerText = username;
+            }
+            if (document.getElementById('sidebar-user-initial')) {
+                document.getElementById('sidebar-user-initial').innerText = username.charAt(0).toUpperCase();
+            }
+            if (document.getElementById('userInitialDisplay')) {
+                document.getElementById('userInitialDisplay').innerText = username.charAt(0).toUpperCase();
+            }
+            if (cachedUser.role === 'admin') {
+                const adminNav = document.getElementById('admin-nav-item');
+                if (adminNav) adminNav.style.display = 'block';
+                if (document.getElementById('user-display-role')) document.getElementById('user-display-role').innerText = 'ADMIN';
+            }
+        });
+
+        // Submit Profile Changes
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
+            const msgEl = document.getElementById('profile-msg');
+            const newUsername = document.getElementById('setting-username').value;
+            
+            try {
+                const res = await fetch('/api/auth/profile', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: user.id || 1,
+                        username: newUsername,
+                        email: document.getElementById('setting-email').value
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    msgEl.style.color = 'var(--accent-green)';
+                    msgEl.innerText = '✨ ' + data.message;
+                    localStorage.setItem('kotolab_user', JSON.stringify(data.user));
+                    localStorage.setItem('kotolab_username', newUsername);
+                    if (document.getElementById('user-display-name')) document.getElementById('user-display-name').innerText = newUsername;
+                    if (document.getElementById('sidebar-user-name')) document.getElementById('sidebar-user-name').innerText = newUsername;
+                    if (typeof loadUserProfile === 'function') loadUserProfile();
+                } else {
+                    msgEl.style.color = 'var(--accent-red)';
+                    msgEl.innerText = '⚠️ ' + data.error;
+                }
+            } catch (err) {
+                msgEl.style.color = 'var(--accent-red)';
+                msgEl.innerText = 'Server connection error.';
+            }
+        });
+
+        // Submit Password Changes
+        document.getElementById('password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
+            const msgEl = document.getElementById('password-msg');
+
+            try {
+                const res = await fetch('/api/auth/password', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: user.id || 1,
+                        currentPassword: document.getElementById('setting-current-pass').value,
+                        newPassword: document.getElementById('setting-new-pass').value
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    msgEl.style.color = 'var(--accent-green)';
+                    msgEl.innerText = '✨ ' + data.message;
+                    document.getElementById('password-form').reset();
+                } else {
+                    msgEl.style.color = 'var(--accent-red)';
+                    msgEl.innerText = '⚠️ ' + data.error;
+                }
+            } catch (err) {
+                msgEl.style.color = 'var(--accent-red)';
+                msgEl.innerText = 'Server connection error.';
+            }
+        });
+
+        function openNotifications() { alert("🔔 No unread notifications."); }
+        function goToSettings() { window.location.href = 'settings.html'; }
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+// Render cards cleanly
+items.forEach((item, index) => {
+    // 1. Look for the Japanese character across all common JSON key names
+    const charSymbol = item.symbol || item.character || item.kanji || item.kana || 
+                       item.char || item.japanese || item.hiragana || item.katakana || 
+                       item.text || item.value || '?';
+
+    // 2. Look for the Romaji reading across all common JSON key names
+    const charReading = item.romaji || item.reading || item.meaning || 
+                        item.kunyomi || item.onyomi || item.english || '';
+
+    const statusId = `status-${category}-${index}`;
+
+    const card = document.createElement("div");
+    card.className = "stat-card";
+    card.style.flexDirection = "column";
+    card.style.alignItems = "center";
+    card.style.textAlign = "center";
+    card.style.padding = "1.5rem";
+
+    card.innerHTML = `
+        <div style="font-size: 3.2rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 0.25rem;">
+            ${charSymbol}
+        </div>
+        <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem;">
+            ${charReading}
+        </div>
+        <div id="${statusId}" style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem; min-height: 20px;">
+            Practice pronunciation
+        </div>
+        <div style="display: flex; gap: 0.5rem; width: 100%;">
+            <button class="tile" style="flex: 1; padding: 0.5rem;" onclick="speakJapanese('${charSymbol}')">
+                🔊 Listen
+            </button>
+            <button class="btn-primary" style="flex: 1; padding: 0.5rem; font-size: 0.85rem;" onclick="startVoiceRecognition('${charSymbol}', '${statusId}')">
+                🎤 Speak
+            </button>
+        </div>
+    `;
+    container.appendChild(card);
+});
