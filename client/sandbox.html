@@ -64,6 +64,57 @@
         .ai-chat-input { flex: 1; background: #090d16; border: 1px solid #334155; border-radius: 10px; padding: 0.55rem 0.85rem; color: white; font-size: 0.82rem; outline: none; }
         .ai-chat-input:focus { border-color: var(--accent-indigo); }
     </style>
+    <style>
+    /* 📱 Native Mobile Bottom Bar & Layout Fix */
+    .mobile-bottom-nav {
+        display: none;
+    }
+
+    @media (max-width: 1100px) { 
+        body { 
+            flex-direction: column !important; 
+            padding-bottom: 75px !important; /* Content ko bottom bar ke niche chupne se bachane ke liye */
+        } 
+        .sidebar { 
+            display: none !important; /* Mobile par desktop sidebar gayab */
+        } 
+        .main-wrapper { 
+            margin-left: 0 !important; 
+            padding: 1.25rem 1rem !important; 
+            width: 100% !important;
+        } 
+        .mobile-bottom-nav {
+            display: flex;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            background: #090d16;
+            border-top: 1px solid var(--border-color);
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.65rem;
+            font-weight: 600;
+            gap: 2px;
+        }
+        .mobile-nav-item.active {
+            color: var(--accent-blue);
+        }
+        .mobile-nav-icon {
+            font-size: 1.25rem;
+        }
+    }
+</style>
 </head>
 <body>
 

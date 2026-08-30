@@ -292,11 +292,24 @@ function renderCurrentQuestion() {
                     `).join('')
                 }
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <button class="tile-btn" style="background: rgba(239,68,68,0.15); border-color: var(--accent-red); color: var(--accent-red); font-size: 0.75rem; padding: 0.3rem 0.75rem;" onclick="clearTiles()">🗑️ Clear</button>
-                <button class="tile-btn" style="background: var(--accent-green); border: none; color: white; font-size: 0.8rem; font-weight: 700; padding: 0.35rem 1rem;" onclick="verifySentence('${q.targetSentence}')">✓ Check Sentence</button>
+            
+            <!-- Clean Clutter-Free Action Bar -->
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
+                <button class="tile-btn" style="background: var(--accent-green); border: none; color: white; font-size: 0.95rem; font-weight: 800; padding: 0.85rem; width: 100%; border-radius: 12px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);" onclick="verifySentence('${q.targetSentence}')">
+                    ✓ Check My Sentence
+                </button>
+                <div style="display: flex; justify-content: space-between; align-items: center; background: #111827; padding: 0.5rem 0.75rem; border-radius: 10px; border: 1px solid var(--border-color);">
+                    <div style="display: flex; gap: 0.75rem;">
+                        <span style="font-size: 0.75rem; color: var(--accent-blue); cursor: pointer; font-weight: 600;" onclick="playAudioPromptText('${q.targetSentence}')">🔊 Listen</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); cursor: pointer; font-weight: 600;" onclick="showHint()">💡 Hint</span>
+                    </div>
+                    <button style="background: rgba(239,68,68,0.15); border: 1px solid var(--accent-red); color: var(--accent-red); font-size: 0.72rem; padding: 0.25rem 0.6rem; border-radius: 6px; cursor: pointer;" onclick="clearTiles()">
+                        🗑️ Clear
+                    </button>
+                </div>
             </div>
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;">
                 ${fullTiles.map(t => `
                     <button class="tile-btn" onclick="addTile('${t}')">${t}</button>
                 `).join('')}
