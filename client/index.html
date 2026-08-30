@@ -16,15 +16,6 @@
         if (!localStorage.getItem('kotolab_token')) { 
             window.location.replace('login.html'); 
         }
-        
-        // 🔥 KILL ROGUE SERVICE WORKER CACHE 🔥
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                for(let registration of registrations) {
-                    registration.unregister();
-                }
-            });
-        }
     </script>
 
     <link rel="stylesheet" href="css/style.css?v=5.0">
@@ -52,7 +43,24 @@
         .user-stats-row { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05); }
 
         .main-wrapper { margin-left: 260px; flex: 1; padding: 2rem 2.5rem; overflow-y: auto; min-height: 100vh; }
-        @media (max-width: 1100px) { .sidebar { width: 100%; height: auto; position: relative; } .main-wrapper { margin-left: 0; } }
+
+        /* Mobile Responsive Fix */
+        @media (max-width: 1100px) { 
+            body { 
+                flex-direction: column; 
+            } 
+            .sidebar { 
+                width: 100%; 
+                height: auto; 
+                position: relative; 
+                padding: 1rem;
+            } 
+            .main-wrapper { 
+                margin-left: 0; 
+                padding: 1.5rem 1rem; 
+                width: 100%;
+            } 
+        }
     </style>
 </head>
 <body>
