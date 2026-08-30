@@ -5,8 +5,8 @@ const db = require('../config/db');
 // GET /api/admin/students (and alias /users) - Fetch all registered accounts and aggregated metrics
 router.get(['/students', '/users'], async (req, res) => {
     try {
-        // Subqueries prevent Cartesian product multiplication between progress and attempts tables
-        const [rows] = await db.query(`
+        // PostgreSQL compatible query using .rows instead of array destructuring
+        const result = await db.query(`
             SELECT 
                 u.id, 
                 u.username, 
@@ -22,7 +22,6 @@ router.get(['/students', '/users'], async (req, res) => {
             LEFT JOIN (
                 SELECT user_id, COUNT(id) AS lessons_completed
                 FROM user_progress
-                WHERE completed = 1 OR completed IS NULL
                 GROUP BY user_id
             ) up_stats ON u.id = up_stats.user_id
             LEFT JOIN (
@@ -35,6 +34,8 @@ router.get(['/students', '/users'], async (req, res) => {
             ) pa_stats ON u.id = pa_stats.user_id
             ORDER BY u.id DESC
         `);
+
+        const rows = result.rows || [];
 
         // Compute aggregate metrics for top dashboard cards
         const studentCount = rows.filter(r => r.role !== 'admin').length;
@@ -63,9 +64,10 @@ router.post(['/reset-stats', '/reset-user'], async (req, res) => {
     }
 
     try {
-        await db.query('DELETE FROM practice_attempts WHERE user_id = ?', [userId]);
-        await db.query('DELETE FROM user_progress WHERE user_id = ?', [userId]);
-        await db.query('UPDATE users SET streak_count = 0 WHERE id = ?', [userId]);
+        // PostgreSQL placeholders use $1 instead of ?
+        await db.query('DELETE FROM practice_attempts WHERE user_id = $1', [userId]);
+        await db.query('DELETE FROM user_progress WHERE user_id = $1', [userId]);
+        await db.query('UPDATE users SET streak_count = 0 WHERE id = $1', [userId]);
 
         return res.json({ message: `Progress and streak reset successfully for User ID #${userId}` });
     } catch (err) {

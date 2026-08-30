@@ -303,30 +303,29 @@ app.get('/api/user/progress', async (req, res) => {
 // Endpoint: Update User Progress after Practice (PostgreSQL Version)
 app.post('/api/user/update-progress', async (req, res) => {
     try {
-        const userId = req.body.userId || 3;
+        const userId = req.body.userId;
         const { correctIncrement, studyMinutesIncrement, lessonCompleted } = req.body;
 
-        if (userId == 999) return res.json({ success: true });
+        if (!userId || userId == 999) return res.json({ success: true });
 
+        // 1. Check karo ki user_progress table mein is user ki entry hai ya nahi
         const existing = await db.query('SELECT * FROM user_progress WHERE user_id = $1', [userId]);
         
         if (existing.rows.length === 0) {
-            const userCheck = await db.query('SELECT id FROM users WHERE id = $1', [userId]);
-            if (userCheck.rows.length > 0) {
-                await db.query(
-                    `INSERT INTO user_progress (user_id, total_correct, study_time_minutes, lessons_completed, grammar_mastery, overall_accuracy) 
-                     VALUES ($1, $2, $3, $4, 10, 10)`,
-                    [userId, correctIncrement || 0, studyMinutesIncrement || 1, lessonCompleted ? 1 : 0]
-                );
-            }
+            // Agar entry nahi hai, toh naye user ke liye pehli row insert karo
+            await db.query(
+                `INSERT INTO user_progress (user_id, total_correct, study_time_minutes, lessons_completed, hiragana_mastery, katakana_mastery, kanji_mastery, vocabulary_mastery, grammar_mastery, overall_accuracy) 
+                 VALUES ($1, $2, $3, $4, 0, 0, 0, 0, 10, 10)`,
+                [userId, correctIncrement || 0, studyMinutesIncrement || 1, lessonCompleted ? 1 : 0]
+            );
         } else {
+            // Agar pehle se hai, toh usko update karo
             await db.query(
                 `UPDATE user_progress 
                  SET total_correct = total_correct + $1, 
                      study_time_minutes = study_time_minutes + $2,
                      lessons_completed = lessons_completed + $3,
-                     grammar_mastery = LEAST(100, grammar_mastery + 0.25),
-                     overall_accuracy = LEAST(100, (hiragana_mastery + katakana_mastery + kanji_mastery + vocabulary_mastery + grammar_mastery + 10) / 5)
+                     overall_accuracy = LEAST(100, (total_correct + $1) * 2)
                  WHERE user_id = $4`,
                 [correctIncrement || 0, studyMinutesIncrement || 0, lessonCompleted ? 1 : 0, userId]
             );
