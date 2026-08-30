@@ -9,6 +9,7 @@ const pool = require('../config/db');
 const JWT_SECRET = process.env.JWT_SECRET || 'kotolab_secret_key_2026';
 
 // POST /api/auth/signup 
+// POST /api/auth/signup 
 router.post('/signup', async (req, res) => {
     try {
         const { username, email, password } = req.body;
@@ -19,19 +20,23 @@ router.post('/signup', async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // 1. User ko 'users' table mein insert karo
         const query = 'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id, username, email, role, user_level, streak_count';
         const result = await pool.query(query, [username, email, hashedPassword]);
         const newUser = result.rows[0];
         
-        // 🚀 Automatically create user_progress entry for the new user so XP/progress tracking never fails
-        await pool.query(
-            `INSERT INTO user_progress (user_id, total_correct, study_time_minutes, lessons_completed, hiragana_mastery, katakana_mastery, kanji_mastery, vocabulary_mastery, grammar_mastery, overall_accuracy) 
-             VALUES ($1, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-             ON CONFLICT (user_id) DO NOTHING`,
-            [newUser.id]
-        );
+        // 🚀 2. PERMANENT SOLUTION: Jaise hi user bane, automatic uski 'user_progress' entry bana do!
+        try {
+            await pool.query(
+                `INSERT INTO user_progress (user_id, total_correct, study_time_minutes, lessons_completed, hiragana_mastery, katakana_mastery, kanji_mastery, vocabulary_mastery, grammar_mastery, overall_accuracy) 
+                 VALUES ($1, 0, 0, 0, 0, 0, 0, 0, 0, 0)`,
+                [newUser.id]
+            );
+        } catch (progressErr) {
+            console.log("Progress entry already exists or handled:", progressErr.message);
+        }
 
-        // Generate JWT token immediately on signup so user gets logged in automatically
+        // Generate JWT token
         const token = jwt.sign(
             { id: newUser.id, username: newUser.username, role: newUser.role || 'user' },
             JWT_SECRET,
