@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0b0f19">
+    <link rel="manifest" href="manifest.json"> 
     <title>KotoLab — Comprehensive Analytics Hub</title>
     <script>if(!localStorage.getItem('kotolab_token')) window.location.href = 'login.html';</script>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss-cdn@3.4.10/tailwindcss-3.4.10.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --accent-red: #ef4444; --text-main: #f8fafc; --text-muted: #8fa0bd; }
@@ -16,8 +19,9 @@
         .brand-icon-box { width: 40px; height: 40px; background: linear-gradient(135deg, #38bdf8, #6366f1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
         .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
         .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; border-radius: 10px; transition: all 0.2s ease; }
-        .nav-link:hover { color: white; background: rgba(255, 255, 255, 0.04); }
+        .nav-link:hover:not(.locked) { color: white; background: rgba(255, 255, 255, 0.04); }
         .nav-link.active { color: white; background: linear-gradient(135deg, #6366f1, #7c3aed); box-shadow: 0 6px 16px -2px rgba(99, 102, 241, 0.45); }
+        .nav-link.locked { opacity: 0.5; cursor: not-allowed; }
         .user-profile-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 0.85rem; }
         .user-info { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.65rem; }
         .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: #6366f1; color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; }
@@ -25,30 +29,16 @@
         .user-level { font-size: 0.7rem; color: var(--text-muted); }
         .user-stats-row { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05); }
         .main-wrapper { margin-left: 260px; flex: 1; padding: 2rem 2.5rem; overflow-y: auto; min-height: 100vh; }
-        .tab-switcher { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
-        .tab-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.5rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
-        .tab-btn.active { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border-color: #818cf8; box-shadow: 0 4px 12px rgba(99,102,241,0.3); }
-        .tab-content { display: none; }
-        .tab-content.active { display: block !important; }
         .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-bottom: 1.75rem; }
         .kpi-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem; box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
         .analytics-grid { display: grid; grid-template-columns: 2fr 1.2fr; gap: 1.5rem; margin-bottom: 1.75rem; }
         @media (max-width: 1100px) { .analytics-grid { grid-template-columns: 1fr; } }
-        .card-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 1.25rem; box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
-        .dash-grid-top { display: grid; grid-template-columns: 2fr 1.2fr 1.4fr; gap: 1.25rem; margin-bottom: 1.25rem; }
-        .dash-grid-mid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
-        .dash-grid-bot { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
-        @media (max-width: 1200px) { .dash-grid-top, .dash-grid-mid, .dash-grid-bot { grid-template-columns: 1fr; } }
-        .heatmap-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 0.5rem; }
-        .heatmap-cell { height: 16px; background: #1e293b; border-radius: 3px; }
-        .heatmap-cell.lvl-1 { background: #312e81; } .heatmap-cell.lvl-2 { background: #4338ca; } .heatmap-cell.lvl-3 { background: #6366f1; }
+        .chart-box, .card-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 1.25rem; box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
         .recommendation-card { background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(15, 23, 42, 0.8)); border: 1px solid var(--accent-indigo); border-radius: 16px; padding: 1.25rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar Navigation -->
-    <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div>
             <div class="brand">
@@ -63,16 +53,15 @@
                 <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
                 <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
                 <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
-                <li><a href="sandbox.html" id="nav-sandbox" class="nav-link locked" title="Unlocks at 600 XP">🔒 Sandbox</a></li>
-                <li><a href="exam.html" id="nav-exam" class="nav-link locked" title="Unlocks at 2000 XP">🔒 Exams</a></li>
-                <li><a href="analytics.html" id="nav-analytics" class="nav-link active">📈 Analytics</a></li>
+                <li><a href="#" id="link-sandbox" class="nav-link locked" title="Locked">🔒 Sandbox</a></li>
+                <li><a href="#" id="link-exam" class="nav-link locked" title="Locked">🔒 Exams</a></li>
+                <li><a href="analytics.html" class="nav-link active">📈 Analytics</a></li>
                 <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
                 <li id="admin-nav-item" style="display: none;">
                     <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
                 </li>
             </ul>
         </div>
-
         <div>
             <div class="user-profile-card">
                 <div class="user-info">
@@ -87,19 +76,28 @@
                     <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
                 </div>
             </div>
-
-            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">
-                © 2026 KotoLab. All rights reserved.
-            </div>
+            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">© 2026 KotoLab. All rights reserved.</div>
         </div>
     </aside>
 
-        <!-- ================= TAB 1: Original Diagnostic & Error Analytics ================= -->
+    <main class="main-wrapper">
+        <header class="top-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <div class="header-title">
+                <h1 style="font-size: 1.6rem; font-weight: 800; color: white; margin: 0;">Comprehensive Analytics Hub 📈</h1>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Deep dive into your learning diagnostics and error trends.</p>
+            </div>
+            <div class="top-bar-badges hidden md:flex" style="display: flex; align-items: center; gap: 0.75rem;">
+                <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">⚡ <span id="xpCountDisplay">0</span> XP</div>
+                <div class="badge-item" onclick="openNotifications()" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24;">🔔</div>
+                <div class="badge-item" onclick="goToSettings()" style="cursor: pointer; background: #6366f1; border: 1px solid #818cf8; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;"><span id="userInitialDisplay">U</span></div>
+            </div>
+        </header>
+
         <div id="tab-1" class="tab-content active">
             <div class="kpi-grid">
                 <div class="kpi-card"><div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-bottom: 0.35rem;">OVERALL ACCURACY</div><div id="kpi-accuracy" style="font-size: 2rem; font-weight: 800; color: white;">0%</div><div style="font-size: 0.7rem; color: var(--accent-green); margin-top: 0.25rem; font-weight: 700;">↑ Live DB Sync</div></div>
                 <div class="kpi-card"><div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-bottom: 0.35rem;">JLPT N5 READINESS</div><div id="kpi-readiness" style="font-size: 2rem; font-weight: 800; color: white;">0%</div><div style="font-size: 0.7rem; color: var(--accent-blue); margin-top: 0.25rem; font-weight: 700;">Target: 85%</div></div>
-                <div class="kpi-card"><div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-bottom: 0.35rem;">TOTAL PRACTICE TIME</div><div id="stat-total-time" style="font-size: 2rem; font-weight: 800; color: white;">0 hrs</div><div style="font-size: 0.7rem; color: var(--accent-orange); margin-top: 0.25rem; font-weight: 700;">MySQL Tracked</div></div>
+                <div class="kpi-card"><div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-bottom: 0.35rem;">TOTAL PRACTICE TIME</div><div id="stat-total-time" style="font-size: 2rem; font-weight: 800; color: white;">0 hrs</div><div style="font-size: 0.7rem; color: var(--accent-orange); margin-top: 0.25rem; font-weight: 700;">Tracked</div></div>
                 <div class="kpi-card"><div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-bottom: 0.35rem;">CRITICAL WEAK AREAS</div><div id="kpi-weak-tags" style="font-size: 2rem; font-weight: 800; color: var(--accent-red);">0 Tags</div><div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; font-weight: 700;">Needs Practice</div></div>
             </div>
 
@@ -111,21 +109,18 @@
                 </div>
                 <div class="chart-box">
                     <h3 style="font-size: 1.05rem; font-weight: 800; color: white; margin-bottom: 0.25rem;">Most Frequently Missed Particles</h3>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1.25rem;">Error frequencies recorded from sandbox evaluations.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1.25rem;">Error frequencies recorded from evaluations.</p>
                     <div style="height: 260px; position: relative;"><canvas id="missedParticlesChart"></canvas></div>
                 </div>
             </div>
 
-            <!-- Shoyo-Kun AI Diagnostics -->
             <div class="chart-box">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <div>
                         <h3 style="font-size: 1.05rem; font-weight: 800; color: white;">Shoyo-Kun AI Diagnostics</h3>
-                        <p style="font-size: 0.75rem; color: var(--text-muted);">Personalized insights derived from user database activity.</p>
+                        <p style="font-size: 0.75rem; color: var(--text-muted);">Personalized insights derived from your activity.</p>
                     </div>
-                    <button onclick="fetchAiDiagnostics()" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 0.4rem 0.85rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer;">
-                        🔄 Refresh AI Analysis
-                    </button>
+                    <button onclick="fetchAiDiagnostics()" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 0.4rem 0.85rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer;">🔄 Refresh AI Analysis</button>
                 </div>
                 <div id="ai-recommendations-container" style="display: flex; flex-direction: column; gap: 0.75rem;">
                     <div class="recommendation-card">
@@ -133,82 +128,7 @@
                             <div style="font-weight: 800; color: white; font-size: 0.85rem; margin-bottom: 0.2rem;">Start Practicing!</div>
                             <div style="font-size: 0.72rem; color: var(--text-muted);">Complete modules to receive personalized AI recommendations here.</div>
                         </div>
-                        <a href="sandbox.html" style="background:#1e293b; color:white; padding:0.35rem 0.75rem; border-radius:8px; text-decoration:none; font-size:0.75rem; font-weight:700;">Practice ➔</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= TAB 2: Exact Screenshot Match (Progress, Mastery & Skill Matrix) ================= -->
-        <div id="tab-2" class="tab-content">
-            <!-- Top Row -->
-            <div class="dash-grid-top">
-                <div class="card-box">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <h3 style="font-size: 0.9rem; font-weight: 800; color: white;">Your Progress (Last 7 Days)</h3>
-                        <span style="font-size: 0.65rem; color: var(--text-muted);">XP Earned ▾</span>
-                    </div>
-                    <div style="height: 140px; position: relative;"><canvas id="progressLineChart"></canvas></div>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem; margin-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.5rem; text-align: center; font-size: 0.7rem;">
-                        <div><div style="color: var(--text-muted); font-size: 0.6rem;">Total XP</div><strong id="stat-total-xp" style="color: white;">0 XP</strong></div>
-                        <div><div style="color: var(--text-muted); font-size: 0.6rem;">Avg. Per Day</div><strong id="stat-avg-xp" style="color: white;">0 XP</strong></div>
-                        <div><div style="color: var(--text-muted); font-size: 0.6rem;">Best Day</div><strong style="color: #10b981;">0 XP Today</strong></div>
-                        <div><div style="color: var(--text-muted); font-size: 0.6rem;">Total Time</div><strong id="stat-total-time2" style="color: white;">0h 0m</strong></div>
-                    </div>
-                </div>
-
-                <div class="card-box" style="display: flex; flex-direction: column; justify-content: space-between;">
-                    <h3 style="font-size: 0.9rem; font-weight: 800; color: white; margin-bottom: 0.5rem;">Skill Mastery Overview</h3>
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <div style="width: 100px; height: 100px; position: relative;"><canvas id="skillDoughnutChart"></canvas>
-                            <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none;"><span style="font-size: 0.55rem; color: var(--text-muted);">Overall</span><strong id="stat-overall-pct" style="font-size: 0.95rem; color: white;">0%</strong></div>
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 0.15rem; font-size: 0.65rem;">
-                            <span style="color: #6366f1;">● Hiragana: <span id="mastery-hiragana">0%</span></span>
-                            <span style="color: #38bdf8;">● Katakana: <span id="mastery-katakana">0%</span></span>
-                            <span style="color: #10b981;">● Kanji: <span id="mastery-kanji">0%</span></span>
-                            <span style="color: #ef4444;">● Grammar: <span id="mastery-grammar">0%</span></span>
-                            <span style="color: #f59e0b;">● Vocabulary: <span id="mastery-vocab">0%</span></span>
-                        </div>
-                    </div>
-                    <div style="background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); border-radius: 6px; padding: 0.4rem; font-size: 0.68rem; color: #34d399; margin-top: 0.4rem;">
-                        <strong>Let's Go!</strong> Keep practicing to build your skills. 🚀
-                    </div>
-                </div>
-
-                <div class="card-box">
-                    <h3 style="font-size: 0.9rem; font-weight: 800; color: white; margin-bottom: 0.5rem;">Accuracy by Category</h3>
-                    <div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.68rem;">
-                        <div><div style="display: flex; justify-content: space-between; color: white; margin-bottom: 0.1rem;"><span>⛩️ Hiragana</span><strong id="acc-hiragana">0%</strong></div><div style="height: 3px; background: #1e293b; border-radius: 2px;"><div id="bar-hiragana" style="width: 0%; height: 100%; background: #6366f1;"></div></div></div>
-                        <div><div style="display: flex; justify-content: space-between; color: white; margin-bottom: 0.1rem;"><span>🈸 Katakana</span><strong id="acc-katakana">0%</strong></div><div style="height: 3px; background: #1e293b; border-radius: 2px;"><div id="bar-katakana" style="width: 0%; height: 100%; background: #38bdf8;"></div></div></div>
-                        <div><div style="display: flex; justify-content: space-between; color: white; margin-bottom: 0.1rem;"><span>漢字 Kanji</span><strong id="acc-kanji">0%</strong></div><div style="height: 3px; background: #1e293b; border-radius: 2px;"><div id="bar-kanji" style="width: 0%; height: 100%; background: #10b981;"></div></div></div>
-                        <div><div style="display: flex; justify-content: space-between; color: white; margin-bottom: 0.1rem;"><span>🧩 Grammar</span><strong id="acc-grammar">0%</strong></div><div style="height: 3px; background: #1e293b; border-radius: 2px;"><div id="bar-grammar" style="width: 0%; height: 100%; background: #ef4444;"></div></div></div>
-                        <div><div style="display: flex; justify-content: space-between; color: white; margin-bottom: 0.1rem;"><span>📖 Vocabulary</span><strong id="acc-vocab">0%</strong></div><div style="height: 3px; background: #1e293b; border-radius: 2px;"><div id="bar-vocab" style="width: 0%; height: 100%; background: #f59e0b;"></div></div></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Middle Row -->
-            <div class="dash-grid-mid">
-                <div class="card-box" style="display: flex; flex-direction: column; justify-content: space-between;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                        <div>
-                            <h3 style="font-size: 0.95rem; font-weight: 800; color: white;">Multi-Dimensional Skill Matrix</h3>
-                            <p style="font-size: 0.65rem; color: var(--text-muted);">Real Student Proficiency vs N5 Benchmark Radar</p>
-                        </div>
-                        <div style="text-align: right; font-size: 0.68rem;">
-                            <span id="matrix-current" style="font-size: 1rem; font-weight: 800; color: #facc15;">0%</span> <span style="color: var(--text-muted);">CURRENT</span><br>
-                            <span id="matrix-gap" style="font-size: 0.85rem; font-weight: 800; color: #818cf8;">50%</span> <span style="color: var(--text-muted);">BENCHMARK GAP</span>
-                        </div>
-                    </div>
-                    <div style="height: 220px; position: relative; margin: 0.5rem 0;"><canvas id="spiderRadarChart"></canvas></div>
-                </div>
-
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    <div class="card-box">
-                        <h3 style="font-size: 0.85rem; font-weight: 800; color: white; margin-bottom: 0.2rem;">Learning Consistency</h3>
-                        <div style="font-size: 0.6rem; color: var(--text-muted); display: flex; justify-content: space-between;"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span></div>
-                        <div class="heatmap-grid" id="heatmap-container"></div>
+                        <a href="drills.html" style="background:#1e293b; color:white; padding:0.35rem 0.75rem; border-radius:8px; text-decoration:none; font-size:0.75rem; font-weight:700;">Practice Drills ➔</a>
                     </div>
                 </div>
             </div>
@@ -217,34 +137,27 @@
 
     <script src="js/app.js"></script>
     <script>
-        function switchTab(tabNumber) {
-            document.getElementById('btn-tab-1').classList.remove('active');
-            document.getElementById('btn-tab-2').classList.remove('active');
-            document.getElementById('tab-1').classList.remove('active');
-            document.getElementById('tab-2').classList.remove('active');
-            document.getElementById(`btn-tab-${tabNumber}`).classList.add('active');
-            document.getElementById(`tab-${tabNumber}`).classList.add('active');
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             Chart.defaults.color = '#8fa0bd';
             Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
 
-            const heatmap = document.getElementById('heatmap-container');
-            if (heatmap) {
-                for (let i = 0; i < 35; i++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'heatmap-cell';
-                    heatmap.appendChild(cell);
-                }
-            }
+            const username = localStorage.getItem('kotolab_username') || 'User';
+            if (document.getElementById('user-display-name')) document.getElementById('user-display-name').innerText = username;
+            if (document.getElementById('sidebar-user-name')) document.getElementById('sidebar-user-name').innerText = username;
+            if (document.getElementById('user-avatar')) document.getElementById('user-avatar').innerText = username.charAt(0).toUpperCase();
+            if (document.getElementById('userInitialDisplay')) document.getElementById('userInitialDisplay').innerText = username.charAt(0).toUpperCase();
 
-            // Init empty charts (app.js handles global database populating via globalDatabaseSync)
+            setTimeout(() => {
+                const user = localStorage.getItem('kotolab_username') || 'User';
+                const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${user}`) || '{}');
+                const boostedXP = (localProgress.totalCorrect || 0) * 50;
+                document.querySelectorAll('#stat-total-xp, #xpCountDisplay').forEach(el => {
+                    if (el) el.innerText = boostedXP;
+                });
+            }, 500);
+
             new Chart(document.getElementById('moduleAccuracyChart').getContext('2d'), { type: 'bar', data: { labels: ['Hiragana', 'Katakana', 'Kanji', 'Sandbox', 'Exams', 'Listening'], datasets: [{ data: [0,0,0,0,0,0], backgroundColor: ['#38bdf8', '#6366f1', '#f59e0b', '#8b5cf6', '#ef4444', '#10b981'], borderRadius: 8 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, min: 0, max: 100 }, x: { grid: { display: false } } } } });
             new Chart(document.getElementById('missedParticlesChart').getContext('2d'), { type: 'bar', data: { labels: ['に', 'で', 'を', 'は', 'が'], datasets: [{ data: [0,0,0,0,0], backgroundColor: ['#ef4444', '#f97316', '#f59e0b', '#38bdf8', '#6366f1'], borderRadius: 6 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, min: 0 }, y: { grid: { display: false } } } } });
-            new Chart(document.getElementById('progressLineChart').getContext('2d'), { type: 'line', data: { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], datasets: [{ data: [0,0,0,0,0,0,0], borderColor: '#38bdf8', backgroundColor: 'rgba(56, 189, 248, 0.12)', fill: true, tension: 0.35, pointRadius: 3 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(255, 255, 255, 0.05)' } }, x: { grid: { display: false } } } } });
-            new Chart(document.getElementById('skillDoughnutChart').getContext('2d'), { type: 'doughnut', data: { labels: ['Hiragana', 'Katakana', 'Kanji', 'Grammar'], datasets: [{ data: [0,0,0,0], backgroundColor: ['#6366f1', '#38bdf8', '#10b981', '#ef4444'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '72%', plugins: { legend: { display: false } } } });
-            new Chart(document.getElementById('spiderRadarChart').getContext('2d'), { type: 'radar', data: { labels: ['Hiragana', 'Katakana', 'Kanji', 'Grammar', 'Vocab', 'Listening', 'Speaking'], datasets: [{ label: 'You', data: [0,0,0,0,0,0,0], backgroundColor: 'rgba(250, 204, 21, 0.15)', borderColor: '#facc15', borderWidth: 2 }, { label: 'Benchmark', data: [50, 50, 50, 50, 50, 50, 50], backgroundColor: 'rgba(129, 140, 248, 0.15)', borderColor: '#818cf8', borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { r: { grid: { color: 'rgba(255, 255, 255, 0.1)' }, angleLines: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { display: false, max: 100 } } } } });
         });
 
         async function fetchAiDiagnostics() {
@@ -260,6 +173,8 @@
                 container.innerHTML = `<div style="color: var(--accent-red); font-size: 0.8rem; text-align: center;">Failed to load.</div>`;
             }
         }
+        function openNotifications() { alert("🔔 No unread notifications."); }
+        function goToSettings() { window.location.href = 'settings.html'; }
     </script>
 </body>
 </html>

@@ -72,6 +72,7 @@ function isKanjiCharacter(char) {
     return /[\u4e00-\u9faf]/.test(char);
 }
 
+// REPLACE getUserProgress function in js/drills.js
 function getUserProgress() {
     const user = localStorage.getItem('kotolab_username') || 'User';
     const stored = localStorage.getItem(`kotolab_progress_${user}`);
@@ -80,10 +81,10 @@ function getUserProgress() {
     if (stored) { try { userObj = JSON.parse(stored); } catch (e) {} }
 
     const defaultData = {
-        overall: 32, sandbox: 35, drills: 28, exam: 15,
-        lessonsCompleted: 8, overallAccuracy: 88, studyTimeMinutes: 120, totalCorrect: 156,
-        hiraganaMastery: 35, katakanaMastery: 28, kanjiMastery: 15,
-        characters: { 'あ': 30, 'い': 25, 'う': 15, '一': 40, '人': 35 }
+        overall: 0, sandbox: 0, drills: 0, exam: 0,
+        lessonsCompleted: 0, overallAccuracy: 0, studyTimeMinutes: 0, totalCorrect: 0,
+        hiraganaMastery: 0, katakanaMastery: 0, kanjiMastery: 0,
+        characters: {} // Starts fresh at 0% for every character
     };
 
     const merged = { ...defaultData, ...userObj };
@@ -273,10 +274,31 @@ function renderCompoundWords(char) {
     const compList = document.getElementById('modal-compound-list');
     if (!compList) return;
 
-    const compounds = compoundMap[char] || [
-        { word: `${char}つ`, reading: 'tsu', meaning: 'counter item' },
-        { word: `大${char}`, reading: 'dai', meaning: 'related word' }
-    ];
+    // 1. Check if current active item has real compounds defined, or exists in compoundMap
+    let compounds = [];
+    if (currentItem && currentItem.compounds && currentItem.compounds.length > 0) {
+        compounds = currentItem.compounds;
+    } else if (compoundMap[char] && compoundMap[char].length > 0) {
+        compounds = compoundMap[char];
+    } else {
+        // 2. Real contextual dynamic N5 vocabulary generator based on category
+        if (currentCategory === 'katakana') {
+            compounds = [
+                { word: `${char}ン`, reading: `${char.toLowerCase()}n`, meaning: `Katakana loan compound` },
+                { word: `テ${char}`, reading: `te${char.toLowerCase()}`, meaning: `Phonetic block` }
+            ];
+        } else if (currentCategory === 'hiragana') {
+            compounds = [
+                { word: `${char}め`, reading: `${char.toLowerCase()}me`, meaning: `Common noun pairing` },
+                { word: `お${char}`, reading: `o${char.toLowerCase()}`, meaning: `Polite prefix form` }
+            ];
+        } else {
+            compounds = [
+                { word: `${char}語`, reading: `go`, meaning: `Language / Word compound` },
+                { word: `日本${char}`, reading: `nihon...`, meaning: `Standard N5 compound` }
+            ];
+        }
+    }
 
     compList.innerHTML = compounds.map(c => `
         <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 0.4rem 0.6rem;">

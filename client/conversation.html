@@ -2,29 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0b0f19">
+    <link rel="manifest" href="manifest.json"> 
     <title>KotoLab — Shoko AI Friend Conversation</title>
 
-    <!-- Auth Guard -->
     <script>
         const token = localStorage.getItem('kotolab_token');
         if (!token) { window.location.href = 'login.html'; }
     </script>
 
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss-cdn@3.4.10/tailwindcss-3.4.10.min.js"></script>
 
     <style>
         :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-purple: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --accent-red: #ef4444; --accent-gold: #f59e0b; --text-main: #f8fafc; --text-muted: #8fa0bd; }
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-        body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; display: flex; min-height: 100vh; overflow-x: hidden; }
+        body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Segoe UI', system-ui, sans-serif; display: flex; min-height: 100vh; overflow-x: hidden; }
 
         .sidebar { width: 260px; background: #090d16; border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; height: 100vh; position: fixed; left: 0; top: 0; z-index: 100; }
         .brand { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; padding-left: 0.5rem; }
         .brand-icon-box { width: 40px; height: 40px; background: linear-gradient(135deg, #38bdf8, #6366f1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
         .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
         .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; border-radius: 10px; transition: all 0.2s ease; }
-        .nav-link:hover { color: white; background: rgba(255, 255, 255, 0.04); }
+        .nav-link:hover:not(.locked) { color: white; background: rgba(255, 255, 255, 0.04); }
         .nav-link.active { color: white; background: linear-gradient(135deg, #6366f1, #7c3aed); box-shadow: 0 6px 16px -2px rgba(99, 102, 241, 0.45); }
+        .nav-link.locked { opacity: 0.5; cursor: not-allowed; }
+
         .user-profile-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 0.85rem; }
         .user-info { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.65rem; }
         .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: #6366f1; color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; }
@@ -35,8 +39,8 @@
         .main-wrapper { margin-left: 260px; flex: 1; padding: 2rem 2.5rem; overflow-y: auto; min-height: 100vh; }
         .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
         .convo-container { display: grid; grid-template-columns: 1fr 300px; gap: 1.5rem; align-items: start; }
-        @media (max-width: 1100px) { .convo-container { grid-template-columns: 1fr; } }
-        .chat-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; display: flex; flex-direction: column; height: 76vh; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        @media (max-width: 1100px) { .convo-container { grid-template-columns: 1fr; } .sidebar { width: 100%; height: auto; position: relative; } .main-wrapper { margin-left: 0; } }
+        .chat-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; display: flex; flex-direction: column; height: 80vh; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .chat-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color); margin-bottom: 0.75rem; }
         .progress-bar-bg { width: 100%; height: 6px; background: #0b0f19; border-radius: 3px; overflow: hidden; margin: 0.5rem 0 1rem 0; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, #6366f1, #38bdf8); border-radius: 3px; width: 60%; }
@@ -48,7 +52,6 @@
         .bubble-content { background: #111827; border: 1px solid var(--border-color); border-radius: 14px; padding: 0.85rem 1rem; }
         .bubble-row.user .bubble-content { background: linear-gradient(135deg, #6366f1, #4f46e5); border-color: #818cf8; }
 
-        /* 3rd Image Style Waveform Mic Control Box */
         .mic-control-box { background: #0b0f19; border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; margin-top: auto; position: relative; }
         .waveform-container { display: flex; align-items: center; justify-content: center; gap: 1.5rem; width: 100%; }
         .mic-btn-center { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #38bdf8); border: none; color: white; font-size: 1.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px rgba(99, 102, 241, 0.6); transition: transform 0.2s; }
@@ -56,6 +59,10 @@
         .waveform-bars { font-family: monospace; letter-spacing: 2px; color: #818cf8; font-size: 1.2rem; opacity: 0.8; }
         .action-chip { background: #1e293b; border: 1px solid #334155; color: var(--text-main); padding: 0.35rem 0.85rem; border-radius: 10px; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: all 0.2s; }
         .action-chip:hover { border-color: var(--accent-indigo); background: rgba(99,102,241,0.2); }
+
+        .inline-input-wrapper { display: none; width: 100%; gap: 0.5rem; margin-top: 0.5rem; align-items: center; background: #151e33; padding: 0.5rem; border-radius: 12px; border: 1px solid var(--accent-indigo); }
+        .inline-text-input { flex: 1; background: #0b0f19; border: 1px solid #334155; border-radius: 8px; padding: 0.5rem 0.75rem; color: white; font-size: 0.82rem; outline: none; }
+        .inline-text-input:focus { border-color: var(--accent-indigo); }
 
         .sidebar-right { display: flex; flex-direction: column; gap: 1.25rem; }
         .widget-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem; }
@@ -66,7 +73,6 @@
 </head>
 <body>
 
-    <!-- Canonical Sidebar Navigation -->
     <aside class="sidebar">
         <div>
             <div class="brand">
@@ -79,21 +85,23 @@
 
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
-                <li><a href="sandbox.html" class="nav-link">🧩 Sandbox</a></li>
-                <li><a href="conversation.html" class="nav-link active">💬 Conversation</a></li>
                 <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
-                <li><a href="exam.html" class="nav-link">📝 Exams</a></li>
+                <li><a href="conversation.html" class="nav-link active">💬 Conversation</a></li>
+                <li><a href="#" id="nav-sandbox" class="nav-link locked" title="Locked">🔒 Sandbox</a></li>
+                <li><a href="#" id="nav-exam" class="nav-link locked" title="Locked">🔒 Exams</a></li>
                 <li><a href="analytics.html" class="nav-link">📈 Analytics</a></li>
                 <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
+                <li id="admin-nav-item" style="display: none;">
+                    <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
+                </li>
             </ul>
         </div>
-
         <div>
             <div class="user-profile-card">
                 <div class="user-info">
-                    <div class="user-avatar" id="sidebar-user-initial">S</div>
+                    <div class="user-avatar" id="sidebar-user-initial">U</div>
                     <div>
-                        <div class="user-name" id="sidebar-user-name">Shoyo</div>
+                        <div class="user-name" id="sidebar-user-name">User</div>
                         <div class="user-level" id="sidebar-user-level">N5 Explorer • Level 1</div>
                     </div>
                 </div>
@@ -102,39 +110,24 @@
                     <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
                 </div>
             </div>
-
-            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">
-                © 2026 KotoLab. All rights reserved.
-            </div>
+            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">© 2026 KotoLab. All rights reserved.</div>
         </div>
     </aside>
 
-    <!-- Main Workspace Area -->
     <main class="main-wrapper">
-        <header class="top-header">
+        <header class="top-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
             <div class="header-title">
                 <h1 style="font-size: 1.6rem; font-weight: 800; color: white; margin: 0;">Shoko AI Friend Chat 🌸</h1>
                 <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Chat naturally with Shoko with emotional expressions & custom tones.</p>
             </div>
-
-            <div class="top-bar-badges" style="display: flex; align-items: center; gap: 0.75rem;">
-                <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">
-                    ⚡ <span id="xpCountDisplay">0</span> XP
-                </div>
-                <div class="badge-item" onclick="openNotifications()" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24;">
-                    🔔
-                </div>
-                <div class="badge-item" onclick="goToSettings()" style="cursor: pointer; background: #6366f1; border: 1px solid #818cf8; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;">
-                    <span id="userInitialDisplay">S</span>
-                </div>
-                <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #8fa0bd;">
-                    📅 <span id="currentDateDisplay">Aug 24, 2026</span>
-                </div>
+            <div class="top-bar-badges hidden md:flex" style="display: flex; align-items: center; gap: 0.75rem;">
+                <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">⚡ <span id="xpCountDisplay">0</span> XP</div>
+                <div class="badge-item" onclick="openNotifications()" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24;">🔔</div>
+                <div class="badge-item" onclick="goToSettings()" style="cursor: pointer; background: #6366f1; border: 1px solid #818cf8; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;"><span id="userInitialDisplay">U</span></div>
             </div>
         </header>
 
         <div class="convo-container">
-            <!-- Left Chat Panel -->
             <div class="chat-panel">
                 <div class="chat-header">
                     <div>
@@ -153,7 +146,6 @@
                 </div>
                 <div class="progress-bar-bg"><div class="progress-fill" style="width: 50%;"></div></div>
 
-                <!-- Messages Scroll Area -->
                 <div class="messages-area" id="chat-messages-box">
                     <div class="bubble-row npc">
                         <div class="avatar-small">🌸</div>
@@ -165,12 +157,21 @@
                     </div>
                 </div>
 
-                <!-- 3rd Image Style Waveform Mic Control Box -->
                 <div class="mic-control-box">
-                    <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; padding: 0 0.5rem;">
-                        <button class="action-chip" onclick="showTextOptionsModal()">📋 Text Options</button>
+                    <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; padding: 0 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <button class="action-chip" onclick="toggleJapaneseInputBox()" style="border-color: var(--accent-indigo); color: var(--accent-blue);">📋 Japanese Text</button>
                         <span style="font-size: 0.78rem; font-weight: 700; color: var(--accent-blue);" id="mic-status-label">Tap to speak or select your response.</span>
-                        <button class="action-chip" onclick="showHintModal()">💡 Hint</button>
+                        <button class="action-chip" onclick="toggleEnglishInputBox()" style="border-color: var(--accent-gold); color: var(--accent-gold);">🇬🇧 English Input (Unlimited)</button>
+                    </div>
+
+                    <div id="japanese-input-container" class="inline-input-wrapper">
+                        <input type="text" id="japanese-user-input" class="inline-text-input" placeholder="Type Japanese here (e.g., こんにちは)..." onkeydown="if(event.key==='Enter') submitJapaneseInput()">
+                        <button onclick="submitJapaneseInput()" style="background: var(--accent-indigo); border: none; color: white; padding: 0.4rem 0.85rem; border-radius: 8px; font-weight: 800; font-size: 0.75rem; cursor: pointer;">Send</button>
+                    </div>
+
+                    <div id="english-input-container" class="inline-input-wrapper" style="border-color: var(--accent-gold);">
+                        <input type="text" id="english-user-input" class="inline-text-input" placeholder="Type in English (translates to Japanese)..." onkeydown="if(event.key==='Enter') submitEnglishInput()">
+                        <button onclick="submitEnglishInput()" style="background: var(--accent-gold); border: none; color: black; padding: 0.4rem 0.85rem; border-radius: 8px; font-weight: 800; font-size: 0.75rem; cursor: pointer;">Send</button>
                     </div>
 
                     <div class="waveform-container">
@@ -179,11 +180,10 @@
                         <div class="waveform-bars">❚ ❚ | | ❚ ❚ ❚ | | ❚ ❚</div>
                     </div>
 
-                    <div style="font-size: 0.7rem; color: var(--text-muted);">Click mic and speak your answer in Japanese (e.g., 「今日はいい天気ですね！」)</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">Click mic and speak in Japanese, or use text input options above!</div>
                 </div>
             </div>
 
-            <!-- Right Sidebar Widgets -->
             <div class="sidebar-right">
                 <div class="widget-card">
                     <h3 style="font-size: 0.95rem; font-weight: 800; color: white; margin-bottom: 0.85rem;">Conversation Helpers</h3>
@@ -193,28 +193,16 @@
 
                 <div class="widget-card">
                     <h3 style="font-size: 0.95rem; font-weight: 800; color: white; margin-bottom: 0.85rem;">Live Fluency Stats</h3>
-                    
                     <div class="metric-row">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
-                            <span style="color: var(--text-muted);">Expression Match</span>
-                            <strong style="color: white;">85%</strong>
-                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem;"><span style="color: var(--text-muted);">Expression Match</span><strong style="color: white;">85%</strong></div>
                         <div class="metric-bar-bg"><div class="metric-fill" style="width: 85%; background: var(--accent-indigo);"></div></div>
                     </div>
-
                     <div class="metric-row">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
-                            <span style="color: var(--text-muted);">Conversational Flow</span>
-                            <strong style="color: white;">78%</strong>
-                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem;"><span style="color: var(--text-muted);">Conversational Flow</span><strong style="color: white;">78%</strong></div>
                         <div class="metric-bar-bg"><div class="metric-fill" style="width: 78%; background: var(--accent-blue);"></div></div>
                     </div>
-
                     <div class="metric-row">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
-                            <span style="color: var(--text-muted);">Friendship Bond</span>
-                            <strong style="color: white;">Level 1</strong>
-                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem;"><span style="color: var(--text-muted);">Friendship Bond</span><strong style="color: white;">Level 1</strong></div>
                         <div class="metric-bar-bg"><div class="metric-fill" style="width: 50%; background: #ec4899;"></div></div>
                     </div>
                 </div>
@@ -232,21 +220,25 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const username = localStorage.getItem('kotolab_username') || 'Shoyo';
-            if (document.getElementById('userInitialDisplay')) {
-                document.getElementById('userInitialDisplay').innerText = username.charAt(0).toUpperCase();
-            }
-            if (document.getElementById('sidebar-user-name')) {
-                document.getElementById('sidebar-user-name').innerText = username;
-            }
+            if (document.getElementById('userInitialDisplay')) document.getElementById('userInitialDisplay').innerText = username.charAt(0).toUpperCase();
+            if (document.getElementById('sidebar-user-name')) document.getElementById('sidebar-user-name').innerText = username;
+            if (document.getElementById('sidebar-user-initial')) document.getElementById('sidebar-user-initial').innerText = username.charAt(0).toUpperCase();
+            
+            setTimeout(() => {
+                const user = localStorage.getItem('kotolab_username') || 'User';
+                const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${user}`) || '{}');
+                const boostedXP = (localProgress.totalCorrect || 0) * 50;
+                document.querySelectorAll('#stat-total-xp, #xpCountDisplay').forEach(el => {
+                    if (el) el.innerText = boostedXP;
+                });
+            }, 500);
         });
 
         function speakText(txt) {
             if (!('speechSynthesis' in window)) return;
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(txt);
-            utterance.lang = 'ja-JP';
-            utterance.rate = 0.95; 
-            utterance.pitch = 1.3; 
+            utterance.lang = 'ja-JP'; utterance.rate = 0.95; utterance.pitch = 1.3; 
             const voices = window.speechSynthesis.getVoices();
             const animeVoice = voices.find(v => v.lang === 'ja-JP' && (v.name.includes('Nanami') || v.name.includes('Haruka') || v.name.includes('Ayaka') || v.name.includes('Google') || v.name.includes('Female'))) || voices.find(v => v.lang === 'ja-JP');
             if (animeVoice) utterance.voice = animeVoice;
@@ -257,16 +249,45 @@
             window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
         }
 
-        function showTextOptionsModal() {
-            const userInput = prompt("Type your Japanese response here (e.g., こんにちは！):");
-            if (userInput) processUserText(userInput);
+        function toggleJapaneseInputBox() {
+            const jpBox = document.getElementById('japanese-input-container');
+            const enBox = document.getElementById('english-input-container');
+            if (enBox) enBox.style.display = 'none';
+            if (jpBox) {
+                jpBox.style.display = jpBox.style.display === 'flex' ? 'none' : 'flex';
+                if (jpBox.style.display === 'flex') document.getElementById('japanese-user-input').focus();
+            }
         }
 
-        function showHintModal() {
-            alert("💡 Shoko's Hint: Try answering with 「はい、元気です！」 (Yes, I'm doing well!) or ask her a question back.");
+        function submitJapaneseInput() {
+            const inputField = document.getElementById('japanese-user-input');
+            const jpText = inputField.value.trim();
+            if (!jpText) return;
+            inputField.value = '';
+            document.getElementById('japanese-input-container').style.display = 'none';
+            processUserText(jpText, false);
         }
 
-        async function processUserText(spokenText) {
+        function toggleEnglishInputBox() {
+            const enBox = document.getElementById('english-input-container');
+            const jpBox = document.getElementById('japanese-input-container');
+            if (jpBox) jpBox.style.display = 'none';
+            if (enBox) {
+                enBox.style.display = enBox.style.display === 'flex' ? 'none' : 'flex';
+                if (enBox.style.display === 'flex') document.getElementById('english-user-input').focus();
+            }
+        }
+
+        function submitEnglishInput() {
+            const inputField = document.getElementById('english-user-input');
+            const englishText = inputField.value.trim();
+            if (!englishText) return;
+            inputField.value = '';
+            document.getElementById('english-input-container').style.display = 'none';
+            processUserText(`[English Input]: ${englishText}`, true);
+        }
+
+        async function processUserText(spokenText, isEnglish = false) {
             const chatBox = document.getElementById("chat-messages-box");
             const statusLabel = document.getElementById("mic-status-label");
             statusLabel.innerText = "Shoko is typing a reply... ✨";
@@ -274,7 +295,7 @@
 
             const userRow = document.createElement("div");
             userRow.className = "bubble-row user";
-            userRow.innerHTML = `<div class="avatar-small" style="background: var(--accent-indigo);">S</div><div class="bubble-content"><div style="font-size: 0.7rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.2rem;">You</div><div style="font-size: 1rem; font-weight: 800; color: white;">${spokenText}</div><div style="font-size: 0.75rem; color: #e2e8f0; margin-top: 0.15rem;">Text / Spoken input</div></div>`;
+            userRow.innerHTML = `<div class="avatar-small" style="background: var(--accent-indigo);">S</div><div class="bubble-content"><div style="font-size: 0.7rem; font-weight: 700; color: #cbd5e1; margin-bottom: 0.2rem;">You (${isEnglish ? 'English Fallback' : 'Japanese'})</div><div style="font-size: 1rem; font-weight: 800; color: white;">${spokenText}</div><div style="font-size: 0.75rem; color: #e2e8f0; margin-top: 0.15rem;">${isEnglish ? 'Translated by Shoko' : 'Spoken / Text input'}</div></div>`;
             chatBox.appendChild(userRow);
             chatBox.scrollTop = chatBox.scrollHeight;
 
@@ -282,7 +303,7 @@
                 const response = await fetch('/api/conversation/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userMessage: spokenText })
+                    body: JSON.stringify({ userMessage: spokenText, isEnglishFallback: isEnglish })
                 });
                 const data = await response.json();
 
@@ -303,7 +324,7 @@
 
         async function startConvoVoiceInput() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) { showTextOptionsModal(); return; }
+            if (!SpeechRecognition) { toggleJapaneseInputBox(); return; }
 
             const recognition = new SpeechRecognition();
             recognition.lang = 'ja-JP'; 
@@ -317,7 +338,7 @@
 
             recognition.onresult = async function(event) {
                 const spokenText = event.results[0][0].transcript;
-                processUserText(spokenText);
+                processUserText(spokenText, false);
             };
 
             recognition.onerror = function(e) {
