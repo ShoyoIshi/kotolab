@@ -223,9 +223,9 @@
     </div>
 
     <script src="js/speech.js"></script>
-    <script src="js/drills.js"></script>
-    <script src="js/app.js"></script>
-
+    <link rel="stylesheet" href="css/style.css?v=2.0">
+    <script src="js/drills.js?v=2.0"></script>
+    <script src="js/app.js?v=2.0"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
@@ -234,7 +234,6 @@
             document.querySelectorAll('#sidebar-user-initial').forEach(el => el && (el.innerText = username.charAt(0).toUpperCase()));
             document.querySelectorAll('#userInitialDisplay').forEach(el => el && (el.innerText = username.charAt(0).toUpperCase()));
             
-            // Accelerated XP Display on Drills Page
             setTimeout(() => {
                 const user = localStorage.getItem('kotolab_username') || 'User';
                 const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${user}`) || '{}');

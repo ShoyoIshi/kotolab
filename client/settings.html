@@ -16,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/tailwindcss-cdn@3.4.10/tailwindcss-3.4.10.min.js"></script>
 
     <style>
-        :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --accent-red: #ef4444; --text-main: #f8fafc; --text-muted: #8fa0bd; }
+        :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --text-main: #f8fafc; --text-muted: #8fa0bd; }
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
         body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Segoe UI', system-ui, sans-serif; display: flex; min-height: 100vh; overflow-x: hidden; }
 
@@ -122,7 +122,6 @@
                 </form>
             </div>
 
-            <!-- Logout Section Card -->
             <div class="settings-card" style="grid-column: 1 / -1; border-color: rgba(239, 68, 68, 0.3);">
                 <h3 style="font-size: 1.1rem; color: #f87171; margin-bottom: 0.5rem;">🚪 Session Management</h3>
                 <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.25rem;">Sign out of your KotoLab session securely.</p>
@@ -131,8 +130,9 @@
         </div>
     </main>
 
-    <script src="js/speech.js"></script>
-    <script src="js/app.js"></script>
+    <link rel="stylesheet" href="css/style.css?v=2.0">
+    <script src="js/drills.js?v=2.0"></script>
+    <script src="js/app.js?v=2.0"></script>
     <script>
         function handleLogout() {
             localStorage.removeItem('kotolab_token');
