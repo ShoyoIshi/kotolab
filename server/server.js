@@ -308,18 +308,15 @@ app.post('/api/user/update-progress', async (req, res) => {
 
         if (!userId || userId == 999) return res.json({ success: true });
 
-        // 1. Check karo ki user_progress table mein is user ki entry hai ya nahi
         const existing = await db.query('SELECT * FROM user_progress WHERE user_id = $1', [userId]);
         
         if (existing.rows.length === 0) {
-            // Agar entry nahi hai, toh naye user ke liye pehli row insert karo
             await db.query(
                 `INSERT INTO user_progress (user_id, total_correct, study_time_minutes, lessons_completed, hiragana_mastery, katakana_mastery, kanji_mastery, vocabulary_mastery, grammar_mastery, overall_accuracy) 
                  VALUES ($1, $2, $3, $4, 0, 0, 0, 0, 10, 10)`,
                 [userId, correctIncrement || 0, studyMinutesIncrement || 1, lessonCompleted ? 1 : 0]
             );
         } else {
-            // Agar pehle se hai, toh usko update karo
             await db.query(
                 `UPDATE user_progress 
                  SET total_correct = total_correct + $1, 
@@ -406,6 +403,59 @@ Rules:
             reply: `「${userMessage || 'こんにちは'}」ですね！一緒に頑張りましょう！`, 
             translation: `Let's work hard together!` 
         });
+    }
+});
+
+// -------------------------------------------------------------
+// Added User Endpoints: Practice Attempts & Character Mastery
+// -------------------------------------------------------------
+
+// POST /api/user/practice-attempt
+app.post('/api/user/practice-attempt', async (req, res) => {
+    const { userId, isCorrect, errorType, userInput, expectedValue } = req.body;
+
+    if (!userId) return res.status(400).json({ error: 'User ID required' });
+
+    try {
+        await db.query(`
+            INSERT INTO practice_attempts (user_id, is_correct)
+            VALUES ($1, $2)
+        `, [userId, isCorrect ? 1 : 0]);
+
+        if (!isCorrect && errorType) {
+            await db.query(`
+                INSERT INTO user_error_logs (user_id, error_type, user_input, expected_value)
+                VALUES ($1, $2, $3, $4)
+            `, [userId, errorType, userInput || '', expectedValue || '']);
+        }
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Error logging practice attempt:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// POST /api/user/character-mastery
+app.post('/api/user/character-mastery', async (req, res) => {
+    const { userId, character, category, masteryLevel } = req.body;
+    
+    if (!userId || !character) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    try {
+        await db.query(`
+            INSERT INTO user_character_mastery (user_id, character_id, mastery_level)
+            VALUES ($1, $2, $3)
+            ON CONFLICT (user_id, character_id) 
+            DO UPDATE SET mastery_level = $3
+        `, [userId, character, masteryLevel || 0]);
+
+        res.json({ success: true, message: 'Character mastery saved!' });
+    } catch (err) {
+        console.error('Error saving character mastery:', err);
+        res.status(500).json({ error: 'Failed to save character mastery' });
     }
 });
 

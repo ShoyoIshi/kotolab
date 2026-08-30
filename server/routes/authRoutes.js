@@ -23,6 +23,14 @@ router.post('/signup', async (req, res) => {
         const result = await pool.query(query, [username, email, hashedPassword]);
         const newUser = result.rows[0];
         
+        // 🚀 Automatically create user_progress entry for the new user so XP/progress tracking never fails
+        await pool.query(
+            `INSERT INTO user_progress (user_id, total_correct, study_time_minutes, lessons_completed, hiragana_mastery, katakana_mastery, kanji_mastery, vocabulary_mastery, grammar_mastery, overall_accuracy) 
+             VALUES ($1, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+             ON CONFLICT (user_id) DO NOTHING`,
+            [newUser.id]
+        );
+
         // Generate JWT token immediately on signup so user gets logged in automatically
         const token = jwt.sign(
             { id: newUser.id, username: newUser.username, role: newUser.role || 'user' },
