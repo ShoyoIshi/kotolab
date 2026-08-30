@@ -92,6 +92,7 @@ function getUserProgress() {
     return merged;
 }
 
+// UPDATED incrementUserCharacterProgress function for js/drills.js
 function incrementUserCharacterProgress(char, category) {
     const user = localStorage.getItem('kotolab_username') || 'User';
     let progress = getUserProgress();
@@ -102,18 +103,29 @@ function incrementUserCharacterProgress(char, category) {
     progress.totalCorrect = (Number(progress.totalCorrect) || 0) + 1;
 
     localStorage.setItem(`kotolab_progress_${user}`, JSON.stringify(progress));
+
+    // Correct Backend Route Call
+    fetch('/api/user/update-drill', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            userId: getCurrentUserId(),
+            category: category
+        })
+    }).catch(err => console.error("Failed to sync drill progress to DB:", err));
+
     return newScore;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadCategoryDrills('hiragana');
-});
+// Global Cache for Drills to eliminate switching delay completely
+const drillsCache = {};
 
 function loadCategoryDrills(category) {
     currentCategory = category;
     const grid = document.getElementById('drills-grid');
     if (!grid) return;
 
+    // Tab styling update
     ['hiragana', 'katakana', 'kanji'].forEach(cat => {
         const btn = document.getElementById(`tab-${cat}`);
         if (btn) {
@@ -121,6 +133,13 @@ function loadCategoryDrills(category) {
             btn.style.color = (cat === category) ? '#ffffff' : 'var(--text-muted, #94a3b8)';
         }
     });
+
+    // 🚀 Check if already cached in memory -> Zero Delay!
+    if (drillsCache[category] && drillsCache[category].length > 0) {
+        currentDrillItems = drillsCache[category];
+        renderDrillCards(currentDrillItems);
+        return;
+    }
 
     grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 3rem;">⚡ Loading ${category} drills...</div>`;
 
@@ -130,14 +149,31 @@ function loadCategoryDrills(category) {
             return res.json();
         })
         .then(items => {
-            currentDrillItems = items && items.length > 0 ? items : fallbackDrillData[category];
+            const finalItems = items && items.length > 0 ? items : fallbackDrillData[category];
+            drillsCache[category] = finalItems; // Store in memory cache
+            currentDrillItems = finalItems;
             renderDrillCards(currentDrillItems);
         })
         .catch(() => {
-            currentDrillItems = fallbackDrillData[category] || fallbackDrillData.hiragana;
+            const fallback = fallbackDrillData[category] || fallbackDrillData.hiragana;
+            drillsCache[category] = fallback;
+            currentDrillItems = fallback;
             renderDrillCards(currentDrillItems);
         });
 }
+
+// Preload all categories in the background right when the page loads so tabs switch instantly
+document.addEventListener('DOMContentLoaded', () => {
+    loadCategoryDrills('hiragana');
+    ['katakana', 'kanji'].forEach(cat => {
+        fetch(`/api/drills/${cat}`)
+            .then(res => res.json())
+            .then(items => {
+                if (items && items.length > 0) drillsCache[cat] = items;
+            })
+            .catch(() => {});
+    });
+});
 
 function renderDrillCards(items) {
     const grid = document.getElementById('drills-grid');

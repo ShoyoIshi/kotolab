@@ -4,34 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0b0f19">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json"> 
     <title>KotoLab - Character Drills</title>
 
     <script>
-        if (!localStorage.getItem('kotolab_token')) { 
-            window.location.replace('login.html'); 
+        if (!localStorage.getItem('kotolab_token')) { window.location.replace('login.html'); }
+        
+        // 🔥 KILL ROGUE SERVICE WORKER CACHE 🔥
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) { registration.unregister(); }
+            });
         }
     </script>
 
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/tailwindcss-cdn@3.4.10/tailwindcss-3.4.10.min.js"></script>
+    <link rel="stylesheet" href="css/style.css?v=14.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
 
     <style>
-        :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --accent-gold: #f59e0b; --text-main: #f8fafc; --text-muted: #8fa0bd; }
+        :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --text-muted: #8fa0bd; }
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-        body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Segoe UI', system-ui, sans-serif; display: flex; min-height: 100vh; }
-        
-        .sidebar { width: 260px; background: #090d16; border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; height: 100vh; position: fixed; left: 0; top: 0; z-index: 100; }
-        @media (max-width: 1100px) {
-            body { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; position: relative; padding: 1rem; border-right: none; border-bottom: 1px solid var(--border-color); }
-            .main-wrapper { margin-left: 0 !important; padding: 1rem !important; }
-            .top-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
-            #character-search-input { width: 100% !important; margin-top: 1rem; }
-            .header-filters { flex-direction: column; width: 100%; }
-        }
+        body { background-color: var(--bg-main); color: #ffffff; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; display: flex; min-height: 100vh; overflow-x: hidden; }
 
+        .sidebar { width: 260px; background: #090d16; border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; height: 100vh; position: fixed; left: 0; top: 0; z-index: 100; }
         .brand { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; padding-left: 0.5rem; }
         .brand-icon-box { width: 40px; height: 40px; background: linear-gradient(135deg, #38bdf8, #6366f1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
         .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
@@ -39,33 +38,36 @@
         .nav-link:hover:not(.locked) { color: white; background: rgba(255, 255, 255, 0.04); }
         .nav-link.active { color: white; background: linear-gradient(135deg, #6366f1, #7c3aed); box-shadow: 0 6px 16px -2px rgba(99, 102, 241, 0.45); }
         .nav-link.locked { opacity: 0.5; cursor: not-allowed; }
-        
+
         .user-profile-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 0.85rem; }
         .user-info { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.65rem; }
         .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: #6366f1; color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; }
         .user-name { font-weight: 700; font-size: 0.85rem; color: white; }
         .user-level { font-size: 0.7rem; color: var(--text-muted); }
         .user-stats-row { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05); }
-        
+
         .main-wrapper { margin-left: 260px; flex: 1; padding: 2rem 2.5rem; overflow-y: auto; min-height: 100vh; }
-        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        @media (max-width: 1100px) { .sidebar { width: 100%; height: auto; position: relative; padding: 1rem; border-right: none; border-bottom: 1px solid var(--border-color); } .main-wrapper { margin-left: 0; padding: 1.5rem; } }
+
         .btn-tab, .btn-primary { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.5rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s ease; }
         .btn-primary, .btn-tab.active { background: #6366f1; color: white; border-color: #6366f1; }
         .weak-btn { background: #1e293b; color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.4rem 0.85rem; border-radius: 8px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: all 0.2s ease; }
         .weak-btn:hover { background: #334155; color: white; }
-        
         .drill-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; transition: transform 0.2s, border-color 0.2s; cursor: pointer; min-height: 100px; }
         .drill-card:hover { transform: translateY(-4px); border-color: #6366f1; }
         .char-text { font-size: 2.5rem; font-weight: 800; color: white; line-height: 1; }
         .romaji-hint { font-size: 0.85rem; color: #38bdf8; font-weight: 600; text-transform: lowercase; }
-
+        
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
         .modal-card { background: #0f172a; border: 1px solid var(--border-color); border-radius: 20px; width: 1080px; max-width: 95vw; padding: 1.5rem; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); max-height: 95vh; overflow-y: auto; }
-        
-        @media (max-width: 1100px) {
-            .modal-card { display: flex; flex-direction: column; }
-            .modal-grid-layout { grid-template-columns: 1fr !important; }
-        }
+        @media (max-width: 1100px) { .modal-card { display: flex; flex-direction: column; } .modal-grid-layout { grid-template-columns: 1fr !important; } }
+
+        /* 🔥 Added Safe Guided Lines CSS (Does not interfere with HanziWriter logic) */
+        .kanji-canvas-box { position: relative; width: 100%; height: 220px; background: #0f172a; border-radius: 12px; border: 1px dashed #334155; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 0.75rem; }
+        .kanji-canvas-box::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; border-top: 1px dashed #1e293b; z-index: 1; }
+        .kanji-canvas-box::after { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; border-left: 1px dashed #1e293b; z-index: 1; }
+        #kanji-target, #kana-canvas, #guide-overlay { z-index: 5 !important; position: relative; }
     </style>
 </head>
 <body>
@@ -79,18 +81,15 @@
                     <div style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600;">JLPT N5 Learning</div>
                 </div>
             </div>
-
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
                 <li><a href="drills.html" class="nav-link active">⚡ Character Drills</a></li>
                 <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
-                <li><a href="#" id="link-sandbox" class="nav-link locked" title="Locked">🔒 Sandbox</a></li>
-                <li><a href="#" id="link-exam" class="nav-link locked" title="Locked">🔒 Exams</a></li>
-                <li><a href="analytics.html" class="nav-link">📈 Analytics</a></li>
+                <li><a href="sandbox.html" id="link-sandbox" class="nav-link locked" title="Locked">🔒 Sandbox</a></li>
+                <li><a href="exam.html" id="link-exam" class="nav-link locked" title="Locked">🔒 Exams</a></li>
+                <li><a href="analytics.html" id="link-analytics" class="nav-link locked">📈 Analytics</a></li>
                 <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
-                <li id="admin-nav-item" style="display: none;">
-                    <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
-                </li>
+                <li id="admin-nav-item" style="display: none;"><a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a></li>
             </ul>
         </div>
         <div>
@@ -99,11 +98,11 @@
                     <div class="user-avatar" id="sidebar-user-initial">U</div>
                     <div>
                         <div class="user-name" id="sidebar-user-name">User</div>
-                        <div class="user-level" id="sidebar-user-level">N5 Explorer • Level 1</div>
+                        <div class="user-level">N5 Explorer • Level 1</div>
                     </div>
                 </div>
                 <div class="user-stats-row">
-                    <span>❤️ <strong id="user-lives">5</strong></span>
+                    <span>❤️ <strong>5</strong></span>
                     <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
                 </div>
             </div>
@@ -117,17 +116,12 @@
                 <h1 style="font-size: 1.6rem; font-weight: 800; color: white; margin: 0;">Character Drills ⚡</h1>
                 <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Choose a script to practice. <span style="color:#38bdf8; font-weight:600;">(Beginner Romaji hints are ON)</span></p>
             </div>
-
             <div class="top-bar-badges hidden md:flex" style="display: flex; align-items: center; gap: 0.75rem;">
                 <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">
                     ⚡ <span id="xpCountDisplay">0</span> XP
                 </div>
-                <div class="badge-item" onclick="openNotifications()" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24;">
-                    🔔
-                </div>
-                <div class="badge-item" onclick="goToSettings()" style="cursor: pointer; background: #6366f1; border: 1px solid #818cf8; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;">
-                    <span id="userInitialDisplay">U</span>
-                </div>
+                <div class="badge-item" onclick="openNotifications()" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24;">🔔</div>
+                <div class="badge-item" onclick="goToSettings()" style="cursor: pointer; background: #6366f1; border: 1px solid #818cf8; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;"><span id="userInitialDisplay">U</span></div>
             </div>
         </header>
 
@@ -137,7 +131,6 @@
                 <button class="btn-tab" id="tab-katakana" style="background: var(--bg-card); color: var(--text-muted);" onclick="loadCategoryDrills('katakana')">Katakana</button>
                 <button class="btn-tab" id="tab-kanji" style="background: var(--bg-card); color: var(--text-muted);" onclick="loadCategoryDrills('kanji')">N5 Kanji</button>
             </div>
-
             <input type="text" id="character-search-input" placeholder="🔍 Search character..." oninput="filterDrillCharacters(this.value)" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1.25rem; border-radius: 20px; color: white; font-size: 0.85rem; outline: none; width: 240px;">
         </div>
 
@@ -163,14 +156,13 @@
                 </div>
             </div>
 
-            <div style="background: #1e1b4b; border: 1px solid #312e81; border-radius: 10px; padding: 0.6rem 1rem; color: #a5b4fc; font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem;">
-                💡 Watch the stroke order animation on the left, then trace the character in the box below.
-            </div>
+            <div style="background: #1e1b4b; border: 1px solid #312e81; border-radius: 10px; padding: 0.6rem 1rem; color: #a5b4fc; font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem;">💡 Watch the stroke order animation on the left, then trace the character in the box below.</div>
 
             <div class="modal-grid-layout" style="display: grid; grid-template-columns: 280px 1fr 280px; gap: 1.25rem; margin-bottom: 1.25rem;">
                 <div style="background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 1rem; display: flex; flex-direction: column;">
                     <div style="font-size: 0.85rem; font-weight: 700; color: white; margin-bottom: 0.75rem;">Correct Stroke Order</div>
-                    <div style="position: relative; width: 100%; height: 220px; background: #0f172a; border-radius: 12px; border: 1px dashed #334155; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 0.75rem;">
+                    <!-- Applied kanji-canvas-box here -->
+                    <div class="kanji-canvas-box">
                         <div id="kanji-target" style="width: 200px; height: 200px; position: relative; z-index: 2;"></div>
                     </div>
                     <div id="modal-stroke-list" style="display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; max-height: 140px; padding-right: 0.25rem;"></div>
@@ -181,15 +173,14 @@
                         <span style="font-size: 0.9rem; font-weight: 800; color: white;">Your Practice</span>
                         <button class="weak-btn" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="resetStrokePractice()">🧹 Clear</button>
                     </div>
-                    <div style="position: relative; width: 100%; height: 220px; background: #0f172a; border-radius: 12px; border: 1px dashed #334155; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 0.75rem;">
+                    <!-- Applied kanji-canvas-box here -->
+                    <div class="kanji-canvas-box">
                         <div id="guide-overlay" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; opacity: 0.15; z-index: 2;">
                             <span id="guide-char-text" style="font-size: 140px; font-weight: 800; color: white;">人</span>
                         </div>
                         <canvas id="kana-canvas" width="380" height="220" style="position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; touch-action: none; z-index: 5;"></canvas>
                     </div>
-                    <div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 0.65rem; margin-bottom: 0.75rem;">
-                        <span id="modal-feedback-msg" style="font-size: 0.8rem; color: #a5b4fc; font-weight: 700;">Trace the character above!</span>
-                    </div>
+                    <div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 0.65rem; margin-bottom: 0.75rem;"><span id="modal-feedback-msg" style="font-size: 0.8rem; color: #a5b4fc; font-weight: 700;">Trace the character above!</span></div>
                     <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-top: auto;">
                         <button class="weak-btn" style="padding: 0.5rem 0.85rem; font-size: 0.8rem;" onclick="playStrokeDemo()">🔄 Replay</button>
                         <button class="btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; background: #4f46e5;" onclick="loadNextCharacter()">Next ➔</button>
@@ -213,40 +204,66 @@
                 <div>⏰ Time Left: <strong id="modal-timer" style="color: #f97316;">05:00</strong></div>
                 <div style="display: flex; align-items: center; gap: 0.75rem; width: 35%;">
                     <span>Completed:</span>
-                    <div style="flex: 1; height: 6px; background: #0f172a; border-radius: 3px; overflow: hidden;">
-                        <div id="modal-session-progress" style="width: 0%; height: 100%; background: #6366f1;"></div>
-                    </div>
+                    <div style="flex: 1; height: 6px; background: #0f172a; border-radius: 3px; overflow: hidden;"><div id="modal-session-progress" style="width: 0%; height: 100%; background: #6366f1;"></div></div>
                     <strong id="modal-session-count" style="color: white;">0 / 20</strong>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="js/speech.js"></script>
-    <link rel="stylesheet" href="css/style.css?v=2.0">
-    <script src="js/drills.js?v=2.0"></script>
-    <script src="js/app.js?v=2.0"></script>
+    <script src="js/speech.js?v=14.0"></script>
+    <script src="js/drills.js?v=14.0"></script>
+    <script src="js/app.js?v=14.0"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
-            const username = currentUser.username || localStorage.getItem('kotolab_username') || 'User';
-            document.querySelectorAll('#sidebar-user-name').forEach(el => el && (el.innerText = username));
-            document.querySelectorAll('#sidebar-user-initial').forEach(el => el && (el.innerText = username.charAt(0).toUpperCase()));
-            document.querySelectorAll('#userInitialDisplay').forEach(el => el && (el.innerText = username.charAt(0).toUpperCase()));
+            const uname = currentUser.username || localStorage.getItem('kotolab_username') || 'User';
             
-            setTimeout(() => {
-                const user = localStorage.getItem('kotolab_username') || 'User';
-                const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${user}`) || '{}');
-                const boostedXP = (localProgress.totalCorrect || 0) * 50;
+            document.querySelectorAll('#sidebar-user-name, #user-display-name, #header-greeting-name').forEach(el => el && (el.innerText = uname));
+            document.querySelectorAll('#sidebar-user-initial, #userInitialDisplay, #user-avatar').forEach(el => el && (el.innerText = uname.charAt(0).toUpperCase()));
+            
+            if (currentUser.role === 'admin' || localStorage.getItem('kotolab_role') === 'admin') {
+                const adminNav = document.getElementById('admin-nav-item');
+                if (adminNav) adminNav.style.display = 'block';
+            }
+
+            setTimeout(async () => {
+                let userId = currentUser.id || 3; 
+                let totalXP = 0;
+                
+                try {
+                    const res = await fetch(`/api/user/progress?userId=${userId}`);
+                    const data = await res.json();
+                    if (data && !data.error) totalXP = (data.total_correct || 0) * 50;
+                } catch (e) {
+                    const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${uname}`) || '{}');
+                    totalXP = (localProgress.totalCorrect || 0) * 50;
+                }
+
                 document.querySelectorAll('#stat-total-xp, #xpCountDisplay').forEach(el => {
-                    if (el) el.innerText = boostedXP;
+                    if (el) el.innerText = totalXP;
                 });
-            }, 500);
+
+                if (totalXP >= 600 || currentUser.role === 'admin') {
+                    const sb = document.getElementById('link-sandbox');
+                    if(sb && !sb.classList.contains('active')) { sb.href = 'sandbox.html'; sb.innerHTML = '🧩 Sandbox'; sb.classList.remove('locked'); sb.title = ''; }
+                }
+                if (totalXP >= 2000 || currentUser.role === 'admin') {
+                    const ex = document.getElementById('link-exam');
+                    if(ex && !ex.classList.contains('active')) { ex.href = 'exam.html'; ex.innerHTML = '📝 Exams'; ex.classList.remove('locked'); ex.title = ''; }
+                }
+                if (totalXP >= 100 || currentUser.role === 'admin') {
+                    const an = document.getElementById('link-analytics');
+                    if(an && !an.classList.contains('active')) { an.href = 'analytics.html'; an.innerHTML = '📈 Analytics'; an.classList.remove('locked'); an.title = ''; }
+                }
+            }, 300);
         });
+
         function filterDrillCharacters(query) {
             const searchTerm = query.toLowerCase().trim();
-            document.querySelectorAll('#drills-grid .drill-card').forEach(card => {
-                card.style.display = card.innerText.toLowerCase().includes(searchTerm) ? '' : 'none';
+            document.querySelectorAll('#drills-grid > div, .drill-card, .stat-card').forEach(card => { 
+                card.style.display = card.innerText.toLowerCase().includes(searchTerm) ? '' : 'none'; 
             });
         }
         function openNotifications() { alert("🔔 No unread notifications."); }

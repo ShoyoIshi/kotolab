@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const fs = require('fs');
-const db = require('../config/db');
 
 // Truncates long readings/meanings to keep grid cards uniform and clean
 function formatCardSubtitle(onyomi, kunyomi, meaning) {
@@ -35,7 +34,6 @@ function normalizeDrillItems(items) {
 
         const formatted = formatCardSubtitle(rawOnyomi, rawKunyomi, rawMeaning);
 
-        // Grid cards get primary summary; detailed modal retains full readings
         const readingStr = formatted.summary || (item.romaji || item.reading || '');
 
         return {
@@ -51,7 +49,7 @@ function normalizeDrillItems(items) {
     });
 }
 
-// Read local JSON files from server/data/ directory
+// Read local JSON files from server/data/ directory instantly
 function loadDataFromJsonFile(category) {
     try {
         const cat = category.toLowerCase();
@@ -103,39 +101,18 @@ const hardcodedFallback = {
     ])
 };
 
-// GET /api/drills/:category
+// GET /api/drills/:category - Fast-Tracked Instant Response
 router.get('/:category', async (req, res) => {
     let category = req.params.category ? req.params.category.toLowerCase() : 'hiragana';
     if (category.includes('kanji')) category = 'kanji';
 
-    // Tier 1: Query MySQL 'kanji' table
-    if (category === 'kanji') {
-        try {
-            if (db && typeof db.query === 'function') {
-                const [rows] = await db.query('SELECT * FROM kanji');
-                if (rows && rows.length > 0) {
-                    const normalized = normalizeDrillItems(rows);
-
-                    // If DB rows contain corrupt '?' symbols, bypass to local JSON or hardcoded fallback
-                    const isCorrupted = normalized.some(item => item.char === '?');
-                    if (!isCorrupted) {
-                        return res.json(normalized);
-                    }
-                    console.warn(`[DRILL ROUTE] MySQL 'kanji' returned '?' characters. Bypassing to JSON/Fallback.`);
-                }
-            }
-        } catch (err) {
-            console.warn(`[DRILL ROUTE] MySQL query error: ${err.message}. Trying local JSON files...`);
-        }
-    }
-
-    // Tier 2: Try reading local JSON files
+    // 🚀 Fast Track: Direct local file rendering without database lag
     const fileData = loadDataFromJsonFile(category);
     if (fileData && fileData.length > 0) {
         return res.json(fileData);
     }
 
-    // Tier 3: Hardcoded fallback
+    // Hardcoded fallback if file is missing
     const fallback = hardcodedFallback[category] || hardcodedFallback.hiragana;
     return res.json(fallback);
 });

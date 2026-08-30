@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0b0f19">
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <link rel="manifest" href="manifest.json"> 
     <title>KotoLab - JLPT N5 Learning Dashboard</title>
 
@@ -11,11 +16,19 @@
         if (!localStorage.getItem('kotolab_token')) { 
             window.location.replace('login.html'); 
         }
+        
+        // 🔥 KILL ROGUE SERVICE WORKER CACHE 🔥
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
     </script>
 
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/tailwindcss-cdn@3.4.10/tailwindcss-3.4.10.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css?v=5.0">
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --text-muted: #8fa0bd; }
@@ -58,9 +71,9 @@
                 <li><a href="index.html" class="nav-link active">🏠 Dashboard</a></li>
                 <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
                 <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
-                <li><a href="#" id="link-sandbox" class="nav-link locked" title="Locked">🔒 Sandbox</a></li>
-                <li><a href="#" id="link-exam" class="nav-link locked" title="Locked">🔒 Exams</a></li>
-                <li><a href="analytics.html" class="nav-link">📈 Analytics</a></li>
+                <li><a href="sandbox.html" id="link-sandbox" class="nav-link locked" title="Locked">🔒 Sandbox</a></li>
+                <li><a href="exam.html" id="link-exam" class="nav-link locked" title="Locked">🔒 Exams</a></li>
+                <li><a href="analytics.html" id="link-analytics" class="nav-link">📈 Analytics</a></li>
                 <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
                 <li id="admin-nav-item" style="display: none;">
                     <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
@@ -102,32 +115,92 @@
         <div class="hero-banner bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-6 text-white mb-8 shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h2 class="text-2xl font-bold mb-2">🚀 Start Your Japanese Journey!</h2>
-                <p class="text-indigo-200">Earn XP in Drills quickly with the accelerated XP multiplier!</p>
+                <p class="text-indigo-200">Earn XP in Drills to unlock Basic Vocabulary, Sandbox, and Mock Exams.</p>
             </div>
             <button onclick="window.location.href='drills.html'" class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition shadow-md whitespace-nowrap">Begin Drills</button>
         </div>
 
         <h2 class="text-xl font-bold text-white mb-4">Your Learning Path</h2>
         <div class="learning-path flex flex-col gap-4">
+            
             <div class="module-card bg-[#151e33] p-5 rounded-lg border-l-4 border-green-500 shadow-md">
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
                     <div>
                         <h3 class="text-xl font-bold text-white">🟢 Phase 1: Alphabets (Hiragana & Katakana)</h3>
-                        <p class="text-[#8fa0bd] text-sm mt-1">Master basic Japanese characters with boosted XP gains.</p>
+                        <p class="text-[#8fa0bd] text-sm mt-1">Master basic Japanese characters. (Romaji hints ON)</p>
                     </div>
-                    <button onclick="window.location.href='drills.html'" class="bg-green-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-600 transition w-full md:w-auto">Start</button>
+                    <button onclick="window.location.href='drills.html'" class="bg-green-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-600 transition w-full md:w-auto">Continue</button>
+                </div>
+                <div class="w-full bg-[#0b0f19] rounded-full h-2.5 overflow-hidden">
+                    <div id="bar-phase-1" class="bg-green-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                </div>
+                <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
+                    <span id="progress-text-1">Drills Mastered</span>
+                    <span id="progress-pct-1">0%</span>
+                </div>
+            </div>
+
+            <div id="card-phase-2" class="module-card bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] transition-all duration-300">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
+                    <div>
+                        <h3 id="title-phase-2" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 2: Basic Vocabulary</h3>
+                        <p class="text-gray-500 text-sm mt-1">Learn everyday words. Unlocks at <strong>300 XP</strong>.</p>
+                    </div>
+                    <button id="btn-phase-2" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">Locked</button>
+                </div>
+                <div class="w-full bg-[#0b0f19] rounded-full h-2.5 overflow-hidden border border-[#263552]">
+                    <div id="bar-phase-2" class="bg-blue-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                </div>
+                <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
+                    <span id="progress-text-2">0 / 300 XP</span>
+                    <span id="progress-pct-2">0%</span>
+                </div>
+            </div>
+
+            <div id="card-phase-3" class="module-card bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] transition-all duration-300">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
+                    <div>
+                        <h3 id="title-phase-3" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 3: Grammar Sandbox</h3>
+                        <p class="text-gray-500 text-sm mt-1">Build sentences & practice particles. Unlocks at <strong>600 XP</strong>.</p>
+                    </div>
+                    <button id="btn-phase-3" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">Locked</button>
+                </div>
+                <div class="w-full bg-[#0b0f19] rounded-full h-2.5 overflow-hidden border border-[#263552]">
+                    <div id="bar-phase-3" class="bg-purple-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                </div>
+                <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
+                    <span id="progress-text-3">0 / 600 XP</span>
+                    <span id="progress-pct-3">0%</span>
+                </div>
+            </div>
+
+            <div id="card-phase-4" class="module-card bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] transition-all duration-300">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
+                    <div>
+                        <h3 id="title-phase-4" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 4: N5 Mock Exams</h3>
+                        <p class="text-gray-500 text-sm mt-1">Test your skills in a timed environment. Unlocks at <strong>2000 XP</strong>.</p>
+                    </div>
+                    <button id="btn-phase-4" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">Locked</button>
+                </div>
+                <div class="w-full bg-[#0b0f19] rounded-full h-2.5 overflow-hidden border border-[#263552]">
+                    <div id="bar-phase-4" class="bg-orange-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                </div>
+                <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
+                    <span id="progress-text-4">0 / 2000 XP</span>
+                    <span id="progress-pct-4">0%</span>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="js/speech.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/app.js?v=5.0"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(async () => {
                 let userId = 3; 
                 let totalXP = 0;
+                let hiraganaMastery = 0;
+                let katakanaMastery = 0;
 
                 try {
                     const storedUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
@@ -139,16 +212,35 @@
                     const data = await res.json();
                     if (data && !data.error) {
                         totalXP = (data.total_correct || 0) * 50;
+                        hiraganaMastery = data.hiragana_mastery || 0;
+                        katakanaMastery = data.katakana_mastery || 0;
                     }
                 } catch (e) {
                     const user = localStorage.getItem('kotolab_username') || 'User';
                     const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${user}`) || '{}');
                     totalXP = (localProgress.totalCorrect || 0) * 50;
+                    hiraganaMastery = localProgress.hiraganaMastery || 0;
+                    katakanaMastery = localProgress.katakanaMastery || 0;
                 }
 
                 document.querySelectorAll('.user-xp-display, #stat-total-xp, #xpCountDisplay').forEach(el => {
                     if (el) el.innerText = el.innerText.includes('XP') ? `${totalXP} XP` : totalXP;
                 });
+
+                const phase1Pct = Math.min(100, Math.round(((hiraganaMastery + katakanaMastery) / 2) || (totalXP > 0 ? Math.min(100, (totalXP / 300) * 100) : 0)));
+                const bar1 = document.getElementById('bar-phase-1');
+                const text1 = document.getElementById('progress-text-1');
+                const pct1 = document.getElementById('progress-pct-1');
+                if (bar1) bar1.style.width = `${phase1Pct}%`;
+                if (text1) text1.innerText = phase1Pct === 100 ? 'Completed' : 'In Progress';
+                if (pct1) pct1.innerText = `${phase1Pct}%`;
+
+                updateModuleProgress(2, totalXP, 300, 'card-phase-2', 'title-phase-2', 'btn-phase-2', '🟢 Phase 2: Basic Vocabulary', '#');
+                updateModuleProgress(3, totalXP, 600, 'card-phase-3', 'title-phase-3', 'btn-phase-3', '🟢 Phase 3: Grammar Sandbox', 'sandbox.html');
+                if (totalXP >= 600) unlockSidebarLink('link-sandbox', 'sandbox.html', '🧩 Sandbox');
+
+                updateModuleProgress(4, totalXP, 2000, 'card-phase-4', 'title-phase-4', 'btn-phase-4', '🟢 Phase 4: N5 Mock Exams', 'exam.html');
+                if (totalXP >= 2000) unlockSidebarLink('link-exam', 'exam.html', '📝 Exams');
 
                 const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
                 const uname = currentUser.username || localStorage.getItem('kotolab_username') || 'User';
@@ -157,7 +249,32 @@
             }, 600);
         });
 
-        function openNotifications() { alert("🔔 Notifications: Sandbox & Exams are currently locked."); }
+        function updateModuleProgress(phaseNum, currentXP, targetXP, cardId, titleId, btnId, titleText, url) {
+            const pct = Math.min(100, Math.round((currentXP / targetXP) * 100));
+            const bar = document.getElementById(`bar-phase-${phaseNum}`);
+            const text = document.getElementById(`progress-text-${phaseNum}`);
+            const pctLabel = document.getElementById(`progress-pct-${phaseNum}`);
+
+            if (bar) bar.style.width = `${pct}%`;
+            if (text) text.innerText = `${currentXP} / ${targetXP} XP`;
+            if (pctLabel) pctLabel.innerText = `${pct}%`;
+
+            if (currentXP >= targetXP) {
+                const card = document.getElementById(cardId);
+                const title = document.getElementById(titleId);
+                const btn = document.getElementById(btnId);
+                if (card) { card.classList.remove('opacity-60', 'bg-[#0b0f19]'); card.classList.add('bg-[#151e33]'); card.style.borderLeft = '4px solid #3b82f6'; }
+                if (title) { title.innerText = titleText; title.classList.remove('text-[#8fa0bd]'); title.classList.add('text-white'); }
+                if (btn) { btn.disabled = false; btn.innerText = 'Start'; btn.className = 'bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition w-full md:w-auto cursor-pointer'; btn.onclick = () => window.location.href = url; }
+            }
+        }
+
+        function unlockSidebarLink(linkId, url, text) {
+            const link = document.getElementById(linkId);
+            if (link) { link.href = url; link.innerText = text; link.classList.remove('locked', 'cursor-not-allowed'); link.style.opacity = '1'; }
+        }
+
+        function openNotifications() { alert("🔔 Notifications:\n• Welcome to KotoLab! Check out your daily goals."); }
         function goToSettings() { window.location.href = 'settings.html'; }
     </script>
 </body>

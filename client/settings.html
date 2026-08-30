@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0b0f19">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json"> 
     <title>KotoLab - Account Settings</title>
 
     <script>
-        const token = localStorage.getItem('kotolab_token');
-        if (!token) window.location.href = 'login.html';
+        if (!localStorage.getItem('kotolab_token')) window.location.replace('login.html');
     </script>
 
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/tailwindcss-cdn@3.4.10/tailwindcss-3.4.10.min.js"></script>
+    <link rel="stylesheet" href="css/style.css?v=6.0">
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --text-main: #f8fafc; --text-muted: #8fa0bd; }
@@ -37,7 +39,10 @@
         .user-stats-row { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05); }
 
         .main-wrapper { margin-left: 260px; flex: 1; padding: 2rem 2.5rem; overflow-y: auto; max-height: 100vh; }
-        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        @media (max-width: 1100px) { .sidebar { width: 100%; height: auto; position: relative; padding: 1rem; border-right: none; border-bottom: 1px solid var(--border-color); } .main-wrapper { margin-left: 0; padding: 1.5rem; } }
+
+        /* Settings specific */
         .settings-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 1.5rem; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); }
         .form-group { margin-bottom: 1.25rem; }
         .form-label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem; }
@@ -56,18 +61,15 @@
                     <div style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600;">JLPT N5 Learning</div>
                 </div>
             </div>
-
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
                 <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
                 <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
-                <li><a href="#" id="link-sandbox" class="nav-link locked" title="Locked">🔒 Sandbox</a></li>
-                <li><a href="#" id="link-exam" class="nav-link locked" title="Locked">🔒 Exams</a></li>
-                <li><a href="analytics.html" class="nav-link">📈 Analytics</a></li>
+                <li><a href="sandbox.html" id="link-sandbox" class="nav-link locked" title="Locked">🔒 Sandbox</a></li>
+                <li><a href="exam.html" id="link-exam" class="nav-link locked" title="Locked">🔒 Exams</a></li>
+                <li><a href="analytics.html" id="link-analytics" class="nav-link locked">📈 Analytics</a></li>
                 <li><a href="settings.html" class="nav-link active">⚙️ Settings</a></li>
-                <li id="admin-nav-item" style="display: none;">
-                    <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
-                </li>
+                <li id="admin-nav-item" style="display: none;"><a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a></li>
             </ul>
         </div>
         <div>
@@ -76,11 +78,11 @@
                     <div class="user-avatar" id="sidebar-user-initial">U</div>
                     <div>
                         <div class="user-name" id="sidebar-user-name">User</div>
-                        <div class="user-level" id="sidebar-user-level">N5 Explorer • Level 1</div>
+                        <div class="user-level">N5 Explorer • Level 1</div>
                     </div>
                 </div>
                 <div class="user-stats-row">
-                    <span>❤️ <strong id="user-lives">5</strong></span>
+                    <span>❤️ <strong>5</strong></span>
                     <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
                 </div>
             </div>
@@ -95,7 +97,9 @@
                 <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Manage your profile information, password, and learning preferences.</p>
             </div>
             <div class="top-bar-badges hidden md:flex" style="display: flex; align-items: center; gap: 0.75rem;">
-                <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">⚡ <span id="xpCountDisplay">0</span> XP</div>
+                <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">
+                    ⚡ <span id="xpCountDisplay">0</span> XP
+                </div>
                 <div class="badge-item" onclick="openNotifications()" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24;">🔔</div>
                 <div class="badge-item" onclick="goToSettings()" style="cursor: pointer; background: #6366f1; border: 1px solid #818cf8; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;"><span id="userInitialDisplay">U</span></div>
             </div>
@@ -130,9 +134,10 @@
         </div>
     </main>
 
-    <link rel="stylesheet" href="css/style.css?v=2.0">
-    <script src="js/drills.js?v=2.0"></script>
-    <script src="js/app.js?v=2.0"></script>
+    <script src="js/speech.js?v=6.0"></script>
+    <script src="js/app.js?v=6.0"></script>
+
+    <!-- UNIVERSAL FETCH SCRIPT (Fixes XP bug) -->
     <script>
         function handleLogout() {
             localStorage.removeItem('kotolab_token');
@@ -140,32 +145,6 @@
             localStorage.removeItem('kotolab_username');
             window.location.replace('login.html');
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const cachedUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
-            const username = cachedUser.username || localStorage.getItem('kotolab_username') || 'Shoyo';
-
-            if (document.getElementById('setting-username')) document.getElementById('setting-username').value = username;
-            if (document.getElementById('setting-email') && cachedUser.email) document.getElementById('setting-email').value = cachedUser.email;
-            if (document.getElementById('sidebar-user-name')) document.getElementById('sidebar-user-name').innerText = username;
-            if (document.getElementById('user-display-name')) document.getElementById('user-display-name').innerText = username;
-            if (document.getElementById('sidebar-user-initial')) document.getElementById('sidebar-user-initial').innerText = username.charAt(0).toUpperCase();
-            if (document.getElementById('userInitialDisplay')) document.getElementById('userInitialDisplay').innerText = username.charAt(0).toUpperCase();
-
-            setTimeout(() => {
-                const user = localStorage.getItem('kotolab_username') || 'User';
-                const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${user}`) || '{}');
-                const boostedXP = (localProgress.totalCorrect || 0) * 50;
-                document.querySelectorAll('#stat-total-xp, #xpCountDisplay').forEach(el => {
-                    if (el) el.innerText = boostedXP;
-                });
-            }, 500);
-
-            if (cachedUser.role === 'admin' || localStorage.getItem('kotolab_role') === 'admin') {
-                const adminNav = document.getElementById('admin-nav-item');
-                if (adminNav) adminNav.style.display = 'block';
-            }
-        });
 
         document.getElementById('profile-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -207,6 +186,53 @@
                     msgEl.style.color = '#ef4444'; msgEl.innerText = '⚠️ ' + data.error;
                 }
             } catch (err) { msgEl.style.color = '#ef4444'; msgEl.innerText = 'Server error.'; }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
+            const uname = currentUser.username || localStorage.getItem('kotolab_username') || 'User';
+            
+            if (document.getElementById('setting-username')) document.getElementById('setting-username').value = uname;
+            if (document.getElementById('setting-email') && currentUser.email) document.getElementById('setting-email').value = currentUser.email;
+
+            document.querySelectorAll('#sidebar-user-name, #user-display-name, #header-greeting-name').forEach(el => el && (el.innerText = uname));
+            document.querySelectorAll('#sidebar-user-initial, #userInitialDisplay, #user-avatar').forEach(el => el && (el.innerText = uname.charAt(0).toUpperCase()));
+            
+            if (currentUser.role === 'admin' || localStorage.getItem('kotolab_role') === 'admin') {
+                const adminNav = document.getElementById('admin-nav-item');
+                if (adminNav) adminNav.style.display = 'block';
+            }
+
+            setTimeout(async () => {
+                let userId = currentUser.id || 3; 
+                let totalXP = 0;
+                try {
+                    const res = await fetch(`/api/user/progress?userId=${userId}`);
+                    const data = await res.json();
+                    if (data && !data.error) totalXP = (data.total_correct || 0) * 50;
+                } catch (e) {
+                    const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${uname}`) || '{}');
+                    totalXP = (localProgress.totalCorrect || 0) * 50;
+                }
+
+                document.querySelectorAll('#stat-total-xp, #xpCountDisplay').forEach(el => {
+                    if (el) el.innerText = totalXP;
+                });
+
+                // Unlock Sidebar Globally based on XP
+                if (totalXP >= 600 || currentUser.role === 'admin') {
+                    const sb = document.getElementById('link-sandbox');
+                    if(sb && !sb.classList.contains('active')) { sb.href = 'sandbox.html'; sb.innerHTML = '🧩 Sandbox'; sb.classList.remove('locked'); sb.title = ''; }
+                }
+                if (totalXP >= 2000 || currentUser.role === 'admin') {
+                    const ex = document.getElementById('link-exam');
+                    if(ex && !ex.classList.contains('active')) { ex.href = 'exam.html'; ex.innerHTML = '📝 Exams'; ex.classList.remove('locked'); ex.title = ''; }
+                }
+                if (totalXP >= 100 || currentUser.role === 'admin') {
+                    const an = document.getElementById('link-analytics');
+                    if(an && !an.classList.contains('active')) { an.href = 'analytics.html'; an.innerHTML = '📈 Analytics'; an.classList.remove('locked'); an.title = ''; }
+                }
+            }, 300);
         });
 
         function openNotifications() { alert("🔔 No unread notifications."); }
