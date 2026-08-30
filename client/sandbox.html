@@ -240,47 +240,79 @@
     <!-- UNIVERSAL FETCH SCRIPT (Fixes XP bug) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
-            const uname = currentUser.username || localStorage.getItem('kotolab_username') || 'User';
-            document.querySelectorAll('#sidebar-user-name, #user-display-name, #header-greeting-name').forEach(el => el && (el.innerText = uname));
-            document.querySelectorAll('#sidebar-user-initial, #userInitialDisplay, #user-avatar').forEach(el => el && (el.innerText = uname.charAt(0).toUpperCase()));
-            
-            if (currentUser.role === 'admin' || localStorage.getItem('kotolab_role') === 'admin') {
-                const adminNav = document.getElementById('admin-nav-item');
-                if (adminNav) adminNav.style.display = 'block';
+    // 1. Strict User Authentication Check (No hardcoded fallback IDs)
+    const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
+    if (!currentUser.id) {
+        window.location.replace('login.html');
+        return;
+    }
+
+    const userId = currentUser.id;
+    const uname = currentUser.username || localStorage.getItem('kotolab_username') || 'User';
+
+    // 2. Update UI User Details
+    document.querySelectorAll('#sidebar-user-name, #user-display-name, #header-greeting-name').forEach(el => el && (el.innerText = uname));
+    document.querySelectorAll('#sidebar-user-initial, #userInitialDisplay, #user-avatar').forEach(el => el && (el.innerText = uname.charAt(0).toUpperCase()));
+
+    if (currentUser.role === 'admin' || localStorage.getItem('kotolab_role') === 'admin') {
+        const adminNav = document.getElementById('admin-nav-item');
+        if (adminNav) adminNav.style.display = 'block';
+    }
+
+    // 3. Fetch Live Database Progress & XP (Universal Synchronized Block)
+    setTimeout(async () => {
+        let totalXP = 0;
+        let hiraganaMastery = 0;
+        let katakanaMastery = 0;
+
+        try {
+            const res = await fetch(`/api/user/progress?userId=${userId}`);
+            const data = await res.json();
+            if (data && !data.error) {
+                totalXP = (data.total_correct || 0) * 50;
+                hiraganaMastery = data.hiragana_mastery || 0;
+                katakanaMastery = data.katakana_mastery || 0;
             }
+        } catch (e) {
+            console.error("XP Fetch Error:", e);
+        }
 
-            setTimeout(async () => {
-                let userId = currentUser.id || 3; 
-                let totalXP = 0;
-                try {
-                    const res = await fetch(`/api/user/progress?userId=${userId}`);
-                    const data = await res.json();
-                    if (data && !data.error) totalXP = (data.total_correct || 0) * 50;
-                } catch (e) {
-                    const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${uname}`) || '{}');
-                    totalXP = (localProgress.totalCorrect || 0) * 50;
-                }
-
-                document.querySelectorAll('#stat-total-xp, #xpCountDisplay').forEach(el => {
-                    if (el) el.innerText = totalXP;
-                });
-
-                // Unlock Sidebar Globally based on XP
-                if (totalXP >= 600 || currentUser.role === 'admin') {
-                    const sb = document.getElementById('link-sandbox');
-                    if(sb && !sb.classList.contains('active')) { sb.href = 'sandbox.html'; sb.innerHTML = '🧩 Sandbox'; sb.classList.remove('locked'); sb.title = ''; }
-                }
-                if (totalXP >= 2000 || currentUser.role === 'admin') {
-                    const ex = document.getElementById('link-exam');
-                    if(ex && !ex.classList.contains('active')) { ex.href = 'exam.html'; ex.innerHTML = '📝 Exams'; ex.classList.remove('locked'); ex.title = ''; }
-                }
-                if (totalXP >= 100 || currentUser.role === 'admin') {
-                    const an = document.getElementById('link-analytics');
-                    if(an && !an.classList.contains('active')) { an.href = 'analytics.html'; an.innerHTML = '📈 Analytics'; an.classList.remove('locked'); an.title = ''; }
-                }
-            }, 300);
+        // Reflect exact XP across all badges and counters uniformly
+        document.querySelectorAll('.user-xp-display, #stat-total-xp, #xpCountDisplay').forEach(el => {
+            if (el) el.innerText = el.innerText.includes('XP') ? `${totalXP} XP` : totalXP;
         });
+
+        // Phase 1 Progress Calculation (If element exists on page)
+        const phase1Pct = Math.min(100, Math.round(((hiraganaMastery + katakanaMastery) / 2) || (totalXP > 0 ? Math.min(100, (totalXP / 300) * 100) : 0)));
+        const bar1 = document.getElementById('bar-phase-1');
+        const text1 = document.getElementById('progress-text-1');
+        const pct1 = document.getElementById('progress-pct-1');
+        if (bar1) bar1.style.width = `${phase1Pct}%`;
+        if (text1) text1.innerText = phase1Pct === 100 ? 'Completed' : 'In Progress';
+        if (pct1) pct1.innerText = `${phase1Pct}%`;
+
+        // Module Unlocks & Progress bars (Safely checks if elements exist)
+        if (typeof updateModuleProgress === 'function') {
+            updateModuleProgress(2, totalXP, 300, 'card-phase-2', 'title-phase-2', 'btn-phase-2', '🟢 Phase 2: Basic Vocabulary', 'sandbox.html');
+            updateModuleProgress(3, totalXP, 600, 'card-phase-3', 'title-phase-3', 'btn-phase-3', '🟢 Phase 3: Grammar Sandbox', 'sandbox.html');
+            updateModuleProgress(4, totalXP, 2000, 'card-phase-4', 'title-phase-4', 'btn-phase-4', '🟢 Phase 4: N5 Mock Exams', 'exam.html');
+        }
+
+        // Global Sidebar Unlocking based on Dynamic XP or Admin Role
+        if (totalXP >= 600 || currentUser.role === 'admin') {
+            const sb = document.getElementById('link-sandbox') || document.getElementById('nav-sandbox');
+            if(sb) { sb.href = 'sandbox.html'; sb.innerHTML = '🧩 Sandbox'; sb.classList.remove('locked', 'cursor-not-allowed'); sb.title = ''; sb.style.opacity = '1'; }
+        }
+        if (totalXP >= 2000 || currentUser.role === 'admin') {
+            const ex = document.getElementById('link-exam') || document.getElementById('nav-exam');
+            if(ex) { ex.href = 'exam.html'; ex.innerHTML = '📝 Exams'; ex.classList.remove('locked', 'cursor-not-allowed'); ex.title = ''; ex.style.opacity = '1'; }
+        }
+        if (totalXP >= 100 || currentUser.role === 'admin') {
+            const an = document.getElementById('link-analytics') || document.getElementById('nav-analytics');
+            if(an) { an.href = 'analytics.html'; an.innerHTML = '📈 Analytics'; an.classList.remove('locked', 'cursor-not-allowed'); an.title = ''; an.style.opacity = '1'; }
+        }
+    }, 300);
+});
 
         function openNotifications() { alert("🔔 No unread notifications."); }
         function goToSettings() { window.location.href = 'settings.html'; }

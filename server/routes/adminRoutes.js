@@ -7,34 +7,21 @@ router.get(['/students', '/users'], async (req, res) => {
     try {
         // PostgreSQL compatible query using .rows instead of array destructuring
         const result = await db.query(`
-            SELECT 
-                u.id, 
-                u.username, 
-                u.email, 
-                u.role, 
-                u.user_level,
-                u.streak_count,
-                u.created_at,
-                COALESCE(up_stats.lessons_completed, 0) AS lessons_completed,
-                COALESCE(pa_stats.total_attempts, 0) AS total_attempts,
-                COALESCE(pa_stats.accuracy, 0) AS accuracy
-            FROM users u
-            LEFT JOIN (
-                SELECT user_id, COUNT(id) AS lessons_completed
-                FROM user_progress
-                GROUP BY user_id
-            ) up_stats ON u.id = up_stats.user_id
-            LEFT JOIN (
-                SELECT 
-                    user_id, 
-                    COUNT(id) AS total_attempts,
-                    ROUND(AVG(CASE WHEN is_correct = 1 THEN 100 ELSE 0 END)) AS accuracy
-                FROM practice_attempts
-                GROUP BY user_id
-            ) pa_stats ON u.id = pa_stats.user_id
-            ORDER BY u.id DESC
-        `);
-
+    SELECT 
+        u.id, 
+        u.username, 
+        u.email, 
+        u.role, 
+        u.user_level,
+        u.streak_count,
+        u.created_at,
+        COALESCE(up.lessons_completed, 0) AS lessons_completed,
+        COALESCE(up.total_correct, 0) AS total_attempts,
+        COALESCE(up.overall_accuracy, 0) AS accuracy
+    FROM users u
+    LEFT JOIN user_progress up ON u.id = up.user_id
+    ORDER BY u.id DESC
+`);
         const rows = result.rows || [];
 
         // Compute aggregate metrics for top dashboard cards

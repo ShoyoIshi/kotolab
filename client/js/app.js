@@ -48,18 +48,12 @@ async function globalDatabaseSync() {
     document.querySelectorAll('.user-name, #user-display-name, #header-greeting-name, #sidebar-user-name').forEach(el => el && (el.innerText = uname));
     document.querySelectorAll('.user-avatar, #user-avatar, #top-user-avatar, #userInitialDisplay, #sidebar-user-initial').forEach(el => el && (el.innerText = uname.charAt(0).toUpperCase()));
     
-    // 🚀 UNIVERSAL XP FIX (Targets all possible IDs across Conversation, Drills, Exams)
-    const totalXP = (p.total_correct || 0) * 10;
+    // 🚀 TARGETED XP SYNC (Only updates designated badges and counters safely)
+    const totalXP = (p.total_correct || 0) * 50;
     document.querySelectorAll('.user-xp-display, #stat-total-xp, #xpCountDisplay').forEach(el => {
         if (el) {
-            if (el.textContent.includes('XP')) el.textContent = el.textContent.replace(/\d+\s*XP(?:\s*XP)*/gi, `${totalXP} XP`);
+            if (el.textContent.includes('XP')) el.textContent = `${totalXP} XP`;
             else el.textContent = totalXP;
-        }
-    });
-
-    document.querySelectorAll('span, div, b, strong').forEach(el => {
-        if (el.children.length === 0 && el.textContent.includes('XP')) {
-            el.textContent = el.textContent.replace(/\d+\s*XP(?:\s*XP)*/gi, `${totalXP} XP`);
         }
     });
 
@@ -90,40 +84,7 @@ async function globalDatabaseSync() {
     }
 
     if (!isNewUser) {
-        // Aggressive Dashboard Percentage Replacer
-        document.querySelectorAll('span, strong, div, p, h2, h3').forEach(el => {
-            const txt = el.textContent.trim();
-            if (txt.match(/^([0-9]+)%$/)) { 
-                const container = el.closest('.lesson-card, .bg-card, li, .flex, .metric-row') || el.parentElement;
-                if (!container) return;
-                const contextText = container.textContent;
-
-                let targetVal = null;
-                if (contextText.includes('Grammar Sandbox') || contextText.includes('Particles') || contextText.includes('Basic Sentences') || contextText.includes('Grammar')) {
-                    targetVal = p.grammar_mastery;
-                } else if (contextText.includes('Hiragana')) {
-                    targetVal = p.hiragana_mastery;
-                } else if (contextText.includes('Katakana')) {
-                    targetVal = p.katakana_mastery;
-                } else if (contextText.includes('Character Drills')) {
-                    targetVal = Math.max(p.hiragana_mastery || 0, p.katakana_mastery || 0);
-                } else if (contextText.includes('Kanji')) {
-                    targetVal = p.kanji_mastery;
-                } else if (contextText.includes('Vocabulary') || contextText.includes('Expressions')) {
-                    targetVal = p.vocabulary_mastery;
-                } else if (contextText.includes('Mock Exam') || contextText.includes('Listening') || contextText.includes('Overall')) {
-                    targetVal = p.overall_accuracy;
-                } else if (contextText.includes('Reading')) {
-                    targetVal = Math.max(p.kanji_mastery || 0, p.overall_accuracy || 0);
-                }
-
-                if (targetVal !== null) {
-                    el.textContent = `${Number(targetVal).toFixed(0)}%`;
-                }
-            }
-        });
-
-        // Aggressive Progress Bar Filler
+        // Aggressive Progress Bar Filler for valid containers
         document.querySelectorAll('.lesson-card, .bg-card, .sandbox-card, [class*="rounded-xl"]').forEach(card => {
             const text = card.textContent || '';
             let targetVal = null;
@@ -295,11 +256,15 @@ function renderCurrentQuestion() {
 
         bodyHTML = `
             <div style="font-size: 0.85rem; color: var(--accent-blue); font-weight: 700; margin-bottom: 0.5rem;">Question ${currentQuestionIndex + 1}: Select the missing particle</div>
-            <div style="background: #111827; padding: 1.25rem; border-radius: 12px; font-size: 1.25rem; color: white; margin-bottom: 1rem; text-align: center; border: 1px solid var(--border-color);">
-                <span class="jp-hover-term" onclick="playAudioPromptText('${fullText}')">
-                    ${q.before} <span id="particle-blank-slot" style="color: var(--accent-blue); font-weight: 800; border-bottom: 2px dashed var(--accent-blue); padding: 0 10px; display: inline-block;">___</span> ${q.after}
-                    <span class="tooltip-text">${q.meaning}</span>
-                </span>
+            <div style="background: #111827; padding: 1.25rem; border-radius: 12px; text-align: center; margin-bottom: 1rem; border: 1px solid var(--border-color);">
+                <div style="font-size: 1.4rem; color: white; font-weight: 800; margin-bottom: 0.5rem; cursor: pointer;" onclick="playAudioPromptText('${fullText}')">
+                    <span class="jp-hover-term">
+                        ${q.before} <span id="particle-blank-slot" style="color: var(--accent-blue); font-weight: 800; border-bottom: 2px dashed var(--accent-blue); padding: 0 10px; display: inline-block;">___</span> ${q.after} 🔊
+                    </span>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">
+                    Meaning: ${q.meaning}
+                </div>
             </div>
             <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">Select missing particle:</div>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
@@ -341,13 +306,17 @@ function renderCurrentQuestion() {
         activeAudioPromptText = q.phrase;
         bodyHTML = `
             <div style="font-size: 0.75rem; color: var(--accent-blue); font-weight: 700; margin-bottom: 0.2rem;">Question ${currentQuestionIndex + 1}: Expression Drill</div>
-            <div style="font-size: 1.8rem; font-weight: 800; color: white; text-align: center; margin: 0.5rem 0;">
-                <span class="jp-hover-term" onclick="playAudioPromptText('${q.phrase}')">
-                    ${q.phrase}
-                    <span class="tooltip-text">Reading: ${q.romaji || q.phrase}</span>
-                </span>
+            <div style="background: #111827; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.25rem; text-align: center; margin-bottom: 1rem;">
+                <div style="font-size: 2.2rem; font-weight: 800; color: white; margin-bottom: 0.5rem; cursor: pointer;" onclick="playAudioPromptText('${q.phrase}')">
+                    ${q.phrase} 🔊
+                </div>
+                <div style="font-size: 0.95rem; color: var(--accent-blue); font-weight: 600; margin-bottom: 0.35rem;">
+                    Reading: ${q.romaji || q.phrase}
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);">
+                    Meaning: ${q.meaning}
+                </div>
             </div>
-            <div style="font-size: 0.8rem; text-align: center; color: var(--text-muted); margin-bottom: 1.25rem;">Meaning: ${q.meaning}</div>
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                 ${q.options.map((opt, idx) => `
                     <button class="tile-btn" id="expr-opt-${idx}" style="text-align: left;" onclick="checkMultipleChoiceAnswer(${idx}, ${q.correct}, '${q.meaning}')">${opt}</button>
@@ -405,14 +374,15 @@ function renderCurrentQuestion() {
         bodyHTML = `
             <div style="font-size: 0.75rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 0.3rem;">Vocabulary Word ${currentQuestionIndex + 1} of ${data.questions.length}</div>
             <div style="background: #111827; border: 1px solid var(--border-color); border-radius: 14px; padding: 1.25rem; text-align: center; margin-bottom: 1rem;">
-                <div style="font-size: 2.2rem; font-weight: 800; color: white; margin-bottom: 0.25rem;">
-                    <span class="jp-hover-term" onclick="playAudioPromptText('${q.word}')">
-                        ${q.word}
-                        <span class="tooltip-text">Furigana: ${q.reading}</span>
-                    </span>
+                <div style="font-size: 2.2rem; font-weight: 800; color: white; margin-bottom: 0.4rem; cursor: pointer;" onclick="playAudioPromptText('${q.word}')">
+                    ${q.word} 🔊
                 </div>
-                <div style="font-size: 0.9rem; color: var(--accent-blue); font-weight: 600;">${q.reading}</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">Usage: <em>${q.example}</em></div>
+                <div style="font-size: 1rem; color: var(--accent-blue); font-weight: 600; margin-bottom: 0.4rem;">
+                    Furigana: ${q.reading}
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">
+                    Usage: <em>${q.example}</em>
+                </div>
             </div>
             <div style="font-size: 0.85rem; color: white; font-weight: 700; margin-bottom: 0.65rem;">${q.question}</div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
@@ -634,12 +604,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const user = localStorage.getItem('kotolab_username') || 'User';
         const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${user}`) || '{}');
         if (localProgress.totalCorrect) {
-            totalXP = localProgress.totalCorrect * 10;
+            totalXP = localProgress.totalCorrect * 50;
         }
     } catch(e) {}
 
-    // 2. Global Unlock Triggers based on XP thresholds
-    // Sandbox unlocks at 600 XP, Exams at 2000 XP, Analytics after Phase 1 (e.g. 100 XP)
+    // 2. Global Unlock Triggers based on XP thresholds (600, 1500, 2500)
     if (totalXP >= 100) {
         const anLink = document.getElementById('nav-analytics');
         if (anLink) { anLink.classList.remove('locked'); anLink.innerHTML = '📈 Analytics'; anLink.href = 'analytics.html'; }
@@ -648,7 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const sbLink = document.getElementById('nav-sandbox');
         if (sbLink) { sbLink.classList.remove('locked'); sbLink.innerHTML = '🧩 Sandbox'; sbLink.href = 'sandbox.html'; }
     }
-    if (totalXP >= 2000) {
+    if (totalXP >= 2500) {
         const exLink = document.getElementById('nav-exam');
         if (exLink) { exLink.classList.remove('locked'); exLink.innerHTML = '📝 Exams'; exLink.href = 'exam.html'; }
     }
@@ -664,5 +633,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-

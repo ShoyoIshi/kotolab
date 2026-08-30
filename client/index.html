@@ -73,7 +73,7 @@
                 <li><a href="conversation.html" class="nav-link">💬 Conversation</a></li>
                 <li><a href="sandbox.html" id="link-sandbox" class="nav-link locked" title="Locked">🔒 Sandbox</a></li>
                 <li><a href="exam.html" id="link-exam" class="nav-link locked" title="Locked">🔒 Exams</a></li>
-                <li><a href="analytics.html" id="link-analytics" class="nav-link">📈 Analytics</a></li>
+                <li><a href="analytics.html" class="nav-link">📈 Analytics</a></li>
                 <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
                 <li id="admin-nav-item" style="display: none;">
                     <a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a>
@@ -144,7 +144,7 @@
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
                     <div>
                         <h3 id="title-phase-2" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 2: Basic Vocabulary</h3>
-                        <p class="text-gray-500 text-sm mt-1">Learn everyday words. Unlocks at <strong>300 XP</strong>.</p>
+                        <p class="text-gray-500 text-sm mt-1">Learn everyday words. Unlocks at <strong>600 XP</strong>.</p>
                     </div>
                     <button id="btn-phase-2" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">Locked</button>
                 </div>
@@ -152,7 +152,7 @@
                     <div id="bar-phase-2" class="bg-blue-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
                 </div>
                 <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
-                    <span id="progress-text-2">0 / 300 XP</span>
+                    <span id="progress-text-2">0 / 600 XP</span>
                     <span id="progress-pct-2">0%</span>
                 </div>
             </div>
@@ -161,7 +161,7 @@
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
                     <div>
                         <h3 id="title-phase-3" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 3: Grammar Sandbox</h3>
-                        <p class="text-gray-500 text-sm mt-1">Build sentences & practice particles. Unlocks at <strong>600 XP</strong>.</p>
+                        <p class="text-gray-500 text-sm mt-1">Build sentences & practice particles. Unlocks at <strong>1500 XP</strong>.</p>
                     </div>
                     <button id="btn-phase-3" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">Locked</button>
                 </div>
@@ -169,7 +169,7 @@
                     <div id="bar-phase-3" class="bg-purple-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
                 </div>
                 <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
-                    <span id="progress-text-3">0 / 600 XP</span>
+                    <span id="progress-text-3">0 / 1500 XP</span>
                     <span id="progress-pct-3">0%</span>
                 </div>
             </div>
@@ -178,7 +178,7 @@
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
                     <div>
                         <h3 id="title-phase-4" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 4: N5 Mock Exams</h3>
-                        <p class="text-gray-500 text-sm mt-1">Test your skills in a timed environment. Unlocks at <strong>2000 XP</strong>.</p>
+                        <p class="text-gray-500 text-sm mt-1">Test your skills in a timed environment. Unlocks at <strong>2500 XP</strong>.</p>
                     </div>
                     <button id="btn-phase-4" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">Locked</button>
                 </div>
@@ -186,7 +186,7 @@
                     <div id="bar-phase-4" class="bg-orange-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
                 </div>
                 <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
-                    <span id="progress-text-4">0 / 2000 XP</span>
+                    <span id="progress-text-4">0 / 2500 XP</span>
                     <span id="progress-pct-4">0%</span>
                 </div>
             </div>
@@ -196,16 +196,19 @@
     <script src="js/app.js?v=5.0"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
+            if (!currentUser.id) {
+                window.location.replace('login.html');
+                return;
+            }
+
+            const userId = currentUser.id;
+            const uname = currentUser.username || 'User';
+
             setTimeout(async () => {
-                let userId = 3; 
                 let totalXP = 0;
                 let hiraganaMastery = 0;
                 let katakanaMastery = 0;
-
-                try {
-                    const storedUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
-                    if (storedUser && storedUser.id) { userId = storedUser.id; }
-                } catch(err) {}
 
                 try {
                     const res = await fetch(`/api/user/progress?userId=${userId}`);
@@ -216,18 +219,16 @@
                         katakanaMastery = data.katakana_mastery || 0;
                     }
                 } catch (e) {
-                    const user = localStorage.getItem('kotolab_username') || 'User';
-                    const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${user}`) || '{}');
-                    totalXP = (localProgress.totalCorrect || 0) * 50;
-                    hiraganaMastery = localProgress.hiraganaMastery || 0;
-                    katakanaMastery = localProgress.katakanaMastery || 0;
+                    console.error("XP Fetch Error:", e);
                 }
 
+                // Exact XP display update
                 document.querySelectorAll('.user-xp-display, #stat-total-xp, #xpCountDisplay').forEach(el => {
                     if (el) el.innerText = el.innerText.includes('XP') ? `${totalXP} XP` : totalXP;
                 });
 
-                const phase1Pct = Math.min(100, Math.round(((hiraganaMastery + katakanaMastery) / 2) || (totalXP > 0 ? Math.min(100, (totalXP / 300) * 100) : 0)));
+                // Phase 1 progress
+                const phase1Pct = Math.min(100, Math.round(((hiraganaMastery + katakanaMastery) / 2) || (totalXP > 0 ? Math.min(100, (totalXP / 600) * 100) : 0)));
                 const bar1 = document.getElementById('bar-phase-1');
                 const text1 = document.getElementById('progress-text-1');
                 const pct1 = document.getElementById('progress-pct-1');
@@ -235,37 +236,59 @@
                 if (text1) text1.innerText = phase1Pct === 100 ? 'Completed' : 'In Progress';
                 if (pct1) pct1.innerText = `${phase1Pct}%`;
 
-                updateModuleProgress(2, totalXP, 300, 'card-phase-2', 'title-phase-2', 'btn-phase-2', '🟢 Phase 2: Basic Vocabulary', '#');
-                updateModuleProgress(3, totalXP, 600, 'card-phase-3', 'title-phase-3', 'btn-phase-3', '🟢 Phase 3: Grammar Sandbox', 'sandbox.html');
-                if (totalXP >= 600) unlockSidebarLink('link-sandbox', 'sandbox.html', '🧩 Sandbox');
+                // 🎯 Exact Phase Thresholds Update (600, 1500, 2500 with live totalXP)
+                updateModuleProgress(2, totalXP, 600, 'card-phase-2', 'title-phase-2', 'btn-phase-2', '🟢 Phase 2: Basic Vocabulary', 'sandbox.html');
+                updateModuleProgress(3, totalXP, 1500, 'card-phase-3', 'title-phase-3', 'btn-phase-3', '🟢 Phase 3: Grammar Sandbox', 'sandbox.html');
+                updateModuleProgress(4, totalXP, 2500, 'card-phase-4', 'title-phase-4', 'btn-phase-4', '🟢 Phase 4: N5 Mock Exams', 'exam.html');
 
-                updateModuleProgress(4, totalXP, 2000, 'card-phase-4', 'title-phase-4', 'btn-phase-4', '🟢 Phase 4: N5 Mock Exams', 'exam.html');
-                if (totalXP >= 2000) unlockSidebarLink('link-exam', 'exam.html', '📝 Exams');
+                // Sidebar Unlocks based on new thresholds
+                if (totalXP >= 1500 || currentUser.role === 'admin') {
+                    const sb = document.getElementById('link-sandbox');
+                    if(sb) { sb.href = 'sandbox.html'; sb.innerHTML = '🧩 Sandbox'; sb.classList.remove('locked', 'cursor-not-allowed'); sb.style.opacity = '1'; }
+                }
+                if (totalXP >= 2500 || currentUser.role === 'admin') {
+                    const ex = document.getElementById('link-exam');
+                    if(ex) { ex.href = 'exam.html'; ex.innerHTML = '📝 Exams'; ex.classList.remove('locked', 'cursor-not-allowed'); ex.style.opacity = '1'; }
+                }
 
-                const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
-                const uname = currentUser.username || localStorage.getItem('kotolab_username') || 'User';
                 document.querySelectorAll('#user-display-name, #header-greeting-name').forEach(el => el && (el.innerText = uname));
                 document.querySelectorAll('#user-avatar, #userInitialDisplay').forEach(el => el && (el.innerText = uname.charAt(0).toUpperCase()));
-            }, 600);
+            }, 300);
         });
 
+        // Safe Progress Bar Calculation (Prevents % overflow past 100)
         function updateModuleProgress(phaseNum, currentXP, targetXP, cardId, titleId, btnId, titleText, url) {
-            const pct = Math.min(100, Math.round((currentXP / targetXP) * 100));
+            const pct = Math.min(100, Math.max(0, Math.round((currentXP / targetXP) * 100)));
+            
             const bar = document.getElementById(`bar-phase-${phaseNum}`);
             const text = document.getElementById(`progress-text-${phaseNum}`);
             const pctLabel = document.getElementById(`progress-pct-${phaseNum}`);
 
             if (bar) bar.style.width = `${pct}%`;
-            if (text) text.innerText = `${currentXP} / ${targetXP} XP`;
+            
+            if (text) text.innerText = `${currentXP} / ${targetXP} XP`; 
             if (pctLabel) pctLabel.innerText = `${pct}%`;
 
             if (currentXP >= targetXP) {
                 const card = document.getElementById(cardId);
                 const title = document.getElementById(titleId);
                 const btn = document.getElementById(btnId);
-                if (card) { card.classList.remove('opacity-60', 'bg-[#0b0f19]'); card.classList.add('bg-[#151e33]'); card.style.borderLeft = '4px solid #3b82f6'; }
-                if (title) { title.innerText = titleText; title.classList.remove('text-[#8fa0bd]'); title.classList.add('text-white'); }
-                if (btn) { btn.disabled = false; btn.innerText = 'Start'; btn.className = 'bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition w-full md:w-auto cursor-pointer'; btn.onclick = () => window.location.href = url; }
+                if (card) { 
+                    card.classList.remove('opacity-60', 'bg-[#0b0f19]'); 
+                    card.classList.add('bg-[#151e33]'); 
+                    card.style.borderLeft = '4px solid #3b82f6'; 
+                }
+                if (title) { 
+                    title.innerText = titleText; 
+                    title.classList.remove('text-[#8fa0bd]'); 
+                    title.classList.add('text-white'); 
+                }
+                if (btn) { 
+                    btn.disabled = false; 
+                    btn.innerText = 'Start'; 
+                    btn.className = 'bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition w-full md:w-auto cursor-pointer'; 
+                    btn.onclick = () => window.location.href = url; 
+                }
             }
         }
 

@@ -23,7 +23,6 @@ app.get('/', (req, res) => {
 
 // 2. Serve static assets from client folder
 app.use(express.static(path.join(__dirname, '../client')));
-
 // -------------------------------------------------------------
 // Core AI Endpoints (Using Groq openai/gpt-oss-120b)
 // -------------------------------------------------------------
