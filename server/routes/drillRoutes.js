@@ -3,8 +3,8 @@ const router = express.Router();
 const path = require('path');
 const fs = require('fs');
 
-// 🚨 IMPORTANT: Apna Supabase client yahan import zaroor karna
-// Example: const supabase = require('../config/supabaseClient');
+// 🚨 IMPORTANT: Apna Supabase database client import karein
+const db = require('../config/db');
 
 // Truncates long readings/meanings to keep grid cards uniform and clean
 function formatCardSubtitle(onyomi, kunyomi, meaning) {
@@ -107,29 +107,55 @@ router.get('/:category', async (req, res) => {
     return res.json(fallback);
 });
 
-// POST /api/drills/mastery - Update character mastery after a drill
+// POST /api/drills/mastery - Update character mastery in Supabase (Fixed)
 router.post('/mastery', async (req, res) => {
-  try {
-    const { userId, characterId, accuracy, isCorrect } = req.body;
-
-    // Supabase upsert logic
-    const { data, error } = await supabase
-      .from('user_character_mastery')
-      .upsert([
-        { 
-          user_id: userId, 
-          character_id: characterId, 
-          accuracy_score: accuracy, 
-          practiced_count: 1, 
-          last_practiced_at: new Date() 
-        }
-      ], { onConflict: ['user_id', 'character_id'] });
-
-    if (error) throw error;
-    res.status(200).json({ success: true, data });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+    try {
+        const { userId, characterId, accuracy } = req.body;
+        
+        const query = `
+            INSERT INTO user_character_mastery (user_id, character_id, mastery_level)
+            VALUES ($1, $2, $3)
+            ON CONFLICT (user_id, character_id) 
+            DO UPDATE SET 
+                mastery_level = EXCLUDED.mastery_level
+            RETURNING *;
+        `;
+        
+        const result = await db.query(query, [userId || 3, characterId, Math.round(accuracy)]);
+        res.status(200).json({ success: true, data: result.rows[0] });
+    } catch (err) {
+        console.error("Mastery Save Error:", err);
+        res.status(500).json({ error: err.message });
+    }
 });
+
+router.post('/api/user/practice-attempt', async (req, res) => {
+    try {
+        const { userId, isCorrect, errorType, userInput, expectedValue } = req.body;
+
+        // Ensure table columns match your Supabase 'practice_attempts' table schema
+        const query = `
+            INSERT INTO practice_attempts (user_id, is_correct, error_type, user_input, expected_value, created_at)
+            VALUES ($1, $2, $3, $4, $5, NOW())
+            RETURNING *;
+        `;
+        
+        const result = await db.query(query, [
+            userId || 3, 
+            isCorrect ?? false, 
+            errorType || 'General', 
+            userInput || '', 
+            expectedValue || ''
+        ]);
+
+        res.status(200).json({ success: true, data: result.rows[0] });
+    } catch (err) {
+        console.error("Practice Attempt Save Error:", err.message);
+        // Fallback response taaki 500 crash na ho aur app chalti rahe
+        res.status(200).json({ success: false, error: err.message });
+    }
+});
+
+module.exports = router;
 
 module.exports = router;

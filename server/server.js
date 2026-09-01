@@ -433,12 +433,12 @@ app.post('/api/analytics/error-log', async (req, res) => {
         const { userId, errorTag, userSentence, expectedSentence } = req.body;
 
         const query = `
-            INSERT INTO user_error_logs (user_id, error_tag, user_input, expected_input, logged_at)
+            INSERT INTO user_error_logs (user_id, error_type, user_input, expected_value, created_at)
             VALUES ($1, $2, $3, $4, NOW())
             RETURNING *;
         `;
         
-        const result = await db.query(query, [userId, errorTag, userSentence, expectedSentence]);
+        const result = await db.query(query, [userId || 3, errorTag, userSentence, expectedSentence]);
         res.status(200).json({ success: true, data: result.rows[0] });
     } catch (err) {
         console.error("Error Log Failed:", err);
@@ -486,6 +486,33 @@ app.post('/api/user/character-mastery', async (req, res) => {
     } catch (err) {
         console.error('Error saving character mastery:', err);
         res.status(500).json({ error: 'Failed to save character mastery' });
+    }
+});
+
+// ==========================================
+// FIX: Analytics Summary Endpoint
+// ==========================================
+app.get('/api/analytics/summary', async (req, res) => {
+    try {
+        const userId = req.query.userId || 3;
+        const result = await db.query('SELECT * FROM user_progress WHERE user_id = $1 LIMIT 1', [userId]);
+        
+        if (result.rows.length === 0) {
+            return res.json({ 
+                success: true, 
+                overall_accuracy: 0, 
+                total_correct: 0, 
+                study_time_minutes: 0,
+                lessons_completed: 0 
+            });
+        }
+        res.json({ 
+            success: true, 
+            data: result.rows[0] 
+        });
+    } catch (err) {
+        console.error("Analytics Summary Error:", err);
+        res.status(500).json({ success: false, error: err.message });
     }
 });
 

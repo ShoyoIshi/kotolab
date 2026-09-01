@@ -425,9 +425,15 @@ async function checkParticleAnswer(selectedParticle, targetParticle, idx, explan
         if (blankSlot) { blankSlot.style.color = '#22c55e'; blankSlot.style.borderColor = '#22c55e'; }
         playAudioPromptText(fullSentence);
         recordSandboxSuccess(); 
+        
+        // 🚀 Track Correct Attempt
+        trackUserAnswer(true);
     } else {
         btn.classList.add('option-incorrect');
         if (blankSlot) { blankSlot.style.color = '#ef4444'; blankSlot.style.borderColor = '#ef4444'; }
+        
+        // 🚀 Track Incorrect Attempt & Error Log
+        trackUserAnswer(false, 'Particle-Selection-Error', selectedParticle, targetParticle);
     }
 
     aiText.innerHTML = `<span style="color: ${isCorrect ? '#22c55e' : '#ef4444'}; font-weight: 700;">${isCorrect ? '✅ Correct Particle 「' + selectedParticle + '」!' : '❌ Incorrect Particle'}</span><br>${explanation}`;
@@ -451,6 +457,9 @@ async function verifySentence(targetSentence) {
     if (isMatch) {
         playAudioPromptText(targetSentence);
         recordSandboxSuccess();
+        trackUserAnswer(true); // 🚀 Track Correct
+    } else {
+        trackUserAnswer(false, 'Sentence-Structure-Error', builtVal || cleanInput, cleanTarget); // 🚀 Track Error
     }
 
     aiText.innerHTML = isMatch 
@@ -461,13 +470,17 @@ async function verifySentence(targetSentence) {
 function checkMultipleChoiceAnswer(selectedIdx, correctIdx, explanation) {
     const clickedBtn = event.target;
     const aiText = document.getElementById('ai-coach-feedback');
-    if (selectedIdx === correctIdx) {
+    const isCorrect = (selectedIdx === correctIdx);
+
+    if (isCorrect) {
         clickedBtn.classList.add('option-correct');
         aiText.innerHTML = `<span style="color: #22c55e; font-weight: 700;">✅ Correct!</span><br>${explanation}`;
         recordSandboxSuccess(); 
+        trackUserAnswer(true); // 🚀 Track Correct
     } else {
         clickedBtn.classList.add('option-incorrect');
         aiText.innerHTML = `<span style="color: #ef4444; font-weight: 700;">❌ Incorrect</span><br>${explanation}`;
+        trackUserAnswer(false, 'Multiple-Choice-Error', `Option Index: ${selectedIdx}`, `Correct Index: ${correctIdx}`); // 🚀 Track Error
     }
 }
 
@@ -553,6 +566,49 @@ function playAudioPromptText(customText) {
     }
 }
 
+// ==========================================
+// 🚀 UNIVERSAL ATTEMPT & ERROR TRACKER
+// ==========================================
+function trackUserAnswer(isCorrect, errorType, userInput, expectedValue) {
+    const userId = getCurrentUserId();
+
+    // 1. Log Practice Attempt
+    fetch('/api/user/practice-attempt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            userId: userId,
+            isCorrect: isCorrect,
+            errorType: errorType || 'General-Error',
+            userInput: userInput || '',
+            expectedValue: expectedValue || ''
+        })
+    }).catch(err => console.error('Practice attempt log failed:', err));
+
+    // 2. Log Error if Incorrect
+    if (!isCorrect) {
+        logUserMistake(errorType, userInput, expectedValue);
+    }
+}
+
+// Error Logging Helper Function
+function logUserMistake(errorTag, userSentence, expectedSentence) {
+    const userId = getCurrentUserId();
+    
+    fetch('/api/analytics/error-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            userId: userId,
+            errorTag: errorTag || 'General-Particle-Error',
+            userSentence: userSentence || '',
+            expectedSentence: expectedSentence || ''
+        })
+    })
+    .then(res => res.json())
+    .then(data => console.log('Error logged to Supabase successfully:', data))
+    .catch(err => console.error('Failed to log error:', err));
+}
 
 // ==========================================
 // 5. GRAMMAR NOTES FETCH HANDLER
@@ -608,41 +664,3 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Setup failed: ', err));
     });
 }
-
-// --- GLOBAL SIDEBAR & LOCK SYNC SCRIPT ---
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Calculate User XP
-    let totalXP = 0;
-    try {
-        const user = localStorage.getItem('kotolab_username') || 'User';
-        const localProgress = JSON.parse(localStorage.getItem(`kotolab_progress_${user}`) || '{}');
-        if (localProgress.totalCorrect) {
-            totalXP = localProgress.totalCorrect * 50;
-        }
-    } catch(e) {}
-
-    // 2. Global Unlock Triggers based on XP thresholds (600, 1500, 2500)
-    if (totalXP >= 100) {
-        const anLink = document.getElementById('nav-analytics');
-        if (anLink) { anLink.classList.remove('locked'); anLink.innerHTML = '📈 Analytics'; anLink.href = 'analytics.html'; }
-    }
-    if (totalXP >= 600) {
-        const sbLink = document.getElementById('nav-sandbox');
-        if (sbLink) { sbLink.classList.remove('locked'); sbLink.innerHTML = '🧩 Sandbox'; sbLink.href = 'sandbox.html'; }
-    }
-    if (totalXP >= 2500) {
-        const exLink = document.getElementById('nav-exam');
-        if (exLink) { exLink.classList.remove('locked'); exLink.innerHTML = '📝 Exams'; exLink.href = 'exam.html'; }
-    }
-
-    // 3. Highlight current active page automatically
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.nav-menu .nav-link').forEach(link => {
-        const href = link.getAttribute('href');
-        if (href === currentPage) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
-});
