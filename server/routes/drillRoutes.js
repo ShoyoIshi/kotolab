@@ -3,6 +3,9 @@ const router = express.Router();
 const path = require('path');
 const fs = require('fs');
 
+// 🚨 IMPORTANT: Apna Supabase client yahan import zaroor karna
+// Example: const supabase = require('../config/supabaseClient');
+
 // Truncates long readings/meanings to keep grid cards uniform and clean
 function formatCardSubtitle(onyomi, kunyomi, meaning) {
     const primaryOn = onyomi ? onyomi.split(',')[0].trim() : '';
@@ -27,13 +30,11 @@ function normalizeDrillItems(items) {
     if (!Array.isArray(items)) return [];
     return items.map(item => {
         const charSymbol = item.kanji_char || item.char || item.kanji || item.character || item.symbol || item.literal || item.kana || '?';
-
         const rawOnyomi = item.onyomi || item.on_reading || '';
         const rawKunyomi = item.kunyomi || item.kun_reading || '';
         const rawMeaning = item.meaning || item.english || '';
 
         const formatted = formatCardSubtitle(rawOnyomi, rawKunyomi, rawMeaning);
-
         const readingStr = formatted.summary || (item.romaji || item.reading || '');
 
         return {
@@ -53,7 +54,6 @@ function normalizeDrillItems(items) {
 function loadDataFromJsonFile(category) {
     try {
         const cat = category.toLowerCase();
-
         if (cat === 'hiragana' || cat === 'katakana') {
             const filePath = path.join(__dirname, '../data/kana.json');
             if (fs.existsSync(filePath)) {
@@ -88,16 +88,8 @@ const hardcodedFallback = {
         { char: 'オ', romaji: 'o', stroke_count: 3 }
     ]),
     kanji: normalizeDrillItems([
-        { char: '一', onyomi: 'イチ, イツ', kunyomi: 'ひと, ひと.つ', meaning: 'One, one radical (no.1)', stroke_count: 1 },
-        { char: '二', onyomi: 'ニ, ジ', kunyomi: 'ふた, ふた.つ', meaning: 'Two', stroke_count: 2 },
-        { char: '三', onyomi: 'サン, ゾウ', kunyomi: 'み, み.つ', meaning: 'Three', stroke_count: 3 },
-        { char: '四', onyomi: 'シ', kunyomi: 'よ, よ.つ, よん', meaning: 'Four', stroke_count: 5 },
-        { char: '五', onyomi: 'ゴ', kunyomi: 'いつ, いつ.つ', meaning: 'Five', stroke_count: 4 },
-        { char: '六', onyomi: 'ロク', kunyomi: 'む, む.つ, むい', meaning: 'Six', stroke_count: 4 },
-        { char: '七', onyomi: 'シチ', kunyomi: 'なな, なな.つ', meaning: 'Seven', stroke_count: 2 },
-        { char: '八', onyomi: 'ハチ', kunyomi: 'や, や.つ, よう', meaning: 'Eight', stroke_count: 2 },
-        { char: '九', onyomi: 'キュウ, ク', kunyomi: 'ここの, ここの.つ', meaning: 'Nine', stroke_count: 2 },
-        { char: '十', onyomi: 'ジュウ', kunyomi: 'とお, と', meaning: 'Ten', stroke_count: 2 }
+        { char: '一', onyomi: 'イチ, イツ', kunyomi: 'ひと, ひと.つ', meaning: 'One', stroke_count: 1 },
+        { char: '二', onyomi: 'ニ, ジ', kunyomi: 'ふた, ふた.つ', meaning: 'Two', stroke_count: 2 }
     ])
 };
 
@@ -106,15 +98,38 @@ router.get('/:category', async (req, res) => {
     let category = req.params.category ? req.params.category.toLowerCase() : 'hiragana';
     if (category.includes('kanji')) category = 'kanji';
 
-    // 🚀 Fast Track: Direct local file rendering without database lag
     const fileData = loadDataFromJsonFile(category);
     if (fileData && fileData.length > 0) {
         return res.json(fileData);
     }
 
-    // Hardcoded fallback if file is missing
     const fallback = hardcodedFallback[category] || hardcodedFallback.hiragana;
     return res.json(fallback);
+});
+
+// POST /api/drills/mastery - Update character mastery after a drill
+router.post('/mastery', async (req, res) => {
+  try {
+    const { userId, characterId, accuracy, isCorrect } = req.body;
+
+    // Supabase upsert logic
+    const { data, error } = await supabase
+      .from('user_character_mastery')
+      .upsert([
+        { 
+          user_id: userId, 
+          character_id: characterId, 
+          accuracy_score: accuracy, 
+          practiced_count: 1, 
+          last_practiced_at: new Date() 
+        }
+      ], { onConflict: ['user_id', 'character_id'] });
+
+    if (error) throw error;
+    res.status(200).json({ success: true, data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;

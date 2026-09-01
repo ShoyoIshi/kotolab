@@ -105,11 +105,12 @@ function incrementUserCharacterProgress(char, category) {
     localStorage.setItem(`kotolab_progress_${user}`, JSON.stringify(progress));
 
     // Correct Backend Route Call
+    const userId = typeof getCurrentUserId === 'function' ? getCurrentUserId() : 3;
     fetch('/api/user/update-drill', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            userId: getCurrentUserId(),
+            userId: userId,
             category: category
         })
     }).catch(err => console.error("Failed to sync drill progress to DB:", err));
@@ -423,6 +424,25 @@ async function setupKanaReferenceSvg(item) {
     }
 }
 
+// 🚀 Database Call Function Added Safely
+async function saveCharacterMastery(characterId, accuracy) {
+    try {
+        const userId = typeof getCurrentUserId === 'function' ? getCurrentUserId() : 3; 
+        await fetch('/api/drills/mastery', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: userId,
+                characterId: characterId,
+                accuracy: accuracy
+            })
+        });
+        console.log('Saved to Supabase DB!');
+    } catch (err) {
+        console.error('Database save failed:', err);
+    }
+}
+
 function setupUserPracticeCanvas() {
     kanaCanvas = document.getElementById('kana-canvas');
     if (!kanaCanvas) return;
@@ -491,12 +511,17 @@ function addCanvasDrawingListeners(cvs) {
     cvs.ontouchend = stopDraw;
 }
 
+// 🚀 Fixed the updateFeedbackAndAccuracy to actually trigger the DB save
 function updateFeedbackAndAccuracy() {
     const feedback = document.getElementById('modal-feedback-msg');
 
     if (currentItem) {
         const updatedScore = incrementUserCharacterProgress(currentItem.char, currentCategory);
         if (feedback) feedback.innerText = `Full Character Completed! Mastery: ${updatedScore}% (+2.5%) 🎉`;
+        
+        // 🚀 NAYA CODE: Yahan call kar
+        saveCharacterMastery(currentItem.char, updatedScore);
+        
         renderDrillCards(currentDrillItems);
     }
 }

@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 
 // 2. Serve static assets from client folder
 app.use(express.static(path.join(__dirname, '../client')));
+
 // -------------------------------------------------------------
 // Core AI Endpoints (Using Groq openai/gpt-oss-120b)
 // -------------------------------------------------------------
@@ -161,7 +162,7 @@ Output MUST strictly adhere to this exact JSON schema:
     }
 });
 
-// Endpoint 3: Ask Tutor Chat (Strict English, Romaji & N5 Japanese format)
+// Endpoint 3: Ask Tutor Chat
 app.post('/api/sandbox/ask-tutor', async (req, res) => {
     try {
         const { question, context } = req.body;
@@ -192,7 +193,7 @@ CRITICAL RULES FOR YOUR RESPONSE:
     }
 });
 
-// Endpoint 4: Contextual Grammar Notes (Clean English Breakdown with Romaji)
+// Endpoint 4: Contextual Grammar Notes
 app.post('/api/sandbox/grammar-notes', async (req, res) => {
     try {
         const { targetTopic, targetSentence } = req.body;
@@ -406,15 +407,49 @@ Rules:
 });
 
 // -------------------------------------------------------------
-// Added User Endpoints: Practice Attempts & Character Mastery
+// NEW: Analytics & Attempt Logging Endpoints
 // -------------------------------------------------------------
 
-// POST /api/user/practice-attempt
+app.post('/api/practice/attempt', async (req, res) => {
+    try {
+        const { userId, sessionType, score, totalQuestions, breakdown } = req.body;
+
+        const query = `
+            INSERT INTO practice_attempts (user_id, session_type, score, total_questions, section_breakdown, created_at)
+            VALUES ($1, $2, $3, $4, $5, NOW())
+            RETURNING *;
+        `;
+        
+        const result = await db.query(query, [userId, sessionType, score, totalQuestions, JSON.stringify(breakdown)]);
+        res.status(200).json({ success: true, data: result.rows[0] });
+    } catch (err) {
+        console.error("Attempt Log Error:", err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.post('/api/analytics/error-log', async (req, res) => {
+    try {
+        const { userId, errorTag, userSentence, expectedSentence } = req.body;
+
+        const query = `
+            INSERT INTO user_error_logs (user_id, error_tag, user_input, expected_input, logged_at)
+            VALUES ($1, $2, $3, $4, NOW())
+            RETURNING *;
+        `;
+        
+        const result = await db.query(query, [userId, errorTag, userSentence, expectedSentence]);
+        res.status(200).json({ success: true, data: result.rows[0] });
+    } catch (err) {
+        console.error("Error Log Failed:", err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Legacy attempt logger (kept for compatibility if used elsewhere)
 app.post('/api/user/practice-attempt', async (req, res) => {
     const { userId, isCorrect, errorType, userInput, expectedValue } = req.body;
-
     if (!userId) return res.status(400).json({ error: 'User ID required' });
-
     try {
         await db.query(`
             INSERT INTO practice_attempts (user_id, is_correct)
@@ -427,7 +462,6 @@ app.post('/api/user/practice-attempt', async (req, res) => {
                 VALUES ($1, $2, $3, $4)
             `, [userId, errorType, userInput || '', expectedValue || '']);
         }
-
         res.json({ success: true });
     } catch (err) {
         console.error('Error logging practice attempt:', err);
@@ -435,14 +469,11 @@ app.post('/api/user/practice-attempt', async (req, res) => {
     }
 });
 
-// POST /api/user/character-mastery
 app.post('/api/user/character-mastery', async (req, res) => {
     const { userId, character, category, masteryLevel } = req.body;
-    
     if (!userId || !character) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
-
     try {
         await db.query(`
             INSERT INTO user_character_mastery (user_id, character_id, mastery_level)
@@ -468,7 +499,6 @@ const routes = [
     { path: '/api/sandbox', file: './routes/sandboxRoutes' },
     { path: '/api/progress', file: './routes/progressRoutes' },
     { path: '/api/exams', file: './routes/examRoutes' },
-    { path: '/api/analytics', file: './routes/progressRoutes' },
     { path: '/api/analytics', file: './routes/analyticsRoutes' },
     { path: '/api/drills', file: './routes/drillRoutes' }
 ];
@@ -490,5 +520,6 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'KotoLab Backend Server is running smoothly!' });
 });
 
+// SERVER LISTEN MUST BE AT THE VERY END
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 KotoLab Server running on http://localhost:${PORT}`));

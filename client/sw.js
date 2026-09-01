@@ -12,6 +12,7 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', (event) => {
+  console.log('[Service Worker] Installed');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(urlsToCache);
@@ -21,6 +22,7 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
+  console.log('[Service Worker] Activated');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -35,7 +37,8 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  event.respondFrom = event.respondWith(
+  // Fixed the typo here: Removed event.respondFrom = 
+  event.respondWith(
     caches.match(event.request).then((response) => {
       return response || fetch(event.request).catch(() => {
         if (event.request.mode === 'navigate') {

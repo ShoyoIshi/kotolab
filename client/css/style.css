@@ -587,3 +587,24 @@ body {
     z-index: 3;
     line-height: 1;
 }
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -100%;
+        z-index: 9999;
+        transition: left 0.3s ease-in-out;
+    }
+    
+    .sidebar.active {
+        left: 0; 
+    }
+    
+    /* Yahan .main-content ki jagah .main-wrapper aayega */
+    .main-wrapper {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 1rem !important; /* Mobile ke hisaab se thodi padding adjust ki hai */
+        padding-top: 80px !important; /* Top header/menu button ke liye jagah */
+    }
+}
