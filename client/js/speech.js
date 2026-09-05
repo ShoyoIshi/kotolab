@@ -30,47 +30,103 @@ if ('speechSynthesis' in window) {
     };
 }
 
-// Voice Recognition (Microphone Listening)
-function startVoiceRecognition(targetWord, statusElementId) {
+// Global reference to handle active recognition state
+let activeRecognitionInstance = null;
+
+// Voice Recognition (Microphone Listening) - NOW ASYNC FOR BETTER DETECTION
+async function startVoiceRecognition(targetWord, statusElementId) {
+    const statusEl = document.getElementById(statusElementId);
+
+    // 🔥 1. PROPER ASYNC BRAVE BROWSER CHECK
+    if (navigator.brave && navigator.brave.isBrave) {
+        try {
+            const isBrave = await navigator.brave.isBrave();
+            if (isBrave) {
+                if (statusEl) {
+                    statusEl.innerHTML = `<span style="color: #f97316;">🦁 Brave Browser blocks voice APIs for privacy. Please type your response!</span>`;
+                }
+                return; // Stop completely for Brave
+            }
+        } catch (err) {
+            console.warn("Brave detection skipped due to strict shields.");
+        }
+    }
+
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-        alert("Voice Recognition is not supported in this browser. Please use Google Chrome or Microsoft Edge.");
+        if (statusEl) {
+            statusEl.innerHTML = `<span style="color: var(--accent-orange);">⚠️ Speech recognition not supported here. Use text input!</span>`;
+        }
         return;
     }
 
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'ja-JP';
-    recognition.interimResults = false;
+    // Stop any ongoing recognition session safely
+    if (activeRecognitionInstance) {
+        try {
+            activeRecognitionInstance.abort();
+        } catch (e) {}
+        activeRecognitionInstance = null;
+    }
 
-    const statusEl = document.getElementById(statusElementId);
-    if (statusEl) statusEl.innerHTML = "🎙️ <i>Listening... Speak now into your microphone!</i>";
-
-    recognition.start();
-
-    recognition.onresult = (event) => {
-        const spokenText = event.results[0][0].transcript.trim();
-        console.log("Recognized Speech:", spokenText);
+    try {
+        const recognition = new SpeechRecognition();
+        activeRecognitionInstance = recognition;
+        
+        recognition.lang = 'ja-JP';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
 
         if (statusEl) {
-            if (spokenText === targetWord) {
-                statusEl.innerHTML = `✨ <b>Perfect!</b> You said: "<span style="color: var(--accent-green);">${spokenText}</span>"`;
-            } else {
-                statusEl.innerHTML = `⚠️ Recognized: "<b>${spokenText}</b>". Target was: "<b>${targetWord}</b>". Try again!`;
-            }
+            statusEl.innerHTML = "🎙️ <i>Listening... Speak now into your microphone!</i>";
         }
-    };
 
-    recognition.onerror = (event) => {
-        console.error("Voice recognition error:", event.error);
-        if (statusEl) {
-            if (event.error === 'not-allowed') {
-                statusEl.innerHTML = `<span style="color: var(--accent-red);">❌ Microphone access blocked. Please allow mic permissions in Chrome address bar!</span>`;
-            } else {
-                statusEl.innerHTML = `<span style="color: var(--accent-orange);">Error listening: ${event.error}</span>`;
+        recognition.onresult = (event) => {
+            activeRecognitionInstance = null;
+            if (!event.results || !event.results[0]) return;
+            
+            const spokenText = event.results[0][0].transcript.trim();
+            console.log("Recognized Speech:", spokenText);
+
+            if (statusEl) {
+                if (spokenText.toLowerCase() === targetWord.toLowerCase()) {
+                    statusEl.innerHTML = `✨ <b>Perfect!</b> You said: "<span style="color: var(--accent-green);">${spokenText}</span>"`;
+                } else {
+                    statusEl.innerHTML = `⚠️ Recognized: "<b>${spokenText}</b>". Target was: "<b>${targetWord}</b>". Try again!`;
+                }
             }
+        };
+
+        recognition.onerror = (event) => {
+            activeRecognitionInstance = null;
+            console.error("Voice recognition error:", event.error);
+            if (statusEl) {
+                if (event.error === 'not-allowed') {
+                    statusEl.innerHTML = `<span style="color: #ef4444;">❌ Mic blocked. Please allow mic permissions in address bar!</span>`;
+                } else if (event.error === 'network') {
+                    // 🔥 2. CATCH BRAVE'S NETWORK BLOCK (If Shields hide navigator.brave)
+                    statusEl.innerHTML = `<span style="color: #f97316;">🦁 Privacy Block (Brave/Edge). Voice API blocked. Use text input!</span>`;
+                } else if (event.error === 'no-speech') {
+                    statusEl.innerHTML = `<span style="color: #f97316;">⚠️ No speech detected. Tap to retry.</span>`;
+                } else {
+                    statusEl.innerHTML = `<span style="color: #ef4444;">Mic error (${event.error}). Tap to retry.</span>`;
+                }
+            }
+        };
+
+        recognition.onend = () => {
+            activeRecognitionInstance = null;
+        };
+
+        recognition.start();
+
+    } catch (err) {
+        activeRecognitionInstance = null;
+        console.error("Failed to start recognition:", err);
+        if (statusEl) {
+            statusEl.innerHTML = `<span style="color: #ef4444;">Mic error or timeout. Tap to retry.</span>`;
         }
-    };
+    }
 }
 
 // Load Real Stats from MySQL Database on Dashboard Load

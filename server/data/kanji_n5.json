@@ -329,7 +329,7 @@
   },
   {
     "kanji_char": "川",
-    "meaning": "river, river or three-stroke river radical (no. 47), stream",
+    "meaning": "river, stream",
     "onyomi": "セン",
     "kunyomi": "かわ",
     "jlpt_level": "N5",
@@ -401,7 +401,7 @@
   },
   {
     "kanji_char": "本",
-    "meaning": "book, counter for long cylindrical things, main",
+    "meaning": "book, main",
     "onyomi": "ホン",
     "kunyomi": "もと",
     "jlpt_level": "N5",
@@ -425,7 +425,7 @@
   },
   {
     "kanji_char": "校",
-    "meaning": "correction, exam, printing",
+    "meaning": "correction, exam, school",
     "onyomi": "キョウ, コウ",
     "kunyomi": "",
     "jlpt_level": "N5",
@@ -529,7 +529,7 @@
   },
   {
     "kanji_char": "西",
-    "meaning": "Spain, west",
+    "meaning": "west",
     "onyomi": "サイ, ス, セイ",
     "kunyomi": "にし",
     "jlpt_level": "N5",
@@ -537,7 +537,7 @@
   },
   {
     "kanji_char": "見",
-    "meaning": "chances, hopes, idea",
+    "meaning": "see, look, watch",
     "onyomi": "ケン",
     "kunyomi": "み.える, み.せる, み.る",
     "jlpt_level": "N5",
@@ -569,7 +569,7 @@
   },
   {
     "kanji_char": "車",
-    "meaning": "car",
+    "meaning": "car, vehicle",
     "onyomi": "シャ",
     "kunyomi": "くるま",
     "jlpt_level": "N5",
@@ -577,7 +577,7 @@
   },
   {
     "kanji_char": "金",
-    "meaning": "gold",
+    "meaning": "gold, money",
     "onyomi": "キン, コン, ゴン",
     "kunyomi": "-がね, かな-, かね",
     "jlpt_level": "N5",
@@ -630,5 +630,229 @@
     "kunyomi": "-だか, たか, たか.い, たか.まる, たか.める",
     "jlpt_level": "N5",
     "stroke_count": 10
+  },
+  {
+    "kanji_char": "魚",
+    "meaning": "fish",
+    "onyomi": "ギョ",
+    "kunyomi": "うお, -うお, さかな",
+    "jlpt_level": "N5",
+    "stroke_count": 11
+  },
+  {
+    "kanji_char": "鳥",
+    "meaning": "bird",
+    "onyomi": "チョウ",
+    "kunyomi": "とり",
+    "jlpt_level": "N5",
+    "stroke_count": 11
+  },
+  {
+    "kanji_char": "肉",
+    "meaning": "meat",
+    "onyomi": "ニク",
+    "kunyomi": "",
+    "jlpt_level": "N5",
+    "stroke_count": 6
+  },
+  {
+    "kanji_char": "安",
+    "meaning": "cheap, low, peaceful",
+    "onyomi": "アン",
+    "kunyomi": "やす.い, やす.まる, やす",
+    "jlpt_level": "N5",
+    "stroke_count": 6
+  },
+  {
+    "kanji_char": "新",
+    "meaning": "new",
+    "onyomi": "シン",
+    "kunyomi": "あら.た, にイ-, あたらしい",
+    "jlpt_level": "N5",
+    "stroke_count": 13
+  },
+  {
+    "kanji_char": "古",
+    "meaning": "old",
+    "onyomi": "コ",
+    "kunyomi": "ふる.い, ふる-, -ふる.す",
+    "jlpt_level": "N5",
+    "stroke_count": 5
+  },
+  {
+    "kanji_char": "多",
+    "meaning": "frequent, many, much",
+    "onyomi": "タ",
+    "kunyomi": "おおか.い, まさ.に, まさ.る",
+    "jlpt_level": "N5",
+    "stroke_count": 6
+  },
+  {
+    "kanji_char": "少",
+    "meaning": "few, little",
+    "onyomi": "ショウ",
+    "kunyomi": "すくな.い, す和.し",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "近",
+    "meaning": "familiar, near",
+    "onyomi": "キン, コン",
+    "kunyomi": "ちか.い",
+    "jlpt_level": "N5",
+    "stroke_count": 7
+  },
+  {
+    "kanji_char": "遠",
+    "meaning": "distant, far",
+    "onyomi": "エン, オン",
+    "kunyomi": "とお.い",
+    "jlpt_level": "N5",
+    "stroke_count": 13
+  },
+  {
+    "kanji_char": "快",
+    "meaning": "cheerful, comfortable, pleasant",
+    "onyomi": "カイ",
+    "kunyomi": "こころよ.い",
+    "jlpt_level": "N5",
+    "stroke_count": 7
+  },
+  {
+    "kanji_char": "道",
+    "meaning": "road-way, street, journey",
+    "onyomi": "ドウ, トウ",
+    "kunyomi": "みち",
+    "jlpt_level": "N5",
+    "stroke_count": 12
+  },
+  {
+    "kanji_char": "駅",
+    "meaning": "station",
+    "onyomi": "エキ",
+    "kunyomi": "",
+    "jlpt_level": "N5",
+    "stroke_count": 14
+  },
+  {
+    "kanji_char": "会社",
+    "meaning": "company, corporation",
+    "onyomi": "カイ, シャ",
+    "kunyomi": "つかさ",
+    "jlpt_level": "N5",
+    "stroke_count": 13
+  },
+  {
+    "kanji_char": "店",
+    "meaning": "shop, store",
+    "onyomi": "テン",
+    "kunyomi": "みせ, たな",
+    "jlpt_level": "N5",
+    "stroke_count": 8
+  },
+  {
+    "kanji_char": "服",
+    "meaning": "clothing, admit, obey",
+    "onyomi": "フク",
+    "kunyomi": "",
+    "jlpt_level": "N5",
+    "stroke_count": 8
+  },
+  {
+    "kanji_char": "買",
+    "meaning": "buy",
+    "onyomi": "バイ",
+    "kunyomi": "か.う",
+    "jlpt_level": "N5",
+    "stroke_count": 12
+  },
+  {
+    "kanji_char": "売",
+    "meaning": "sell",
+    "onyomi": "バイ",
+    "kunyomi": "う.る, う.れる",
+    "jlpt_level": "N5",
+    "stroke_count": 7
+  },
+  {
+    "kanji_char": "朝",
+    "meaning": "morning, dynasty",
+    "onyomi": "チョウ",
+    "kunyomi": "あさ",
+    "jlpt_level": "N5",
+    "stroke_count": 12
+  },
+  {
+    "kanji_char": "昼",
+    "meaning": "daytime, noon",
+    "onyomi": "チュウ",
+    "kunyomi": "ひる",
+    "jlpt_level": "N5",
+    "stroke_count": 9
+  },
+  {
+    "kanji_char": "夜",
+    "meaning": "evening, night",
+    "onyomi": "ヤ",
+    "kunyomi": "よ, よる",
+    "jlpt_level": "N5",
+    "stroke_count": 8
+  },
+  {
+    "kanji_char": "夕",
+    "meaning": "evening",
+    "onyomi": "セキ",
+    "kunyomi": "ゆう",
+    "jlpt_level": "N5",
+    "stroke_count": 3
+  },
+  {
+    "kanji_char": "漢字",
+    "meaning": "Chinese characters, kanji",
+    "onyomi": "カン, ジ",
+    "kunyomi": "",
+    "jlpt_level": "N5",
+    "stroke_count": 19
+  },
+  {
+    "kanji_char": "手",
+    "meaning": "hand",
+    "onyomi": "シュ, ズ",
+    "kunyomi": "た, て, て-",
+    "jlpt_level": "N5",
+    "stroke_count": 4
+  },
+  {
+    "kanji_char": "足",
+    "meaning": "foot, leg, suffice",
+    "onyomi": "ソク",
+    "kunyomi": "あし, た.りる, た.す, た.る",
+    "jlpt_level": "N5",
+    "stroke_count": 7
+  },
+  {
+    "kanji_char": "目",
+    "meaning": "eye, class, look",
+    "onyomi": "モク, ボク",
+    "kunyomi": "め, -め, ま-",
+    "jlpt_level": "N5",
+    "stroke_count": 5
+  },
+  {
+    "kanji_char": "耳",
+    "meaning": "ear",
+    "onyomi": "ジ",
+    "kunyomi": "みみ",
+    "jlpt_level": "N5",
+    "stroke_count": 6
+  },
+  {
+    "kanji_char": "口",
+    "meaning": "mouth, opening",
+    "onyomi": "コウ, ク",
+    "kunyomi": "くち",
+    "jlpt_level": "N5",
+    "stroke_count": 3
   }
 ]

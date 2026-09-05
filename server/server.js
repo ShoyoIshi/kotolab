@@ -232,6 +232,35 @@ Target Sentence: "${targetSentence}"`;
     }
 });
 
+// -------------------------------------------------------------
+// NEW: Vocabulary Fetch Endpoint from Supabase Database
+// -------------------------------------------------------------
+app.get('/api/sandbox/vocab', async (req, res) => {
+    try {
+        const result = await db.query("SELECT * FROM vocabulary WHERE jlpt_level = 'N5'");
+        res.json({ 
+            success: true, 
+            words: result.rows 
+        });
+    } catch (err) {
+        console.error("Database Vocab Fetch Error:", err);
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// -------------------------------------------------------------
+// NEW: Dynamic Particle & Sentence Practice Bank from Supabase
+// -------------------------------------------------------------
+app.get('/api/sandbox/particles', async (req, res) => {
+    try {
+        const result = await db.query("SELECT * FROM vocabulary WHERE jlpt_level = 'N5' LIMIT 50");
+        res.json({ success: true, words: result.rows });
+    } catch (err) {
+        console.error("Particle Bank Fetch Error:", err);
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
 // Endpoint: AI Diagnostic Recommendations for Analytics Page
 app.post('/api/analytics/diagnostics', async (req, res) => {
     try {
