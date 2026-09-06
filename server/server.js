@@ -576,6 +576,61 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'KotoLab Backend Server is running smoothly!' });
 });
 
+// ==========================================
+// ❤️ LIVES & STAMINA SYSTEM API ROUTES (PostgreSQL Compatible)
+// ==========================================
+
+// 1. Lose a life when user makes a mistake
+app.post('/api/user/lose-life', async (req, res) => {
+    const { userId } = req.body;
+    if (!userId) return res.status(400).json({ error: 'Missing userId' });
+
+    try {
+        const userRes = await db.query('SELECT lives, last_life_lost_at FROM user_progress WHERE user_id = $1 LIMIT 1', [userId]);
+
+        if (userRes.rows.length === 0) {
+            return res.status(404).json({ error: 'User progress not found' });
+        }
+
+        const user = userRes.rows[0];
+        let currentLives = user.lives !== undefined && user.lives !== null ? user.lives : 5;
+        if (currentLives > 0) currentLives -= 1;
+
+        const updateRes = await db.query(
+            `UPDATE user_progress SET lives = $1, last_life_lost_at = NOW() WHERE user_id = $2 RETURNING lives`,
+            [currentLives, userId]
+        );
+
+        res.json({ success: true, lives: updateRes.rows[0].lives });
+    } catch (err) {
+        console.error('Error updating lives:', err);
+        res.status(500).json({ error: 'Server error updating lives' });
+    }
+});
+
+// 2. Refill life endpoint
+app.post('/api/user/refill-life', async (req, res) => {
+    const { userId, amount = 1 } = req.body;
+    if (!userId) return res.status(400).json({ error: 'Missing userId' });
+
+    try {
+        const userRes = await db.query('SELECT lives FROM user_progress WHERE user_id = $1 LIMIT 1', [userId]);
+        const user = userRes.rows[0];
+
+        let currentLives = Math.min(5, (user?.lives || 5) + amount);
+
+        const updateRes = await db.query(
+            `UPDATE user_progress SET lives = $1 WHERE user_id = $2 RETURNING lives`,
+            [currentLives, userId]
+        );
+
+        res.json({ success: true, lives: updateRes.rows[0].lives });
+    } catch (err) {
+        console.error('Error refilling life:', err);
+        res.status(500).json({ error: 'Server error refilling life' });
+    }
+});
+
 // SERVER LISTEN MUST BE AT THE VERY END
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 KotoLab Server running on http://localhost:${PORT}`));

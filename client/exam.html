@@ -2,12 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="theme-color" content="#4f46e5">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="/manifest.json">
     <title>KotoLab — Official JLPT N5 Examinations</title>
 
     <script>
@@ -20,7 +24,7 @@
 
     <style>
         :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --accent-red: #ef4444; --accent-gold: #f59e0b; --text-main: #f8fafc; --text-muted: #8fa0bd; }
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; display: flex; min-height: 100vh; overflow-x: hidden; }
 
         /* Canonical Sidebar */
@@ -40,7 +44,6 @@
         .user-stats-row { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05); }
 
         .main-wrapper { margin-left: 260px; flex: 1; padding: 2rem 2.5rem; overflow-y: auto; max-height: 100vh; }
-        @media (max-width: 1100px) { body { flex-direction: column !important; padding-bottom: 75px !important; } .sidebar { display: none !important; } .main-wrapper { margin-left: 0 !important; padding: 1.25rem 1rem !important; width: 100% !important; } }
 
         /* 🔥 PREMIUM EXAM UI 🔥 */
         .premium-banner { background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(15,23,42,0.8)); border: 1px solid var(--accent-indigo); padding: 1.5rem; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
@@ -89,6 +92,37 @@
         
         .results-container { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 2.5rem; display: flex; flex-direction: column; gap: 2rem; box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
         .review-item { background: #090d16; border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+
+        /* 📱 RESPONSIVE LOGIC: DESKTOP vs MOBILE */
+        .desktop-only { display: flex; }
+        .mobile-only { display: none; }
+        .mobile-bottom-nav { display: none; }
+
+        @media (max-width: 1100px) { 
+            body { flex-direction: column !important; } 
+            .sidebar { display: none !important; } 
+            .main-wrapper { margin-left: 0 !important; padding: 1.25rem 1rem 85px 1rem !important; width: 100% !important; max-width: 600px; margin: 0 auto !important; }
+            .desktop-only { display: none !important; }
+            .mobile-only { display: flex !important; }
+            
+            .exam-active-layout { grid-template-columns: 1fr !important; }
+            .exam-palette-card { position: relative !important; top: 0 !important; margin-top: 1rem; }
+            .mobile-header { justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+            
+            .mobile-bottom-nav {
+                display: flex; position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
+                background: rgba(11, 15, 25, 0.95); border-top: 1px solid rgba(38, 53, 82, 0.8);
+                justify-content: space-around; align-items: center; z-index: 1000;
+                backdrop-filter: blur(12px); padding-bottom: env(safe-area-inset-bottom);
+            }
+            .mobile-nav-item {
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                color: #64748b; text-decoration: none; font-size: 0.65rem; font-weight: 700; gap: 4px; flex: 1; height: 100%; transition: color 0.2s;
+            }
+            .mobile-nav-item.active { color: #6366f1; }
+            .mobile-nav-icon { font-size: 1.4rem; line-height: 1; transition: transform 0.2s; }
+            .mobile-nav-item.active .mobile-nav-icon { transform: scale(1.15); filter: drop-shadow(0 0 8px rgba(99,102,241,0.5)); }
+        }
     </style>
 </head>
 <body>
@@ -124,8 +158,8 @@
                     </div>
                 </div>
                 <div class="user-stats-row">
-                    <span>❤️ <strong id="user-lives">5</strong></span>
-                    <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
+                 <span>❤️ <strong id="user-lives">5</strong> <span id="life-timer-display" style="color: var(--accent-orange); font-size: 0.7rem; font-family: monospace; display: none; margin-left: 4px;"></span></span>
+                 <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
                 </div>
             </div>
             <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">
@@ -136,12 +170,12 @@
 
     <!-- Main Workspace -->
     <main class="main-wrapper">
-        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <!-- Desktop Header -->
+        <header class="top-header desktop-only" style="justify-content: space-between; align-items: center; margin-bottom: 2rem;">
             <div>
                 <h1 style="font-size: 1.8rem; font-weight: 900; color: white; margin: 0;">Standardized Examination Hall 📝</h1>
                 <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">Official Diagnostic JLPT Benchmark Assessment.</p>
             </div>
-            <!-- Top Right Badges (Fixed to match Sandbox exactly) -->
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <div style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); padding: 0.4rem 1rem; border-radius: 99px; font-size: 0.85rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 0.5rem;">
                     ⚡ <span id="xpCountDisplay">0</span> XP
@@ -155,9 +189,23 @@
             </div>
         </header>
 
+        <!-- Mobile Header -->
+        <header class="mobile-only mobile-header">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div class="brand-icon-box" style="width: 35px; height: 35px; font-size: 1.1rem; box-shadow: none;">⛩️</div>
+                <div style="line-height: 1.1;">
+                    <div style="font-weight: 800; font-size: 1.1rem; color: white;">KotoLab</div>
+                    <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 600;">Mock Exams</div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span onclick="alert('No unread notifications.')" style="font-size: 1.2rem; cursor:pointer;">🔔</span>
+                <div class="user-avatar" id="mobile-user-initial" style="width: 32px; height: 32px; font-size: 0.85rem; cursor: pointer;" onclick="window.location.href='settings.html'">U</div>
+            </div>
+        </header>
+
         <!-- VIEW 1: EXAM LOBBY -->
         <div id="exam-lobby-view">
-            <!-- Premium Progress Banner -->
             <div class="premium-banner">
                 <div>
                     <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">Global Readiness</div>
@@ -165,15 +213,12 @@
                         Current Accuracy: <span id="exam-user-accuracy" style="color: var(--accent-green);">0%</span>
                     </div>
                 </div>
-                <div style="text-align: right; max-width: 300px; color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">
+                <div class="desktop-only" style="text-align: right; max-width: 300px; color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">
                     Score higher in the Sandbox Modules to increase your accuracy and unlock harder boss-level exams.
                 </div>
             </div>
 
-            <!-- Enhanced Exam Cards Grid -->
             <div class="exam-grid">
-                
-                <!-- LEVEL 1 -->
                 <div class="exam-card card-level-1 unlocked" id="exam-card-1">
                     <div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
@@ -186,7 +231,6 @@
                     <button class="start-btn btn-blue" id="btn-1" onclick="startExam('level1')">Start Exam</button>
                 </div>
 
-                <!-- LEVEL 2 -->
                 <div class="exam-card card-level-2 locked-card" id="exam-card-2">
                     <div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
@@ -199,7 +243,6 @@
                     <button class="start-btn btn-locked" id="btn-2" onclick="startExam('level2')">Locked</button>
                 </div>
 
-                <!-- LEVEL 3 -->
                 <div class="exam-card card-level-3 locked-card" id="exam-card-3">
                     <div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
@@ -212,7 +255,6 @@
                     <button class="start-btn btn-locked" id="btn-3" onclick="startExam('level3')">Locked</button>
                 </div>
 
-                <!-- LEVEL 4 -->
                 <div class="exam-card card-level-4 locked-card" id="exam-card-4">
                     <div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
@@ -229,13 +271,12 @@
 
         <!-- VIEW 2: LIVE RUNNING EXAMINATION -->
         <div id="exam-live-view" style="display: none;">
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); flex-wrap: wrap; gap: 1rem;">
                 <div>
                     <span id="active-section-badge" style="background: #4f46e5; color: white; font-size: 0.75rem; font-weight: 800; padding: 0.25rem 0.75rem; border-radius: 6px;">SECTION</span>
                     <h2 id="live-exam-title" style="font-size: 1.3rem; color: white; margin: 0.4rem 0 0 0; font-weight: 800;">Paper Title</h2>
                 </div>
-                <!-- 🚀 UPDATED: Quit Button added here next to Submit -->
-                <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
                     <div style="display: flex; align-items: center; gap: 0.75rem; background: #090d16; border: 1px solid #334155; padding: 0.5rem 1.25rem; border-radius: 12px;">
                         <span style="font-size: 1.25rem;">⏰</span>
                         <div><div style="font-size: 0.7rem; color: var(--text-muted); font-weight: 700;">TIME REMAINING</div><div id="exam-timer" style="font-size: 1.25rem; font-weight: 900; color: #f97316; font-family: monospace;">20:00</div></div>
@@ -283,10 +324,10 @@
         <!-- VIEW 3: RESULTS -->
         <div id="exam-results-view" style="display: none;">
             <div class="results-container">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
                     <div>
                         <span id="result-status-badge" style="background: #064e3b; color: #34d399; font-weight: 800; font-size: 0.9rem; padding: 0.4rem 1rem; border-radius: 20px; border: 1px solid #10b981;">PASSED</span>
-                        <h1 style="font-size: 2rem; font-weight: 900; color: white; margin: 0.75rem 0 0.2rem 0;">Exam Results Breakdown</h1>
+                        <h1 style="font-size: 2rem; font-weight: 900; color: white; margin: 0.75rem 0 0.2rem 0;">Exam Results</h1>
                     </div>
                     <div style="text-align: right;">
                         <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;">FINAL SCORE</div>
@@ -295,7 +336,7 @@
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem;">
                     <div style="background: #090d16; border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem; text-align: center;">
                         <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">KANJI & VOCAB</div>
                         <div id="score-vocab" style="font-size: 1.5rem; font-weight: 800; color: white; margin: 0.5rem 0;">0/3</div>
@@ -325,46 +366,50 @@
         </div>
     </main>
 
-    <!-- 🚀 MASSIVE INLINE EXAM BANK (Guarantees NO Fetch Errors) 🚀 -->
+    <!-- 📱 NATIVE BOTTOM NAVIGATION BAR -->
+    <nav class="mobile-bottom-nav">
+        <a href="index.html" class="mobile-nav-item"><span class="mobile-nav-icon">🏠</span><span>Home</span></a>
+        <a href="drills.html" class="mobile-nav-item"><span class="mobile-nav-icon">⚡</span><span>Drills</span></a>
+        <a href="sandbox.html" class="mobile-nav-item"><span class="mobile-nav-icon">🧩</span><span>Sandbox</span></a>
+        <a href="conversation.html" class="mobile-nav-item"><span class="mobile-nav-icon">💬</span><span>Chat</span></a>
+        <a href="analytics.html" class="mobile-nav-item"><span class="mobile-nav-icon">📈</span><span>Analytics</span></a>
+    </nav>
+
+    <!-- 🚀 GLOBAL APP SCRIPT (Handles Live Lives & Timers Automatically) -->
+    <script src="js/app.js?v=26.0"></script>
+
+    <!-- 🚀 MASSIVE INLINE EXAM BANK & ENGINE 🚀 -->
     <script>
         const examBankData = {
             level1: {
                 title: "N5 Starter Certification",
                 questions: [
-                    // VOCAB (3)
                     { section: "KANJI & VOCAB", category: "vocab", prompt: "この「車」は 新しいです。", sub: "Reading of Kanji", options: ["くるま", "でんしゃ", "じてんしゃ", "ひこうき"], correct: 0, explanation: "車 (kuruma) = car." },
                     { section: "KANJI & VOCAB", category: "vocab", prompt: "冷たい「みず」を 飲みました。", sub: "Kanji for the word", options: ["火", "水", "木", "金"], correct: 1, explanation: "みず (mizu) = 水 (water)." },
                     { section: "KANJI & VOCAB", category: "vocab", prompt: "まいあさ ７時に（ ）。", sub: "Choose correct verb", options: ["ねます", "おきます", "たべます", "よみます"], correct: 1, explanation: "おきます = to wake up." },
-                    // GRAMMAR (4)
                     { section: "GRAMMAR", category: "grammar", prompt: "わたしは パン（ ）たべます。", sub: "Select missing particle", options: ["を", "が", "に", "で"], correct: 0, explanation: "を marks the object of eating." },
-                    { section: "GRAMMAR", category: "grammar", prompt: "がっこう（ ）いきます。", sub: "Select missing particle", options: ["で", "を", "に", "が"], correct: 2, explanation: "に marks destination." },
+                    { section: "GRAMMAR", category: "grammar", prompt: "がっこう（ ）いきます。", sub: "Select missing particle", options: ["で", "を", "に", "が"], correct: 2, explanation: "ni marks destination." },
                     { section: "GRAMMAR", category: "grammar", prompt: "これは なん（ ）か。", sub: "Complete the sentence", options: ["は", "です", "を", "が"], correct: 1, explanation: "なんですか = What is it?" },
                     { section: "GRAMMAR", category: "grammar", prompt: "きのう、どこへ（ ）か。", sub: "Verb tense", options: ["いきます", "いきました", "いかない", "いって"], correct: 1, explanation: "きのう (yesterday) requires past tense いきました." },
-                    // READING (2)
                     { section: "READING", category: "reading", passage: "はじめまして。わたしは マリアです。アメリカから きました。がくせいです。", prompt: "マリアさんは どこから きましたか。", sub: "Read and answer", options: ["イギリス", "アメリカ", "日本", "フランス"], correct: 1, explanation: "Text says アメリカからきました." },
                     { section: "READING", category: "reading", passage: "【スーパーの お知らせ】\nあしたは 休みです。明後日（あさって）来てください。", prompt: "あした、スーパーで 買い物が できますか。", sub: "Read and answer", options: ["はい、できます。", "いいえ、できません。"], correct: 1, explanation: "あしたは休みです means tomorrow it is closed." },
-                    // LISTENING (3)
                     { section: "LISTENING", category: "listening", dialogueText: "男：おはようございます。女：ああ、おはようございます。", prompt: "今は いつですか。", sub: "Listen and answer", options: ["あさ (Morning)", "ひる (Afternoon)", "よる (Evening)", "よなか (Night)"], correct: 0, explanation: "おはようございます is used in the morning (あさ)." },
-                    { section: "LISTENING", category: "listening", dialogueText: "男：すみません、いま 何時ですか。女：ええと、３時半です。", prompt: "いま 何時ですか。", sub: "Listen and answer", options: ["３：００", "３：３０", "４：００", "４：３０"], correct: 1, explanation: "３時半 (San-ji han) means 3:30." },
-                    { section: "LISTENING", category: "listening", dialogueText: "男：りんごを ふたつ ください。女：はい、１００円です。", prompt: "男の人は いくら 払いますか。", sub: "Listen and answer", options: ["１００円", "２００円", "３００円", "４００円"], correct: 0, explanation: "The woman says it is 100 yen." }
+                    { section: "LISTENING", category: "listening", dialogueText: "男：すみません、いま 何時ですか。女：ええと、３時半です。", prompt: "いま 何時ですか。", sub: "Listen and answer", options: ["３：００", "３：３０", "４：０0", "４：３０"], correct: 1, explanation: "３時半 (San-ji han) means 3:30." },
+                    { section: "LISTENING", category: "listening", dialogueText: "男：りんごを ふたつ ください。女：はい、１００円です。", prompt: "男の人は いくら 払いますか。", sub: "Listen and answer", options: ["１０0円", "２００円", "３００円", "４００円"], correct: 0, explanation: "The woman says it is 100 yen." }
                 ]
             },
             level2: {
                 title: "N5 Intermediate Certification",
                 questions: [
-                    // VOCAB (3)
                     { section: "KANJI & VOCAB", category: "vocab", prompt: "あの ケーキは「高い」です。", sub: "Reading of Kanji", options: ["やすい", "たかい", "おいしい", "あまい"], correct: 1, explanation: "高い (takai) = expensive/high." },
                     { section: "KANJI & VOCAB", category: "vocab", prompt: "あしたは「やすみ」です。", sub: "Kanji for the word", options: ["体", "休", "本", "何"], correct: 1, explanation: "やすみ = 休み (holiday/rest)." },
                     { section: "KANJI & VOCAB", category: "vocab", prompt: "おんがくを（ ）。", sub: "Choose correct verb", options: ["みます", "ききます", "かきます", "はなします"], correct: 1, explanation: "ききます = to listen (to music)." },
-                    // GRAMMAR (4)
                     { section: "GRAMMAR", category: "grammar", prompt: "えんぴつ（ ）てがみを かきます。", sub: "Select missing particle", options: ["に", "で", "を", "が"], correct: 1, explanation: "で indicates tool used (with a pencil)." },
                     { section: "GRAMMAR", category: "grammar", prompt: "いっしょに えいがを（ ）か。", sub: "Verb form", options: ["みます", "みませんか", "みて", "みましょう"], correct: 1, explanation: "〜ませんか is used for inviting someone." },
                     { section: "GRAMMAR", category: "grammar", prompt: "へやに だれ（ ）いません。", sub: "Select missing particle", options: ["は", "が", "も", "を"], correct: 2, explanation: "だれもいません = nobody is there." },
-                    { section: "GRAMMAR", category: "grammar", prompt: "つくえの ( 1 ) ( 2 ) ( ★ ) ( 4 ) あります。", sub: "Order the words", options: ["に", "が", "うえ", "かばん"], correct: 3, explanation: "Correct order: うえ(3) に(1) かばん(4) が(2). Star is at position 3, which is かばん." },
-                    // READING (2)
+                    { section: "GRAMMAR", category: "grammar", prompt: "つくえの ( 1 ) ( 2 ) ( ★ ) ( 4 ) あります。", sub: "Order the words", options: ["に", "が", "うえ", "かばん"], correct: 3, explanation: "Correct order: うえ(3) に(1) かばん(4) が(2)." },
                     { section: "READING", category: "reading", passage: "【手紙】\nお母さんへ、\n日本の 生活は 楽しいです。毎日 大学で 日本語を 勉強しています。\n来月、国へ 帰ります。\nさくら", prompt: "さくらさんは 今、どこに いますか。", sub: "Read and answer", options: ["お母さんの家", "日本", "自分の国", "病院"], correct: 1, explanation: "She writes 'Life in Japan is fun', so she is in Japan." },
                     { section: "READING", category: "reading", passage: "月曜日：はれ\n火曜日：あめ\n水曜日：くもり\n木曜日：はれ", prompt: "あめは いつですか。", sub: "Read and answer", options: ["月曜日", "火曜日", "水曜日", "木曜日"], correct: 1, explanation: "火曜日 (Tuesday) shows あめ (rain)." },
-                    // LISTENING (3)
                     { section: "LISTENING", category: "listening", dialogueText: "男：あしたの 天気は どうですか。女：あしたは 雨です。", prompt: "あしたの 天気は どうですか。", sub: "Listen and answer", options: ["はれ (Sunny)", "あめ (Rain)", "くもり (Cloudy)", "ゆき (Snow)"], correct: 1, explanation: "She clearly says あしたは雨です (Tomorrow is rain)." },
                     { section: "LISTENING", category: "listening", dialogueText: "男：すみません、トイレは どこですか。女：２階です。", prompt: "トイレは どこですか。", sub: "Listen and answer", options: ["１階", "２階", "３階", "４階"], correct: 1, explanation: "２階 (ni-kai) means 2nd floor." },
                     { section: "LISTENING", category: "listening", dialogueText: "男：日曜日、テニスを しましたか。女：いいえ、何もしませんでした。", prompt: "女の人は 日曜日 何を しましたか。", sub: "Listen and answer", options: ["テニスをしました", "買い物をしました", "勉強しました", "何もしませんでした"], correct: 3, explanation: "何もしませんでした = did nothing." }
@@ -373,20 +418,16 @@
             level3: {
                 title: "N5 Advanced Certification",
                 questions: [
-                    // VOCAB (3)
                     { section: "KANJI & VOCAB", category: "vocab", prompt: "毎朝「新聞」を 読みます。", sub: "Reading of Kanji", options: ["しんぶん", "てがみ", "ざっし", "じしょ"], correct: 0, explanation: "新聞 (shinbun) = newspaper." },
                     { section: "KANJI & VOCAB", category: "vocab", prompt: "わたしの「あに」は 会社員です。", sub: "Kanji for the word", options: ["弟", "兄", "父", "母"], correct: 1, explanation: "あに = 兄 (older brother)." },
                     { section: "KANJI & VOCAB", category: "vocab", prompt: "カメラで 写真を（ ）。", sub: "Choose correct verb", options: ["かきます", "とります", "つくります", "みます"], correct: 1, explanation: "写真を とります = to take a photo." },
-                    // GRAMMAR (4)
                     { section: "GRAMMAR", category: "grammar", prompt: "あついから、まどを（ ）ください。", sub: "Verb form", options: ["あけ", "あけて", "あけないで", "あけた"], correct: 1, explanation: "Please open = あけてください (te-form)." },
-                    { section: "GRAMMAR", category: "grammar", prompt: "ねる（ ）、歯を 磨きます。", sub: "Select grammar pattern", options: ["あとで", "まえに", "とき", "ながら"], correct: 1, explanation: "まえに = before (Before sleeping, I brush teeth)." },
-                    { section: "GRAMMAR", category: "grammar", prompt: "わたしは 日本語が 少し（ ）。", sub: "Complete the sentence", options: ["わかります", "あります", "います", "します"], correct: 0, explanation: "わかります = understand (I understand a little Japanese)." },
-                    { section: "GRAMMAR", category: "grammar", prompt: "わたしは ( 1 ) ( 2 ) ( ★ ) ( 4 ) いきません。", sub: "Order the words", options: ["は", "どこ", "へ", "も"], correct: 3, explanation: "Correct order: どこ(2) へ(3) も(4) いきません(doesn't use 1). Actually order is どこへも." },
-                    // READING (2)
-                    { section: "READING", category: "reading", passage: "山田さんへ、\nきのうは ありがとうございました。とても 楽しかったです。\nまた いっしょに ご飯を 食べましょう。\n田中より", prompt: "田中さんは どうして 手紙を 書きましたか。", sub: "Read and answer", options: ["お礼を言うため (To thank)", "謝るため (To apologize)", "質問するため (To ask)", "怒るため (To be angry)"], correct: 0, explanation: "He says ありがとうございました (Thank you)." },
-                    { section: "READING", category: "reading", passage: "わたしは 犬が 好きですが、猫は 好きじゃありません。でも、妹は 猫が 好きです。", prompt: "妹は 何が 好きですか。", sub: "Read and answer", options: ["犬", "猫", "犬と猫", "何も好きじゃない"], correct: 1, explanation: "妹は猫が好きです = Little sister likes cats." },
-                    // LISTENING (3)
-                    { section: "LISTENING", category: "listening", dialogueText: "女：すみません、郵便局は どこですか。男：まっすぐ 行って、右に 曲がってください。", prompt: "郵便局へ 行くには どうしますか。", sub: "Listen and answer", options: ["まっすぐ行って、左", "まっすぐ行って、右", "右に行って、左", "左に行って、右"], correct: 1, explanation: "まっすぐ行って、右に曲がってください = Go straight, turn right." },
+                    { section: "GRAMMAR", category: "grammar", prompt: "ねる（ ）、歯を 磨きます。", sub: "Select grammar pattern", options: ["あとで", "まえに", "とき", "ながら"], correct: 1, explanation: "まえに = before." },
+                    { section: "GRAMMAR", category: "grammar", prompt: "わたしは 日本語が 少し（ ）。", sub: "Complete the sentence", options: ["わかります", "あります", "います", "します"], correct: 0, explanation: "わかります = understand." },
+                    { section: "GRAMMAR", category: "grammar", prompt: "わたしは ( 1 ) ( 2 ) ( ★ ) ( 4 ) いきません。", sub: "Order the words", options: ["は", "どこ", "へ", "も"], correct: 3, explanation: "Correct order: どこへもいきません." },
+                    { section: "READING", category: "reading", passage: "山田さんへ、\nきのうは ありがとうございました。とても 楽しかったです。\nまた いっしょに ご飯を 食べましょう。\n田中より", prompt: "田中さんは どうして 手紙を 書きましたか。", sub: "Read and answer", options: ["お礼を言うため (To thank)", "謝るため (To apologize)", "質問するため (To ask)", "怒るため (To be angry)"], correct: 0, explanation: "He says ありがとうございました." },
+                    { section: "READING", category: "reading", passage: "わたしは 犬が 好きですが、猫は 好きじゃありません。でも、妹は 猫が 好きです。", prompt: "妹は 何が 好きですか。", sub: "Read and answer", options: ["犬", "猫", "犬と猫", "何も好きじゃない"], correct: 1, explanation: "妹は猫が好きです." },
+                    { section: "LISTENING", category: "listening", dialogueText: "女：すみません、郵便局は どこですか。男：まっすぐ 行って、右に 曲がってください。", prompt: "郵便局へ 行くには どうしますか。", sub: "Listen and answer", options: ["まっすぐ行って、左", "まっすぐ行って、右", "右に行って、左", "左に行って、右"], correct: 1, explanation: "Go straight, turn right." },
                     { section: "LISTENING", category: "listening", dialogueText: "男：もしもし、田中さんですか。女：いいえ、違います。鈴木です。", prompt: "電話に出た人は だれですか。", sub: "Listen and answer", options: ["田中さん", "鈴木さん", "男の人", "わかりません"], correct: 1, explanation: "The woman says she is Suzuki." },
                     { section: "LISTENING", category: "listening", dialogueText: "男：肉と 魚と どちらが 好きですか。女：魚のほうが 好きです。", prompt: "女の人は どちらが 好きですか。", sub: "Listen and answer", options: ["肉", "魚", "両方", "どちらも嫌い"], correct: 1, explanation: "魚のほうが好きです = I prefer fish." }
                 ]
@@ -394,29 +435,22 @@
             level4: {
                 title: "N5 Mastery Boss Level",
                 questions: [
-                    // VOCAB (3)
                     { section: "KANJI & VOCAB", category: "vocab", prompt: "あの「人」は だれですか。", sub: "Reading of Kanji", options: ["にん", "ひと", "じん", "びと"], correct: 1, explanation: "人 as a standalone noun is read as ひと (hito)." },
-                    { section: "KANJI & VOCAB", category: "vocab", prompt: "きょうは「さむい」です。", sub: "Kanji for the word", options: ["暑い", "寒い", "熱い", "冷たい"], correct: 1, explanation: "さむい = 寒い (cold weather)." },
-                    { section: "KANJI & VOCAB", category: "vocab", prompt: "ラジオの おとが（ ）です。", sub: "Choose correct adjective", options: ["おおきい", "ひろい", "ながい", "ふとい"], correct: 0, explanation: "おおきい (big/loud) is used for volume." },
-                    // GRAMMAR (4)
+                    { section: "KANJI & VOCAB", category: "vocab", prompt: "きょうは「さむい」です。", sub: "Kanji for the word", options: ["暑い", "寒い", "熱い", "冷たい"], correct: 1, explanation: "さむい = 寒い." },
+                    { section: "KANJI & VOCAB", category: "vocab", prompt: "ラジオの おとが（ ）です。", sub: "Choose correct adjective", options: ["おおきい", "ひろい", "ながい", "ふとい"], correct: 0, explanation: "おおきい is used for volume." },
                     { section: "GRAMMAR", category: "grammar", prompt: "富士山に のぼった（ ）が あります。", sub: "Select grammar pattern", options: ["こと", "もの", "とき", "ひと"], correct: 0, explanation: "〜たことがあります expresses past experience." },
-                    { section: "GRAMMAR", category: "grammar", prompt: "日曜日、本を 読ん（ ）、テレビを 見（ ）します。", sub: "Verb form (tari-tari)", options: ["て/て", "たり/たり", "た/た", "だり/だり"], correct: 1, explanation: "〜たり〜たりします lists representative actions." },
-                    { section: "GRAMMAR", category: "grammar", prompt: "この 漢字は 読む（ ）が できます。", sub: "Select missing particle/word", options: ["の", "こと", "もの", "ため"], correct: 1, explanation: "〜ことができます expresses ability." },
-                    { section: "GRAMMAR", category: "grammar", prompt: "だれ ( 1 ) ( 2 ) ( ★ ) ( 4 ) きましたか。", sub: "Order the words", options: ["は", "が", "を", "も"], correct: 1, explanation: "Just a trick question: だれがきましたか (Who came?)" },
-                    // READING (2)
-                    { section: "READING", category: "reading", passage: "きのう、デパートへ 行きました。シャツを 買いたかったですが、高いですから 買いませんでした。代わりに 靴下を 買いました。", prompt: "この人は きのう 何を 買いましたか。", sub: "Read and answer", options: ["シャツ", "靴下", "シャツと靴下", "何も買わなかった"], correct: 1, explanation: "代わりに靴下を買いました = Bought socks instead." },
-                    { section: "READING", category: "reading", passage: "【ゴミの 捨て方】\n燃えるゴミは 月曜日と 木曜日です。\n缶や 瓶は 水曜日です。", prompt: "缶は いつ 捨てますか。", sub: "Read and answer", options: ["月曜日", "木曜日", "水曜日", "金曜日"], correct: 2, explanation: "缶や瓶は水曜日です = Cans/bottles are Wednesday." },
-                    // LISTENING (3)
-                    { section: "LISTENING", category: "listening", dialogueText: "女：来週の パーティー、金曜日でしたね。男：すみません、土曜日に なりました。", prompt: "パーティーは いつですか。", sub: "Listen and answer", options: ["木曜日", "金曜日", "土曜日", "日曜日"], correct: 2, explanation: "土曜日になりました = It became Saturday." },
-                    { section: "LISTENING", category: "listening", dialogueText: "男：田中さんは どの人ですか。女：あの 背が高くて、めがねを かけている 人です。", prompt: "田中さんは どんな人ですか。", sub: "Listen and answer", options: ["背が低くて、めがね", "背が高くて、めがね", "背が高くて、ぼうし", "背が低くて、ぼうし"], correct: 1, explanation: "背が高くて (tall)、めがねをかけている (wearing glasses)." },
-                    { section: "LISTENING", category: "listening", dialogueText: "アナウンス：次の 電車は ３番線から 出発します。", prompt: "電車は 何番線から 出発しますか。", sub: "Listen and answer", options: ["１番線", "２番線", "３番線", "４番線"], correct: 2, explanation: "３番線 (San-ban sen) = Platform 3." }
+                    { section: "GRAMMAR", category: "grammar", prompt: "日曜日、本を 読ん（ ）、テレビを 見（ ）します。", sub: "Verb form (tari-tari)", options: ["て/て", "たり/たり", "た/た", "だり/だり"], correct: 1, explanation: "〜たり〜たりします." },
+                    { section: "GRAMMAR", category: "grammar", prompt: "この 漢字は 読む（ ）が できます。", sub: "Select missing particle/word", options: ["の", "こと", "もの", "ため"], correct: 1, explanation: "〜ことができます." },
+                    { section: "GRAMMAR", category: "grammar", prompt: "だれ ( 1 ) ( 2 ) ( ★ ) ( 4 ) きましたか。", sub: "Order the words", options: ["は", "が", "を", "も"], correct: 1, explanation: "だれがきましたか." },
+                    { section: "READING", category: "reading", passage: "きのう、デパートへ 行きました。シャツを 買いたかったですが、高いですから 買いませんでした。代わりに 靴下を 買いました。", prompt: "この人は きのう 何を 買いましたか。", sub: "Read and answer", options: ["シャツ", "靴下", "シャツと靴下", "何も買わなかった"], correct: 1, explanation: "代わりに靴下を買いました." },
+                    { section: "READING", category: "reading", passage: "【ゴミの 捨て方】\n燃えるゴミは 月曜日と 木曜日です。\n缶や 瓶は 水曜日です。", prompt: "缶は いつ 捨てますか。", sub: "Read and answer", options: ["月曜日", "木曜日", "水曜日", "金曜日"], correct: 2, explanation: "缶や瓶は水曜日です." },
+                    { section: "LISTENING", category: "listening", dialogueText: "女：来週の パーティー、金曜日でしたね。男：すみません、土曜日に なりました。", prompt: "パーティーは いつですか。", sub: "Listen and answer", options: ["木曜日", "金曜日", "土曜日", "日曜日"], correct: 2, explanation: "土曜日になりました." },
+                    { section: "LISTENING", category: "listening", dialogueText: "男：田中さんは どの人ですか。女：あの 背が高くて、めがねを かけている 人です。", prompt: "田中さんは どんな人ですか。", sub: "Listen and answer", options: ["背が低くて、めがね", "背が高くて、めがね", "背が高くて、ぼうし", "背が低くて、ぼうし"], correct: 1, explanation: "背が高くて、めがねをかけている." },
+                    { section: "LISTENING", category: "listening", dialogueText: "アナウンス：次の 電車は ３番線から 出発します。", prompt: "電車は 何番線から 出発しますか。", sub: "Listen and answer", options: ["１番線", "２番線", "３番線", "４番線"], correct: 2, explanation: "３番線." }
                 ]
             }
         };
 
-        // ==========================================
-        // 🚀 EXAM ENGINE & AUTH SCRIPT
-        // ==========================================
         let activePaper = [];
         let activeQuestionIndex = 0;
         let userResponses = [];
@@ -428,46 +462,33 @@
             if (!currentUser.id) return window.location.replace('login.html');
             
             const uname = currentUser.username || 'User';
-            // Username full text
             document.querySelectorAll('#sidebar-user-name').forEach(el => el && (el.innerText = uname));
-            // Only First Letter for Avatar Circles
-            document.querySelectorAll('#sidebar-user-initial, #userInitialDisplay').forEach(el => el && (el.innerText = uname.charAt(0).toUpperCase()));
+            document.querySelectorAll('#mobile-user-initial, #sidebar-user-initial, #userInitialDisplay').forEach(el => el && (el.innerText = uname.charAt(0).toUpperCase()));
 
             try {
                 const res = await fetch(`/api/user/progress?userId=${currentUser.id}`);
                 const data = await res.json();
                 
                 let accuracy = data && !data.error ? Number(data.overall_accuracy || 0) : 0;
-                let totalXP = (data.total_correct || 0) * 50;
-                
-                // FIXED XP SYNC LOGIC
-                document.querySelectorAll('#stat-total-xp, #xpCountDisplay').forEach(el => {
-                    if (el) el.innerText = totalXP;
-                });
-
                 document.getElementById('exam-user-accuracy').innerText = `${accuracy.toFixed(0)}%`;
 
                 if (accuracy >= 40) unlockCard(2, 'var(--accent-green)');
                 if (accuracy >= 60) unlockCard(3, 'var(--accent-orange)');
                 if (accuracy >= 80) unlockCard(4, 'var(--accent-gold)');
-
             } catch(e) { console.error("Progress Fetch Error:", e); }
         });
 
         function unlockCard(num, color) {
             const card = document.getElementById(`exam-card-${num}`);
             if (!card) return;
-            
             card.classList.remove('locked-card');
             card.classList.add('unlocked');
-            
             const badge = document.getElementById(`badge-${num}`);
             if (badge) {
                 badge.innerText = `LEVEL ${num} 🔓`;
                 badge.style.background = color.replace('var(', '').replace(')', '') === '--accent-gold' ? 'rgba(245,158,11,0.2)' : 'rgba(16,185,129,0.2)';
                 badge.style.color = color;
             }
-            
             const btn = document.getElementById(`btn-${num}`);
             if (btn) {
                 btn.innerText = 'Start Exam';
@@ -512,31 +533,17 @@
         function renderQuestion(index) {
             activeQuestionIndex = index;
             const q = activePaper[index];
-            
             document.getElementById('active-section-badge').innerText = q.section;
             document.getElementById('q-index-label').innerText = `Question ${index + 1} of ${activePaper.length}`;
             document.getElementById('q-prompt-text').innerText = q.prompt;
             document.getElementById('q-sub-text').innerText = q.sub;
 
-            // Reading Passage
             const passageBox = document.getElementById('q-passage-container');
-            if (q.passage) {
-                passageBox.innerText = q.passage;
-                passageBox.style.display = 'block';
-            } else {
-                passageBox.style.display = 'none';
-            }
+            if (q.passage) { passageBox.innerText = q.passage; passageBox.style.display = 'block'; } else { passageBox.style.display = 'none'; }
 
-            // Listening Audio
             const listeningBox = document.getElementById('q-listening-container');
-            if (q.dialogueText) {
-                listeningBox.style.display = 'flex';
-                document.getElementById('q-listening-script').innerText = "(Click button to listen)";
-            } else {
-                listeningBox.style.display = 'none';
-            }
+            if (q.dialogueText) { listeningBox.style.display = 'flex'; document.getElementById('q-listening-script').innerText = "(Click button to listen)"; } else { listeningBox.style.display = 'none'; }
 
-            // Options
             const opts = document.getElementById('q-options-container');
             opts.innerHTML = q.options.map((opt, oIdx) => `
                 <div class="option-tile ${userResponses[index] === oIdx ? 'selected' : ''}" onclick="selectAnswer(${oIdx})">
@@ -576,9 +583,8 @@
             }
         }
 
-        // 🚀 NEW: Quit Exam Function
         function quitExam() {
-            if(confirm("Are you sure you want to quit? Your progress will NOT be saved, and this will not affect your score.")) {
+            if(confirm("Are you sure you want to quit? Your progress will NOT be saved.")) {
                 clearInterval(timerInterval);
                 document.getElementById('exam-live-view').style.display = 'none';
                 document.getElementById('exam-lobby-view').style.display = 'block';
@@ -602,7 +608,6 @@
                 const isC = userResponses[idx] === q.correct;
                 breakdown[q.category].t++;
                 if(isC) { correct++; breakdown[q.category].c++; }
-                
                 return `
                     <div class="review-item" style="border-left: 4px solid ${isC ? '#10b981' : '#ef4444'};">
                         <div style="font-size: 0.8rem; color: var(--accent-blue); font-weight: 800; margin-bottom: 0.25rem;">${q.section}</div>
@@ -620,20 +625,16 @@
             document.getElementById('result-score-big').innerText = `${scorePercent}%`;
             document.getElementById('result-fraction').innerText = `(${correct} / ${activePaper.length} Correct)`;
             
-            // Populate category breakdown
             document.getElementById('score-vocab').innerText = `${breakdown.vocab.c}/${breakdown.vocab.t}`;
             document.getElementById('score-grammar').innerText = `${breakdown.grammar.c}/${breakdown.grammar.t}`;
             document.getElementById('score-reading').innerText = `${breakdown.reading.c}/${breakdown.reading.t}`;
             document.getElementById('score-listening').innerText = `${breakdown.listening.c}/${breakdown.listening.t}`;
-
             document.getElementById('detailed-review-container').innerHTML = reviewHtml;
 
             const badge = document.getElementById('result-status-badge');
             if (scorePercent >= 60) {
                 badge.innerText = "PASSED • 合格 🎉";
                 badge.style.background = "#064e3b"; badge.style.color = "#34d399"; badge.style.borderColor = "#10b981";
-                
-                // Submit progress to DB if passed
                 fetch('/api/user/update-progress', {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ userId: JSON.parse(localStorage.getItem('kotolab_user')).id, correctIncrement: correct, studyMinutesIncrement: 20, lessonCompleted: true })
@@ -653,6 +654,8 @@
                 if (timeRemainingSeconds <= 0) promptSubmitExam();
             }, 1000);
         }
+        function openNotifications() { alert("🔔 No unread notifications."); }
+        function goToSettings() { window.location.href = 'settings.html'; }
     </script>
 </body>
 </html>

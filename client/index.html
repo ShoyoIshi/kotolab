@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
- 
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="theme-color" content="#4f46e5">
+    <!-- 🚀 PWA Meta Tags: App-like standalone experience for Mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0b0f19">
     <link rel="manifest" href="/manifest.json">
     <title>KotoLab - JLPT N5 Learning Dashboard</title>
 
@@ -15,7 +15,6 @@
         if (!localStorage.getItem('kotolab_token')) { 
             window.location.replace('login.html'); 
         }
-        
     </script>
 
     <link rel="stylesheet" href="css/style.css?v=5.0">
@@ -23,9 +22,10 @@
 
     <style>
         :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --text-muted: #8fa0bd; }
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-        body { background-color: var(--bg-main); color: #ffffff; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; display: flex; min-height: 100vh; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-main); color: #ffffff; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; display: flex; min-height: 100vh; overflow-x: hidden; }
 
+        /* Canonical Sidebar (Desktop) */
         .sidebar { width: 260px; background: #090d16; border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; height: 100vh; position: fixed; left: 0; top: 0; z-index: 100; }
         .brand { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; padding-left: 0.5rem; }
         .brand-icon-box { width: 40px; height: 40px; background: linear-gradient(135deg, #38bdf8, #6366f1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
@@ -42,63 +42,60 @@
         .user-level { font-size: 0.7rem; color: var(--text-muted); }
         .user-stats-row { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05); }
 
-        .main-wrapper { margin-left: 260px; flex: 1; padding: 2rem 2.5rem; overflow-y: auto; min-height: 100vh; }
-        @media (max-width: 1100px) { .sidebar { width: 100%; height: auto; position: relative; } .main-wrapper { margin-left: 0; } }
-    </style>
-    <style>
-    /* 📱 Native Mobile Bottom Bar & Layout Fix */
-    .mobile-bottom-nav {
-        display: none;
-    }
+        .main-wrapper { margin-left: 260px; flex: 1; padding: 2rem 2.5rem; overflow-y: auto; height: 100vh; }
 
-    @media (max-width: 1100px) { 
-        body { 
-            flex-direction: column !important; 
-            padding-bottom: 75px !important; /* Content ko bottom bar ke niche chupne se bachane ke liye */
-        } 
-        .sidebar { 
-            display: none !important; /* Mobile par desktop sidebar gayab */
-        } 
-        .main-wrapper { 
-            margin-left: 0 !important; 
-            padding: 1.25rem 1rem !important; 
-            width: 100% !important;
-        } 
-        .mobile-bottom-nav {
-            display: flex;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 65px;
-            background: #090d16;
-            border-top: 1px solid var(--border-color);
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
+        /* 📱 RESPONSIVE LOGIC: DESKTOP vs MOBILE */
+        .desktop-only { display: block; }
+        .mobile-only { display: none; }
+        .mobile-bottom-nav { display: none; }
+
+        @media (max-width: 1100px) { 
+            body { flex-direction: column !important; } 
+            .sidebar { display: none !important; } 
+            .main-wrapper { 
+                margin-left: 0 !important; 
+                padding: 1.25rem 1rem 85px 1rem !important; /* Bottom padding for nav */
+                width: 100% !important;
+                max-width: 600px;
+                margin: 0 auto !important;
+            }
+            .desktop-only { display: none !important; }
+            .mobile-only { display: block !important; }
+
+            /* Mobile Bottom Nav */
+            .mobile-bottom-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 70px;
+                background: rgba(11, 15, 25, 0.95);
+                border-top: 1px solid rgba(38, 53, 82, 0.8);
+                justify-content: space-around;
+                align-items: center;
+                z-index: 1000;
+                backdrop-filter: blur(12px);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+            .mobile-nav-item {
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                color: #64748b; text-decoration: none; font-size: 0.65rem; font-weight: 700; gap: 4px; flex: 1; height: 100%; transition: color 0.2s;
+            }
+            .mobile-nav-item.active { color: #6366f1; }
+            .mobile-nav-icon { font-size: 1.4rem; line-height: 1; transition: transform 0.2s; }
+            .mobile-nav-item.active .mobile-nav-icon { transform: scale(1.15); filter: drop-shadow(0 0 8px rgba(99,102,241,0.5)); }
         }
-        .mobile-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.65rem;
-            font-weight: 600;
-            gap: 2px;
-        }
-        .mobile-nav-item.active {
-            color: var(--accent-blue);
-        }
-        .mobile-nav-icon {
-            font-size: 1.25rem;
-        }
-    }
-</style>
+
+        /* 📱 Mobile App Cards */
+        .app-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.25rem; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s, background 0.2s; cursor: pointer; text-decoration: none; margin-bottom: 0.85rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .app-card:active { transform: scale(0.98); background: #1e293b; }
+        .app-card.locked { opacity: 0.5; pointer-events: none; }
+    </style>
 </head>
 <body>
 
+    <!-- 🖥️ DESKTOP SIDEBAR -->
     <aside class="sidebar">
         <div>
             <div class="brand">
@@ -133,8 +130,8 @@
                     </div>
                 </div>
                 <div class="user-stats-row">
-                    <span>❤️ <strong id="user-lives">5</strong></span>
-                    <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
+                 <span>❤️ <strong id="user-lives">5</strong> <span id="life-timer-display" style="color: var(--accent-orange); font-size: 0.7rem; font-family: monospace; display: none; margin-left: 4px;"></span></span>
+                 <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
                 </div>
             </div>
             <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">© 2026 KotoLab. All rights reserved.</div>
@@ -142,100 +139,233 @@
     </aside>
 
     <main class="main-wrapper">
-        <header class="top-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-            <div class="header-title">
-                <h1 style="font-size: 1.6rem; font-weight: 800; color: white; margin: 0;">おはようございます、<span id="header-greeting-name">User</span>! 👋</h1>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Let's continue your journey in Japanese learning today.</p>
-            </div>
-            <div class="top-bar-badges hidden md:flex" style="display: flex; align-items: center; gap: 0.75rem;">
-                <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">⚡ <span id="xpCountDisplay">0</span> XP</div>
-                <div class="badge-item" onclick="openNotifications()" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24;">🔔</div>
-                <div class="badge-item" onclick="goToSettings()" style="cursor: pointer; background: #6366f1; border: 1px solid #818cf8; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;"><span id="userInitialDisplay">U</span></div>
-            </div>
-        </header>
+        
+        <!-- ========================================== -->
+        <!-- 🖥️ DESKTOP LAYOUT (HIDDEN ON MOBILE)       -->
+        <!-- ========================================== -->
+        <div class="desktop-only">
+            <header class="top-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <div class="header-title">
+                    <h1 style="font-size: 1.6rem; font-weight: 800; color: white; margin: 0;">おはようございます、<span class="greeting-name-desktop">User</span>! 👋</h1>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Let's continue your journey in Japanese learning today.</p>
+                </div>
+                <div class="top-bar-badges hidden md:flex" style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="badge-item" style="background: #151e33; border: 1px solid #263552; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">⚡ <span class="xpCountDisplayDesktop">0</span> XP</div>
+                    <div class="badge-item" onclick="openNotifications()" style="cursor: pointer; background: #151e33; border: 1px solid #263552; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fbbf24;">🔔</div>
+                    <div class="badge-item userInitialDisplay" onclick="goToSettings()" style="cursor: pointer; background: #6366f1; border: 1px solid #818cf8; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white;">U</div>
+                </div>
+            </header>
 
-        <div class="hero-banner bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-6 text-white mb-8 shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-                <h2 class="text-2xl font-bold mb-2">🚀 Start Your Japanese Journey!</h2>
-                <p class="text-indigo-200">Earn XP in Drills to unlock Basic Vocabulary, Sandbox, and Mock Exams.</p>
+            <div class="hero-banner bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-6 text-white mb-8 shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold mb-2">🚀 Start Your Japanese Journey!</h2>
+                    <p class="text-indigo-200">Earn XP in Drills to unlock Basic Vocabulary, Sandbox, and Mock Exams.</p>
+                </div>
+                <button onclick="window.location.href='drills.html'" class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition shadow-md whitespace-nowrap">Begin Drills</button>
             </div>
-            <button onclick="window.location.href='drills.html'" class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition shadow-md whitespace-nowrap">Begin Drills</button>
+
+            <h2 class="text-xl font-bold text-white mb-4">Your Learning Path</h2>
+            <div class="learning-path flex flex-col gap-4">
+                
+                <div class="module-card bg-[#151e33] p-5 rounded-lg border-l-4 border-green-500 shadow-md">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">🟢 Phase 1: Alphabets (Hiragana & Katakana)</h3>
+                            <p class="text-[#8fa0bd] text-sm mt-1">Master basic Japanese characters. (Romaji hints ON)</p>
+                        </div>
+                        <button onclick="window.location.href='drills.html'" class="bg-green-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-600 transition w-full md:w-auto">Continue</button>
+                    </div>
+                    <div class="w-full bg-[#0b0f19] rounded-full h-2.5 overflow-hidden">
+                        <div id="bar-phase-1" class="bg-green-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
+                        <span id="progress-text-1">Drills Mastered</span>
+                        <span id="progress-pct-1">0%</span>
+                    </div>
+                </div>
+
+                <div id="card-phase-2" class="module-card bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] transition-all duration-300">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
+                        <div>
+                            <h3 id="title-phase-2" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 2: Basic Vocabulary</h3>
+                            <p class="text-gray-500 text-sm mt-1">Learn everyday words. Unlocks at <strong>600 XP</strong>.</p>
+                        </div>
+                        <button id="btn-phase-2" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">Locked</button>
+                    </div>
+                    <div class="w-full bg-[#0b0f19] rounded-full h-2.5 overflow-hidden border border-[#263552]">
+                        <div id="bar-phase-2" class="bg-blue-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
+                        <span id="progress-text-2">0 / 600 XP</span>
+                        <span id="progress-pct-2">0%</span>
+                    </div>
+                </div>
+
+                <div id="card-phase-3" class="module-card bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] transition-all duration-300">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
+                        <div>
+                            <h3 id="title-phase-3" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 3: Grammar Sandbox</h3>
+                            <p class="text-gray-500 text-sm mt-1">Build sentences & practice particles. Unlocks at <strong>1500 XP</strong>.</p>
+                        </div>
+                        <button id="btn-phase-3" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">Locked</button>
+                    </div>
+                    <div class="w-full bg-[#0b0f19] rounded-full h-2.5 overflow-hidden border border-[#263552]">
+                        <div id="bar-phase-3" class="bg-purple-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
+                        <span id="progress-text-3">0 / 1500 XP</span>
+                        <span id="progress-pct-3">0%</span>
+                    </div>
+                </div>
+
+                <div id="card-phase-4" class="module-card bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] transition-all duration-300">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
+                        <div>
+                            <h3 id="title-phase-4" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 4: N5 Mock Exams</h3>
+                            <p class="text-gray-500 text-sm mt-1">Test your skills in a timed environment. Unlocks at <strong>2500 XP</strong>.</p>
+                        </div>
+                        <button id="btn-phase-4" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">Locked</button>
+                    </div>
+                    <div class="w-full bg-[#0b0f19] rounded-full h-2.5 overflow-hidden border border-[#263552]">
+                        <div id="bar-phase-4" class="bg-orange-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
+                        <span id="progress-text-4">0 / 2500 XP</span>
+                        <span id="progress-pct-4">0%</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <h2 class="text-xl font-bold text-white mb-4">Your Learning Path</h2>
-        <div class="learning-path flex flex-col gap-4">
+        <!-- ========================================== -->
+        <!-- 📱 MOBILE PWA LAYOUT (HIDDEN ON DESKTOP)   -->
+        <!-- ========================================== -->
+        <div class="mobile-only">
             
-            <div class="module-card bg-[#151e33] p-5 rounded-lg border-l-4 border-green-500 shadow-md">
-                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
-                    <div>
-                        <h3 class="text-xl font-bold text-white">🟢 Phase 1: Alphabets (Hiragana & Katakana)</h3>
-                        <p class="text-[#8fa0bd] text-sm mt-1">Master basic Japanese characters. (Romaji hints ON)</p>
+            <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="brand-icon-box" style="width: 35px; height: 35px; font-size: 1.1rem; box-shadow: none;">⛩️</div>
+                    <div style="line-height: 1.1;">
+                        <div style="font-weight: 800; font-size: 1.1rem; color: white;">KotoLab</div>
+                        <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 600;">JLPT N5 Learning</div>
                     </div>
-                    <button onclick="window.location.href='drills.html'" class="bg-green-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-600 transition w-full md:w-auto">Continue</button>
                 </div>
-                <div class="w-full bg-[#0b0f19] rounded-full h-2.5 overflow-hidden">
-                    <div id="bar-phase-1" class="bg-green-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span onclick="openNotifications()" style="font-size: 1.2rem; cursor:pointer;">🔔</span>
+                    <div class="user-avatar userInitialDisplay" style="width: 32px; height: 32px; font-size: 0.85rem; cursor: pointer;" onclick="window.location.href='settings.html'">U</div>
                 </div>
-                <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
-                    <span id="progress-text-1">Drills Mastered</span>
-                    <span id="progress-pct-1">0%</span>
+            </header>
+
+            <h1 style="font-size: 1.6rem; font-weight: 800; color: white; margin-bottom: 0.25rem;">Hello, <span class="greeting-name-desktop">User</span>! 👋</h1>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Let's continue your learning journey.</p>
+
+            <!-- 📱 Stats Bar -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1rem; display: flex; justify-content: space-around; align-items: center; margin-bottom: 1.5rem;">
+                <div style="text-align: center; flex: 1; border-right: 1px solid var(--border-color);">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.25rem;">Lives</div>
+                    <div style="font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                        ❤️ <span class="mobile-user-lives">5</span>
+                    </div>
+                </div>
+                <div style="text-align: center; flex: 1; border-right: 1px solid var(--border-color);">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.25rem;">Total XP</div>
+                    <div style="font-weight: 800; font-size: 1.1rem; color: #fbbf24; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                        ⚡ <span class="xpCountDisplayDesktop">0</span>
+                    </div>
+                </div>
+                <div style="text-align: center; flex: 1;">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.25rem;">Accuracy</div>
+                    <div style="font-weight: 800; font-size: 1.1rem; color: #34d399; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                        🎯 <span id="stat-accuracy-mobile">0%</span>
+                    </div>
                 </div>
             </div>
 
-            <div id="card-phase-2" class="module-card bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] transition-all duration-300">
-                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
-                    <div>
-                        <h3 id="title-phase-2" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 2: Basic Vocabulary</h3>
-                        <p class="text-gray-500 text-sm mt-1">Learn everyday words. Unlocks at <strong>600 XP</strong>.</p>
-                    </div>
-                    <button id="btn-phase-2" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">Locked</button>
+            <!-- 📱 N5 Progress Box -->
+            <div style="background: linear-gradient(135deg, #1e1b4b, #312e81); border: 1px solid #3730a3; border-radius: 20px; padding: 1.5rem; margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="font-size: 1.1rem; font-weight: 800; color: white;">N5 Progress</h3>
+                    <span id="overall-prog-txt" style="color: #a5b4fc; font-weight: 800; font-size: 1rem;">0%</span>
                 </div>
-                <div class="w-full bg-[#0b0f19] rounded-full h-2.5 overflow-hidden border border-[#263552]">
-                    <div id="bar-phase-2" class="bg-blue-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                <div style="width: 100%; background: #0f172a; border-radius: 99px; height: 8px; margin-bottom: 0.75rem; overflow: hidden;">
+                    <div id="overall-prog-fill" style="background: #6366f1; height: 100%; width: 0%; transition: width 0.6s ease-out; border-radius: 99px;"></div>
                 </div>
-                <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
-                    <span id="progress-text-2">0 / 600 XP</span>
-                    <span id="progress-pct-2">0%</span>
-                </div>
+                <p style="font-size: 0.8rem; color: #c7d2fe; font-weight: 600;">Keep going! You're doing great! 🌟</p>
             </div>
 
-            <div id="card-phase-3" class="module-card bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] transition-all duration-300">
-                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
-                    <div>
-                        <h3 id="title-phase-3" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 3: Grammar Sandbox</h3>
-                        <p class="text-gray-500 text-sm mt-1">Build sentences & practice particles. Unlocks at <strong>1500 XP</strong>.</p>
+            <h2 style="font-size: 1.1rem; font-weight: 800; color: white; margin-bottom: 1rem;">Continue Learning</h2>
+            
+            <div style="display: flex; flex-direction: column;">
+                
+                <!-- Drills -->
+                <a href="drills.html" class="app-card">
+                    <div style="width: 50px; height: 50px; border-radius: 14px; background: #281515; border: 1px solid #450a0a; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0;">⚡</div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 1rem; font-weight: 800; color: white;">Character Drills</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Hiragana, Katakana, Kanji practice.</div>
                     </div>
-                    <button id="btn-phase-3" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">Locked</button>
-                </div>
-                <div class="w-full bg-[#0b0f19] rounded-full h-2.5 overflow-hidden border border-[#263552]">
-                    <div id="bar-phase-3" class="bg-purple-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
-                </div>
-                <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
-                    <span id="progress-text-3">0 / 1500 XP</span>
-                    <span id="progress-pct-3">0%</span>
-                </div>
-            </div>
+                    <div style="color: #4f46e5; font-weight: 800; font-size: 1.2rem;">➔</div>
+                </a>
 
-            <div id="card-phase-4" class="module-card bg-[#0b0f19] p-5 rounded-lg opacity-60 border border-[#263552] transition-all duration-300">
-                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-3">
-                    <div>
-                        <h3 id="title-phase-4" class="text-xl font-bold text-[#8fa0bd]">🔒 Phase 4: N5 Mock Exams</h3>
-                        <p class="text-gray-500 text-sm mt-1">Test your skills in a timed environment. Unlocks at <strong>2500 XP</strong>.</p>
+                <!-- Conversation (Always Unlocked!) -->
+                <a href="conversation.html" class="app-card">
+                    <div style="width: 50px; height: 50px; border-radius: 14px; background: #064e3b; border: 1px solid #065f46; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0;">💬</div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 1rem; font-weight: 800; color: white;">AI Conversation</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;">Practice speaking with Sensei.</div>
                     </div>
-                    <button id="btn-phase-4" disabled class="bg-[#151e33] text-gray-500 border border-[#263552] px-6 py-2 rounded-lg cursor-not-allowed w-full md:w-auto">Locked</button>
-                </div>
-                <div class="w-full bg-[#0b0f19] rounded-full h-2.5 overflow-hidden border border-[#263552]">
-                    <div id="bar-phase-4" class="bg-orange-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%;"></div>
-                </div>
-                <div class="flex justify-between text-xs text-[#8fa0bd] mt-1">
-                    <span id="progress-text-4">0 / 2500 XP</span>
-                    <span id="progress-pct-4">0%</span>
-                </div>
+                    <div style="color: #4f46e5; font-weight: 800; font-size: 1.2rem;">➔</div>
+                </a>
+
+                <!-- Sandbox -->
+                <a href="sandbox.html" class="app-card locked" id="mobile-card-sandbox">
+                    <div style="width: 50px; height: 50px; border-radius: 14px; background: #1e1b4b; border: 1px solid #312e81; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0;">🧩</div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 1rem; font-weight: 800; color: white;">Grammar Sandbox</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;" id="mobile-sandbox-desc">Unlocks at 1500 XP.</div>
+                    </div>
+                    <div style="color: #4f46e5; font-weight: 800; font-size: 1.2rem;" id="mobile-sandbox-icon">🔒</div>
+                </a>
+
+                <!-- Exams -->
+                <a href="exam.html" class="app-card locked" id="mobile-card-exam">
+                    <div style="width: 50px; height: 50px; border-radius: 14px; background: #1e293b; border: 1px solid #334155; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0;">📝</div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 1rem; font-weight: 800; color: white;">Mock Exams</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;" id="mobile-exam-desc">Unlocks at 2500 XP.</div>
+                    </div>
+                    <div style="color: #4f46e5; font-weight: 800; font-size: 1.2rem;" id="mobile-exam-icon">🔒</div>
+                </a>
+
             </div>
         </div>
     </main>
 
-    <script src="js/app.js?v=5.0"></script>
+    <!-- 📱 NATIVE BOTTOM NAVIGATION BAR -->
+    <nav class="mobile-bottom-nav">
+        <a href="index.html" class="mobile-nav-item active">
+            <span class="mobile-nav-icon">🏠</span>
+            <span>Home</span>
+        </a>
+        <a href="drills.html" class="mobile-nav-item">
+            <span class="mobile-nav-icon">⚡</span>
+            <span>Drills</span>
+        </a>
+        <a href="sandbox.html" class="mobile-nav-item">
+            <span class="mobile-nav-icon">🧩</span>
+            <span>Sandbox</span>
+        </a>
+        <a href="conversation.html" class="mobile-nav-item">
+            <span class="mobile-nav-icon">💬</span>
+            <span>Chat</span>
+        </a>
+        <a href="analytics.html" class="mobile-nav-item">
+            <span class="mobile-nav-icon">📈</span>
+            <span>Analytics</span>
+        </a>
+    </nav>
+
+    <script src="js/app.js?v=25.0"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
@@ -249,28 +379,34 @@
 
             setTimeout(async () => {
                 let totalXP = 0;
-                let hiraganaMastery = 0;
-                let katakanaMastery = 0;
+                let accuracy = 0;
+                let hira = 0, kata = 0;
+                let lives = 5;
 
                 try {
                     const res = await fetch(`/api/user/progress?userId=${userId}`);
                     const data = await res.json();
                     if (data && !data.error) {
                         totalXP = (data.total_correct || 0) * 50;
-                        hiraganaMastery = data.hiragana_mastery || 0;
-                        katakanaMastery = data.katakana_mastery || 0;
+                        accuracy = data.overall_accuracy || 0;
+                        hira = data.hiragana_mastery || 0;
+                        kata = data.katakana_mastery || 0;
+                        lives = data.lives !== undefined ? data.lives : 5;
                     }
-                } catch (e) {
-                    console.error("XP Fetch Error:", e);
-                }
+                } catch (e) { console.error("XP Fetch Error:", e); }
 
-                // Exact XP display update
-                document.querySelectorAll('.user-xp-display, #stat-total-xp, #xpCountDisplay').forEach(el => {
-                    if (el) el.innerText = el.innerText.includes('XP') ? `${totalXP} XP` : totalXP;
-                });
+                // 1. Sync User Names & Initials (Desktop & Mobile)
+                document.querySelectorAll('.greeting-name-desktop, #user-display-name').forEach(el => el.innerText = uname);
+                document.querySelectorAll('.userInitialDisplay, #user-avatar').forEach(el => el.innerText = uname.charAt(0).toUpperCase());
 
-                // Phase 1 progress
-                const phase1Pct = Math.min(100, Math.round(((hiraganaMastery + katakanaMastery) / 2) || (totalXP > 0 ? Math.min(100, (totalXP / 600) * 100) : 0)));
+                // 2. Sync Basic Top Stats
+                document.querySelectorAll('.xpCountDisplayDesktop, #stat-total-xp').forEach(el => el.innerText = totalXP);
+                document.querySelectorAll('.mobile-user-lives, #user-lives').forEach(el => el.innerText = lives);
+                const accMobile = document.getElementById('stat-accuracy-mobile');
+                if(accMobile) accMobile.innerText = `${Number(accuracy).toFixed(0)}%`;
+
+                // 3. Desktop Phase 1 Progress
+                const phase1Pct = Math.min(100, Math.round(((hira + kata) / 2) || (totalXP > 0 ? Math.min(100, (totalXP / 600) * 100) : 0)));
                 const bar1 = document.getElementById('bar-phase-1');
                 const text1 = document.getElementById('progress-text-1');
                 const pct1 = document.getElementById('progress-pct-1');
@@ -278,40 +414,51 @@
                 if (text1) text1.innerText = phase1Pct === 100 ? 'Completed' : 'In Progress';
                 if (pct1) pct1.innerText = `${phase1Pct}%`;
 
-                // 🎯 Exact Phase Thresholds Update (600, 1500, 2500 with live totalXP)
+                // 4. Mobile Overall Progress Bar
+                let overallPct = phase1Pct;
+                document.getElementById('overall-prog-txt').innerText = `${overallPct}%`;
+                document.getElementById('overall-prog-fill').style.width = `${overallPct}%`;
+
+                // 5. Unlock Logic for Desktop Phases
                 updateModuleProgress(2, totalXP, 600, 'card-phase-2', 'title-phase-2', 'btn-phase-2', '🟢 Phase 2: Basic Vocabulary', 'sandbox.html');
                 updateModuleProgress(3, totalXP, 1500, 'card-phase-3', 'title-phase-3', 'btn-phase-3', '🟢 Phase 3: Grammar Sandbox', 'sandbox.html');
                 updateModuleProgress(4, totalXP, 2500, 'card-phase-4', 'title-phase-4', 'btn-phase-4', '🟢 Phase 4: N5 Mock Exams', 'exam.html');
 
-                // Sidebar Unlocks based on new thresholds
-                if (totalXP >= 1500 || currentUser.role === 'admin') {
-                    const sb = document.getElementById('link-sandbox');
-                    if(sb) { sb.href = 'sandbox.html'; sb.innerHTML = '🧩 Sandbox'; sb.classList.remove('locked', 'cursor-not-allowed'); sb.style.opacity = '1'; }
-                }
-                if (totalXP >= 2500 || currentUser.role === 'admin') {
-                    const ex = document.getElementById('link-exam');
-                    if(ex) { ex.href = 'exam.html'; ex.innerHTML = '📝 Exams'; ex.classList.remove('locked', 'cursor-not-allowed'); ex.style.opacity = '1'; }
+                // 6. Unlock Logic for Sidebar (Desktop)
+                if (totalXP >= 1500 || currentUser.role === 'admin') unlockSidebarLink('link-sandbox', 'sandbox.html', '🧩 Sandbox');
+                if (totalXP >= 2500 || currentUser.role === 'admin') unlockSidebarLink('link-exam', 'exam.html', '📝 Exams');
+
+                // 7. Unlock Logic for Mobile App Cards
+                const isAdmin = currentUser.role === 'admin';
+                const cardSandbox = document.getElementById('mobile-card-sandbox');
+                if (totalXP >= 1500 || isAdmin) {
+                    cardSandbox.classList.remove('locked');
+                    document.getElementById('mobile-sandbox-icon').innerText = '➔';
+                    document.getElementById('mobile-sandbox-desc').innerText = 'Build sentences and get AI feedback.';
                 }
 
-                document.querySelectorAll('#user-display-name, #header-greeting-name').forEach(el => el && (el.innerText = uname));
-                document.querySelectorAll('#user-avatar, #userInitialDisplay').forEach(el => el && (el.innerText = uname.charAt(0).toUpperCase()));
+                const cardExam = document.getElementById('mobile-card-exam');
+                if (totalXP >= 2500 || isAdmin) {
+                    cardExam.classList.remove('locked');
+                    document.getElementById('mobile-exam-icon').innerText = '➔';
+                    document.getElementById('mobile-exam-desc').innerText = 'Test your N5 readiness.';
+                }
+
             }, 300);
         });
 
-        // Safe Progress Bar Calculation (Prevents % overflow past 100)
+        // Desktop Phase Unlock Helper
         function updateModuleProgress(phaseNum, currentXP, targetXP, cardId, titleId, btnId, titleText, url) {
             const pct = Math.min(100, Math.max(0, Math.round((currentXP / targetXP) * 100)));
-            
             const bar = document.getElementById(`bar-phase-${phaseNum}`);
             const text = document.getElementById(`progress-text-${phaseNum}`);
             const pctLabel = document.getElementById(`progress-pct-${phaseNum}`);
 
             if (bar) bar.style.width = `${pct}%`;
-            
             if (text) text.innerText = `${currentXP} / ${targetXP} XP`; 
             if (pctLabel) pctLabel.innerText = `${pct}%`;
 
-            if (currentXP >= targetXP) {
+            if (currentXP >= targetXP || JSON.parse(localStorage.getItem('kotolab_user') || '{}').role === 'admin') {
                 const card = document.getElementById(cardId);
                 const title = document.getElementById(titleId);
                 const btn = document.getElementById(btnId);

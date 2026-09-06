@@ -2,8 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 🚀 PWA Meta Tags: App-like standalone experience for Mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0b0f19">
+    <link rel="manifest" href="/manifest.json">
+    
     <title>KotoLab - Login & Welcome</title>
+    
     <style>
         :root {
             --bg-main: #0b0f19;
@@ -19,6 +27,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Plus Jakarta Sans', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+            -webkit-tap-highlight-color: transparent; /* Mobile par tap color hatane ke liye */
         }
 
         body {
@@ -318,12 +327,19 @@
             text-decoration: underline;
         }
 
+        /* 📱 RESPONSIVE PWA/MOBILE SETTINGS */
         @media (max-width: 1100px) {
             .login-container {
                 grid-template-columns: 1fr;
             }
             .brand-showcase {
-                display: none;
+                display: none; /* Hide beautiful sidebar on mobile to save space */
+            }
+            .login-form-side {
+                padding: 2rem 1.5rem; /* Better padding for mobile screens */
+                justify-content: center;
+                height: 100vh; /* Ensure it takes full app screen */
+                padding-bottom: env(safe-area-inset-bottom);
             }
         }
     </style>
@@ -416,6 +432,7 @@
 
     </div>
 
+    <!-- 🚀 JS LOGIC 100% UNTOUCHED 🚀 -->
     <script>
         let isSignUpMode = false;
 

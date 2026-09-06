@@ -23,7 +23,7 @@ let currentLoadedSvgStrokes = [];
 let strokesDrawnInCurrentAttempt = 0;
 let currentStrokePath = []; 
 
-// Ultra-Simple Script Backgrounds (Easy enough for a 5-year-old to understand!)
+// Ultra-Simple Script Backgrounds
 const scriptHistories = {
     hiragana: `<strong>Hiragana (ひらがな)</strong> is the first Japanese alphabet that kids learn! Think of it like smooth, round, and friendly letters. Long ago, people wanted an easy way to write everyday Japanese words quickly. So, they made these soft, curvy shapes. We use Hiragana for normal Japanese words and daily talk!`,
     katakana: `<strong>Katakana (カタカナ)</strong> is the second Japanese alphabet. While Hiragana is round and soft, Katakana is made of sharp, straight, and strong lines! Long ago, Japanese monks used small pieces of Chinese characters as a quick shortcut to take notes. Today, we use Katakana for fun foreign words like ice cream (アイスクリーム), computer (コンピュータ), and animal names!`,
@@ -390,6 +390,18 @@ async function initInteractiveCanvas(item) {
             });
             
             writer.animateCharacter();
+
+            // ❤️ ADDED QUIZ LOGIC FOR HANZI WRITER
+            writer.quiz({
+                onMistake: function(strokeData) {
+                    console.log("Mistake made during drawing!");
+                    if (typeof triggerLifeLoss === 'function') triggerLifeLoss();
+                },
+                onComplete: function(summaryData) {
+                    updateFeedbackAndAccuracy();
+                }
+            });
+
             hanziWriterSuccess = true;
 
             const targetStrokes = item.strokeCount || item.stroke_count || 4;
@@ -489,6 +501,11 @@ function handleIncorrectStroke() {
     if (kanaCanvas) {
         kanaCanvas.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
         setTimeout(() => { kanaCanvas.style.backgroundColor = 'transparent'; }, 400);
+    }
+
+    // ❤️ LIFE MINUS LOGIC TRIGGER FOR CUSTOM CANVAS
+    if (typeof triggerLifeLoss === 'function') {
+        triggerLifeLoss();
     }
 
     if (currentItem) {

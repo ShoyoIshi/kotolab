@@ -23,7 +23,7 @@ function getFormattedTodayDate() {
 }
 
 // ==========================================
-// 1. GLOBAL DATABASE SYNCHRONIZER (Dashboard, XP & Analytics Fix)
+// 1. GLOBAL DATABASE SYNCHRONIZER (Dashboard, XP, Lives & Analytics Fix)
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(async () => { await globalDatabaseSync(); }, 400);
@@ -40,6 +40,83 @@ async function globalDatabaseSync() {
         const data = await res.json();
         if (data && !data.error && data.total_correct !== undefined) p = data;
     } catch(e) {}
+
+    // ==========================================
+    // ❤️ LIVES & REFILL TIMER EVALUATION (STRICT PAGE FILTER)
+    // ==========================================
+    let currentLives = p.lives !== undefined ? p.lives : 5;
+    const maxLives = 5;
+    const refillIntervalMinutes = 30; // Har 30 min mein 1 life refill
+
+    if (currentLives < maxLives && p.last_life_lost_at) {
+        const lastLostTime = new Date(p.last_life_lost_at).getTime();
+        const now = new Date().getTime();
+        const diffMinutes = Math.floor((now - lastLostTime) / (1000 * 60));
+
+        const earnedLives = Math.floor(diffMinutes / refillIntervalMinutes);
+        if (earnedLives > 0) {
+            currentLives = Math.min(maxLives, currentLives + earnedLives);
+            // Sync updated lives back to database quietly
+            fetch('/api/user/refill-life', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: userId, amount: earnedLives })
+            }).catch(err => console.log('Auto-refill sync error:', err));
+        }
+
+        // 🕒 Start the Live MM:SS Countdown
+        if (currentLives < maxLives) {
+            if (window.liveTimerInterval) clearInterval(window.liveTimerInterval);
+            window.liveTimerInterval = setInterval(() => {
+                const currentTime = new Date().getTime();
+                const totalDiffMs = currentTime - lastLostTime;
+                const refillMs = refillIntervalMinutes * 60 * 1000;
+                
+                const timePassedInCycle = totalDiffMs % refillMs;
+                const timeLeftMs = refillMs - timePassedInCycle;
+
+                const m = Math.floor(timeLeftMs / (1000 * 60));
+                const s = Math.floor((timeLeftMs % (1000 * 60)) / 1000);
+
+                document.querySelectorAll('#life-timer-display').forEach(el => {
+                    if (el) {
+                        el.style.display = 'inline';
+                        el.innerText = `(+${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')})`;
+                    }
+                });
+
+                // Auto-refresh when timer hits 0
+                if (timeLeftMs <= 1000) {
+                    clearInterval(window.liveTimerInterval);
+                    globalDatabaseSync(); // Refresh lives
+                }
+            }, 1000);
+        }
+    } else {
+        // Hide timer if lives are full
+        document.querySelectorAll('#life-timer-display').forEach(el => {
+            if (el) el.style.display = 'none';
+        });
+        if (window.liveTimerInterval) clearInterval(window.liveTimerInterval);
+    }
+
+    // Reflect Lives across all UI elements safely
+    document.querySelectorAll('#user-lives, .user-lives-display').forEach(el => {
+        if (el) el.innerText = currentLives;
+    });
+
+    // 🚀 STRICT PAGE CHECK: Only block on practice pages!
+    // CONVERSATION IS NOW A FREE ZONE (No locks there!)
+    if (currentLives <= 0) {
+        const path = window.location.pathname.toLowerCase();
+        const isPracticePage = path.includes('drills') || 
+                               path.includes('sandbox') || 
+                               path.includes('exam'); 
+        if (isPracticePage) {
+            triggerGameOverModal();
+        }
+    }
+    // ==========================================
 
     const isNewUser = (p.lessons_completed === 0 && p.total_correct === 0 && p.study_time_minutes === 0);
     const storedUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
@@ -155,7 +232,7 @@ const sentenceBank = [
     { prompt: "Build: 'I bought a watch.'", targetSentence: "わたしは とけい を かいました。", tiles: ["わたしは", "とけい", "を", "かいました。"], distractors: ["に", "ねます"] }
 ];
 
-// Dynamic Vocabulary Fetcher from Supabase Database (662 words integration)
+// Dynamic Vocabulary Fetcher from Supabase Database
 async function fetchVocabBankForModule() {
     try {
         const response = await fetch('/api/sandbox/vocab');
@@ -530,7 +607,7 @@ async function checkParticleAnswer(selectedParticle, targetParticle, idx, explan
 
     if (blankSlot) blankSlot.innerText = ` ${selectedParticle} `;
     
-    // 🔥 DYNAMIC COMPARISON (Strips spaces and punctuation for precise matching)
+    // 🔥 DYNAMIC COMPARISON
     const cleanSelected = String(selectedParticle).trim();
     const cleanTarget = String(targetParticle).trim();
     const isCorrect = (cleanSelected === cleanTarget);
@@ -544,6 +621,7 @@ async function checkParticleAnswer(selectedParticle, targetParticle, idx, explan
     } else {
         btn.classList.add('option-incorrect');
         if (blankSlot) { blankSlot.style.color = '#ef4444'; blankSlot.style.borderColor = '#ef4444'; }
+        triggerLifeLoss(); // ❤️ Deduct life on error
         trackUserAnswer(false, 'Particle-Selection-Error', cleanSelected, cleanTarget);
     }
 
@@ -570,6 +648,7 @@ async function verifySentence(targetSentence) {
         recordSandboxSuccess();
         trackUserAnswer(true); 
     } else {
+        triggerLifeLoss(); // ❤️ Deduct life on error
         trackUserAnswer(false, 'Sentence-Structure-Error', builtVal || cleanInput, cleanTarget); 
     }
 
@@ -591,6 +670,7 @@ function checkMultipleChoiceAnswer(selectedIdx, correctIdx, explanation) {
     } else {
         clickedBtn.classList.add('option-incorrect');
         aiText.innerHTML = `<span style="color: #ef4444; font-weight: 700;">❌ Incorrect</span><br>${explanation}`;
+        triggerLifeLoss(); // ❤️ Deduct life on error
         trackUserAnswer(false, 'Multiple-Choice-Error', `Option Index: ${selectedIdx}`, `Correct Index: ${correctIdx}`); 
     }
 }
@@ -769,4 +849,47 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Setup failed: ', err));
     });
+}
+
+// ==========================================
+// ❤️ LIVES DEDUCTION & GAME OVER MODAL
+// ==========================================
+function triggerLifeLoss() {
+    const userId = getCurrentUserId();
+    fetch('/api/user/lose-life', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: userId })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            document.querySelectorAll('#user-lives, .user-lives-display').forEach(el => {
+                if (el) el.innerText = data.lives;
+            });
+            globalDatabaseSync(); // Insta-sync timer
+            
+            if (data.lives <= 0) {
+                const path = window.location.pathname.toLowerCase();
+                // 🚀 STRICT CHECK: MODAL WILL ONLY SHOW ON THESE 3 PAGES (Conversation EXCLUDED)
+                if (path.includes('drills') || path.includes('sandbox') || path.includes('exam')) {
+                    triggerGameOverModal();
+                }
+            }
+        }
+    }).catch(err => console.error('Failed to deduct life:', err));
+}
+
+function triggerGameOverModal() {
+    if (document.getElementById('gameOverModal')) return;
+    const modalHTML = `
+        <div id="gameOverModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(8px);">
+            <div style="background: #151e33; border: 1px solid var(--border-color); border-radius: 20px; padding: 2.5rem; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">💔</div>
+                <h2 style="color: white; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Out of Lives!</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">You've run out of lives. Wait for a 30-minute cooldown or return to the dashboard.</p>
+                <button onclick="window.location.href='index.html'" style="background: var(--accent-indigo); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer;">Return to Dashboard 🏠</button>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
 }

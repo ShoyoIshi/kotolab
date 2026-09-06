@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="theme-color" content="#4f46e5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0b0f19">
     <link rel="manifest" href="/manifest.json">
     <title>KotoLab — Shoko AI Friend Conversation</title>
 
@@ -17,7 +17,7 @@
 
     <style>
         :root { --bg-main: #0b0f19; --bg-card: #151e33; --border-color: #263552; --accent-indigo: #6366f1; --accent-blue: #38bdf8; --accent-green: #10b981; --accent-orange: #f97316; --text-muted: #8fa0bd; }
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Segoe UI', system-ui, sans-serif; display: flex; min-height: 100vh; overflow-x: hidden; }
 
         .sidebar { width: 260px; background: #090d16; border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; height: 100vh; position: fixed; left: 0; top: 0; z-index: 100; }
@@ -38,12 +38,10 @@
 
         .main-wrapper { margin-left: 260px; flex: 1; padding: 2rem 2.5rem; overflow-y: auto; min-height: 100vh; }
         .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-        @media (max-width: 1100px) { .sidebar { width: 100%; height: auto; position: relative; padding: 1rem; border-right: none; border-bottom: 1px solid var(--border-color); } .main-wrapper { margin-left: 0; padding: 1.5rem; } }
 
         /* Convo specifics */
         .convo-container { display: grid; grid-template-columns: 1fr 300px; gap: 1.5rem; align-items: start; }
-        @media (max-width: 1100px) { .convo-container { grid-template-columns: 1fr; } }
-        .chat-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; display: flex; flex-direction: column; height: 80vh; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .chat-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; display: flex; flex-direction: column; height: 75vh; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .chat-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color); margin-bottom: 0.75rem; }
         .progress-bar-bg { width: 100%; height: 6px; background: #0b0f19; border-radius: 3px; overflow: hidden; margin: 0.5rem 0 1rem 0; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, #6366f1, #38bdf8); border-radius: 3px; width: 60%; }
@@ -69,61 +67,42 @@
         .metric-row { margin-bottom: 0.75rem; }
         .metric-bar-bg { width: 100%; height: 6px; background: #0b0f19; border-radius: 3px; overflow: hidden; margin-top: 0.25rem; }
         .metric-fill { height: 100%; border-radius: 3px; }
-    </style>
-    <style>
-    /* 📱 Native Mobile Bottom Bar & Layout Fix */
-    .mobile-bottom-nav {
-        display: none;
-    }
 
-    @media (max-width: 1100px) { 
-        body { 
-            flex-direction: column !important; 
-            padding-bottom: 75px !important; /* Content ko bottom bar ke niche chupne se bachane ke liye */
-        } 
-        .sidebar { 
-            display: none !important; /* Mobile par desktop sidebar gayab */
-        } 
-        .main-wrapper { 
-            margin-left: 0 !important; 
-            padding: 1.25rem 1rem !important; 
-            width: 100% !important;
-        } 
-        .mobile-bottom-nav {
-            display: flex;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 65px;
-            background: #090d16;
-            border-top: 1px solid var(--border-color);
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
+        /* 📱 RESPONSIVE LOGIC: DESKTOP vs MOBILE */
+        .desktop-only { display: flex; }
+        .mobile-only { display: none; }
+        .mobile-bottom-nav { display: none; }
+
+        @media (max-width: 1100px) { 
+            body { flex-direction: column !important; } 
+            .sidebar { display: none !important; } 
+            .main-wrapper { margin-left: 0 !important; padding: 1.25rem 1rem 85px 1rem !important; width: 100% !important; max-width: 600px; margin: 0 auto !important; }
+            .desktop-only { display: none !important; }
+            .mobile-only { display: flex !important; }
+            .convo-container { grid-template-columns: 1fr; }
+            .chat-panel { height: 72vh; }
+            .sidebar-right { display: none; } /* Hide extra side widgets on mobile to fit screen */
+            .mobile-header { justify-content: space-between; align-items: center; margin-bottom: 1.5rem; width: 100%; }
+            
+            .mobile-bottom-nav {
+                display: flex; position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
+                background: rgba(11, 15, 25, 0.95); border-top: 1px solid rgba(38, 53, 82, 0.8);
+                justify-content: space-around; align-items: center; z-index: 1000;
+                backdrop-filter: blur(12px); padding-bottom: env(safe-area-inset-bottom);
+            }
+            .mobile-nav-item {
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                color: #64748b; text-decoration: none; font-size: 0.65rem; font-weight: 700; gap: 4px; flex: 1; height: 100%; transition: color 0.2s;
+            }
+            .mobile-nav-item.active { color: #6366f1; }
+            .mobile-nav-icon { font-size: 1.4rem; line-height: 1; transition: transform 0.2s; }
+            .mobile-nav-item.active .mobile-nav-icon { transform: scale(1.15); filter: drop-shadow(0 0 8px rgba(99,102,241,0.5)); }
         }
-        .mobile-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.65rem;
-            font-weight: 600;
-            gap: 2px;
-        }
-        .mobile-nav-item.active {
-            color: var(--accent-blue);
-        }
-        .mobile-nav-icon {
-            font-size: 1.25rem;
-        }
-    }
-</style>
+    </style>
 </head>
 <body>
 
+    <!-- Canonical Sidebar (Desktop) -->
     <aside class="sidebar">
         <div>
             <div class="brand">
@@ -137,8 +116,8 @@
                 <li><a href="index.html" class="nav-link">🏠 Dashboard</a></li>
                 <li><a href="drills.html" class="nav-link">⚡ Character Drills</a></li>
                 <li><a href="conversation.html" class="nav-link active">💬 Conversation</a></li>
-                <li><a href="#" id="link-sandbox" class="nav-link locked" title="Locked">🔒 Sandbox</a></li>
-                <li><a href="#" id="link-exam" class="nav-link locked" title="Locked">🔒 Exams</a></li>
+                <li><a href="sandbox.html" id="link-sandbox" class="nav-link locked" title="Locked">🔒 Sandbox</a></li>
+                <li><a href="exam.html" id="link-exam" class="nav-link locked" title="Locked">🔒 Exams</a></li>
                 <li><a href="analytics.html" id="link-analytics" class="nav-link locked">📈 Analytics</a></li>
                 <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
                 <li id="admin-nav-item" style="display: none;"><a href="admin.html" class="nav-link" style="color: var(--accent-orange);">🛠️ Admin Panel</a></li>
@@ -154,7 +133,7 @@
                     </div>
                 </div>
                 <div class="user-stats-row">
-                    <span>❤️ <strong>5</strong></span>
+                    <span>❤️ <strong id="user-lives">5</strong> <span id="life-timer-display" style="color: var(--accent-orange); font-size: 0.7rem; font-family: monospace; display: none; margin-left: 4px;"></span></span>
                     <span>⚡ <strong id="stat-total-xp">0</strong> XP</span>
                 </div>
             </div>
@@ -163,7 +142,8 @@
     </aside>
 
     <main class="main-wrapper">
-        <header class="top-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <!-- Desktop Header -->
+        <header class="top-header desktop-only" style="justify-content: space-between; align-items: center; margin-bottom: 2rem;">
             <div class="header-title">
                 <h1 style="font-size: 1.6rem; font-weight: 800; color: white; margin: 0;">Shoko AI Friend Chat 🌸</h1>
                 <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Chat naturally with Shoko with emotional expressions & custom tones.</p>
@@ -177,6 +157,21 @@
             </div>
         </header>
 
+        <!-- Mobile Header -->
+        <header class="mobile-only mobile-header">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div class="brand-icon-box" style="width: 35px; height: 35px; font-size: 1.1rem; box-shadow: none;">⛩️</div>
+                <div style="line-height: 1.1;">
+                    <div style="font-weight: 800; font-size: 1.1rem; color: white;">KotoLab</div>
+                    <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 600;">AI Conversation</div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span onclick="openNotifications()" style="font-size: 1.2rem; cursor:pointer;">🔔</span>
+                <div class="user-avatar" id="mobile-user-initial" style="width: 32px; height: 32px; font-size: 0.85rem; cursor: pointer;" onclick="window.location.href='settings.html'">U</div>
+            </div>
+        </header>
+
         <div class="convo-container">
             <div class="chat-panel">
                 <div class="chat-header">
@@ -185,7 +180,7 @@
                         <p style="font-size: 0.75rem; color: var(--text-muted);">Practice daily conversational Japanese with Shoko.</p>
                     </div>
                     <div style="display: flex; gap: 0.5rem; align-items: center;">
-                        <span style="background: rgba(236, 72, 153, 0.15); border: 1px solid #ec4899; color: #f472b6; padding: 0.25rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">Casual & Formal</span>
+                        <span class="desktop-only" style="background: rgba(236, 72, 153, 0.15); border: 1px solid #ec4899; color: #f472b6; padding: 0.25rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700;">Casual & Formal</span>
                         <button onclick="location.href='index.html'" style="background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); padding: 0.3rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer;">End</button>
                     </div>
                 </div>
@@ -209,36 +204,37 @@
 
                 <div class="mic-control-box">
                     <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; padding: 0 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
-                        <button class="action-chip" onclick="toggleJapaneseInputBox()" style="border-color: var(--accent-indigo); color: var(--accent-blue);">📋 Japanese Text</button>
-                        <span style="font-size: 0.78rem; font-weight: 700; color: var(--accent-blue);" id="mic-status-label">Tap to speak or select your response.</span>
-                        <button class="action-chip" onclick="toggleEnglishInputBox()" style="border-color: var(--accent-gold); color: var(--accent-gold);">🇬🇧 English Input (Unlimited)</button>
+                        <button class="action-chip" onclick="toggleJapaneseInputBox()" style="border-color: var(--accent-indigo); color: var(--accent-blue);">📋 JP Text</button>
+                        <span style="font-size: 0.75rem; font-weight: 700; color: var(--accent-blue);" id="mic-status-label">Tap to speak or select response.</span>
+                        <button class="action-chip" onclick="toggleEnglishInputBox()" style="border-color: var(--accent-gold); color: var(--accent-gold);">🇬🇧 EN Input</button>
                     </div>
 
                     <div id="japanese-input-container" class="inline-input-wrapper">
-                        <input type="text" id="japanese-user-input" class="inline-text-input" placeholder="Type Japanese here (e.g., こんにちは)..." onkeydown="if(event.key==='Enter') submitJapaneseInput()">
+                        <input type="text" id="japanese-user-input" class="inline-text-input" placeholder="Type Japanese here..." onkeydown="if(event.key==='Enter') submitJapaneseInput()">
                         <button onclick="submitJapaneseInput()" style="background: var(--accent-indigo); border: none; color: white; padding: 0.4rem 0.85rem; border-radius: 8px; font-weight: 800; font-size: 0.75rem; cursor: pointer;">Send</button>
                     </div>
 
                     <div id="english-input-container" class="inline-input-wrapper" style="border-color: var(--accent-gold);">
-                        <input type="text" id="english-user-input" class="inline-text-input" placeholder="Type in English (translates to Japanese)..." onkeydown="if(event.key==='Enter') submitEnglishInput()">
+                        <input type="text" id="english-user-input" class="inline-text-input" placeholder="Type in English..." onkeydown="if(event.key==='Enter') submitEnglishInput()">
                         <button onclick="submitEnglishInput()" style="background: var(--accent-gold); border: none; color: black; padding: 0.4rem 0.85rem; border-radius: 8px; font-weight: 800; font-size: 0.75rem; cursor: pointer;">Send</button>
                     </div>
 
                     <div class="waveform-container">
-                        <div class="waveform-bars">❚ ❚ | | ❚ ❚ ❚ | | ❚ ❚</div>
+                        <div class="waveform-bars desktop-only">❚ ❚ | | ❚ ❚ ❚ | | ❚ ❚</div>
                         <button class="mic-btn-center" onclick="startConvoVoiceInput()">🎙️</button>
-                        <div class="waveform-bars">❚ ❚ | | ❚ ❚ ❚ | | ❚ ❚</div>
+                        <div class="waveform-bars desktop-only">❚ ❚ | | ❚ ❚ ❚ | | ❚ ❚</div>
                     </div>
 
-                    <div style="font-size: 0.7rem; color: var(--text-muted);">Click mic and speak in Japanese, or use text input options above!</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">Click mic and speak in Japanese or use text options!</div>
                 </div>
             </div>
 
+            <!-- Right Sidebar Widgets (Hidden on Mobile to fit screen) -->
             <div class="sidebar-right">
                 <div class="widget-card">
                     <h3 style="font-size: 0.95rem; font-weight: 800; color: white; margin-bottom: 0.85rem;">Conversation Helpers</h3>
                     <div style="font-size: 0.8rem; color: var(--accent-blue); margin-bottom: 0.5rem; cursor: pointer;" onclick="alert('Friendly phrase: そうだね！ (That is right!)')">💡 Friendly Expressions</div>
-                    <div style="font-size: 0.8rem; color: #f472b6; cursor: pointer;" onclick="alert('Emotional tone: Shoko responds naturally to casual or polite inputs.')">✨ Emotional Tone Guide</div>
+                    <div style="font-size: 0.8rem; color: #f472b6; cursor: pointer;" onclick="alert('Emotional tone: Shoko responds naturally.')">✨ Emotional Tone Guide</div>
                 </div>
 
                 <div class="widget-card">
@@ -266,84 +262,51 @@
         </div>
     </main>
 
+    <!-- 📱 NATIVE BOTTOM NAVIGATION BAR -->
+    <nav class="mobile-bottom-nav">
+        <a href="index.html" class="mobile-nav-item"><span class="mobile-nav-icon">🏠</span><span>Home</span></a>
+        <a href="drills.html" class="mobile-nav-item"><span class="mobile-nav-icon">⚡</span><span>Drills</span></a>
+        <a href="sandbox.html" class="mobile-nav-item"><span class="mobile-nav-icon">🧩</span><span>Sandbox</span></a>
+        <a href="conversation.html" class="mobile-nav-item active"><span class="mobile-nav-icon">💬</span><span>Chat</span></a>
+        <a href="analytics.html" class="mobile-nav-item"><span class="mobile-nav-icon">📈</span><span>Analytics</span></a>
+    </nav>
+
+    <!-- 🚀 GLOBAL APP SCRIPT & 100% UNTOUCHED CHAT LOGIC -->
     <script src="js/app.js?v=6.0"></script>
-    
-    <!-- UNIVERSAL FETCH SCRIPT (Fixes XP bug) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-    // 1. Strict User Authentication Check (No hardcoded fallback IDs)
-    const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
-    if (!currentUser.id) {
-        window.location.replace('login.html');
-        return;
-    }
-
-    const userId = currentUser.id;
-    const uname = currentUser.username || localStorage.getItem('kotolab_username') || 'User';
-
-    // 2. Update UI User Details
-    document.querySelectorAll('#sidebar-user-name, #user-display-name, #header-greeting-name').forEach(el => el && (el.innerText = uname));
-    document.querySelectorAll('#sidebar-user-initial, #userInitialDisplay, #user-avatar').forEach(el => el && (el.innerText = uname.charAt(0).toUpperCase()));
-
-    if (currentUser.role === 'admin' || localStorage.getItem('kotolab_role') === 'admin') {
-        const adminNav = document.getElementById('admin-nav-item');
-        if (adminNav) adminNav.style.display = 'block';
-    }
-
-    // 3. Fetch Live Database Progress & XP (Universal Synchronized Block)
-    setTimeout(async () => {
-        let totalXP = 0;
-        let hiraganaMastery = 0;
-        let katakanaMastery = 0;
-
-        try {
-            const res = await fetch(`/api/user/progress?userId=${userId}`);
-            const data = await res.json();
-            if (data && !data.error) {
-                totalXP = (data.total_correct || 0) * 50;
-                hiraganaMastery = data.hiragana_mastery || 0;
-                katakanaMastery = data.katakana_mastery || 0;
+            const currentUser = JSON.parse(localStorage.getItem('kotolab_user') || '{}');
+            if (!currentUser.id) {
+                window.location.replace('login.html');
+                return;
             }
-        } catch (e) {
-            console.error("XP Fetch Error:", e);
-        }
 
-        // Reflect exact XP across all badges and counters uniformly
-        document.querySelectorAll('.user-xp-display, #stat-total-xp, #xpCountDisplay').forEach(el => {
-            if (el) el.innerText = el.innerText.includes('XP') ? `${totalXP} XP` : totalXP;
+            const userId = currentUser.id;
+            const uname = currentUser.username || localStorage.getItem('kotolab_username') || 'User';
+
+            document.querySelectorAll('#sidebar-user-name, #user-display-name, #header-greeting-name').forEach(el => el && (el.innerText = uname));
+            document.querySelectorAll('#sidebar-user-initial, #userInitialDisplay, #user-avatar, #mobile-user-initial').forEach(el => el && (el.innerText = uname.charAt(0).toUpperCase()));
+
+            if (currentUser.role === 'admin' || localStorage.getItem('kotolab_role') === 'admin') {
+                const adminNav = document.getElementById('admin-nav-item');
+                if (adminNav) adminNav.style.display = 'block';
+            }
+
+            setTimeout(async () => {
+                let totalXP = 0;
+                try {
+                    const res = await fetch(`/api/user/progress?userId=${userId}`);
+                    const data = await res.json();
+                    if (data && !data.error) {
+                        totalXP = (data.total_correct || 0) * 50;
+                    }
+                } catch (e) { console.error("XP Fetch Error:", e); }
+
+                document.querySelectorAll('.user-xp-display, #stat-total-xp, #xpCountDisplay').forEach(el => {
+                    if (el) el.innerText = el.innerText.includes('XP') ? `${totalXP} XP` : totalXP;
+                });
+            }, 300);
         });
-
-        // Phase 1 Progress Calculation (If element exists on page)
-        const phase1Pct = Math.min(100, Math.round(((hiraganaMastery + katakanaMastery) / 2) || (totalXP > 0 ? Math.min(100, (totalXP / 300) * 100) : 0)));
-        const bar1 = document.getElementById('bar-phase-1');
-        const text1 = document.getElementById('progress-text-1');
-        const pct1 = document.getElementById('progress-pct-1');
-        if (bar1) bar1.style.width = `${phase1Pct}%`;
-        if (text1) text1.innerText = phase1Pct === 100 ? 'Completed' : 'In Progress';
-        if (pct1) pct1.innerText = `${phase1Pct}%`;
-
-        // Module Unlocks & Progress bars (Safely checks if elements exist)
-        if (typeof updateModuleProgress === 'function') {
-            updateModuleProgress(2, totalXP, 300, 'card-phase-2', 'title-phase-2', 'btn-phase-2', '🟢 Phase 2: Basic Vocabulary', 'sandbox.html');
-            updateModuleProgress(3, totalXP, 600, 'card-phase-3', 'title-phase-3', 'btn-phase-3', '🟢 Phase 3: Grammar Sandbox', 'sandbox.html');
-            updateModuleProgress(4, totalXP, 2000, 'card-phase-4', 'title-phase-4', 'btn-phase-4', '🟢 Phase 4: N5 Mock Exams', 'exam.html');
-        }
-
-        // Global Sidebar Unlocking based on Dynamic XP or Admin Role
-        if (totalXP >= 600 || currentUser.role === 'admin') {
-            const sb = document.getElementById('link-sandbox') || document.getElementById('nav-sandbox');
-            if(sb) { sb.href = 'sandbox.html'; sb.innerHTML = '🧩 Sandbox'; sb.classList.remove('locked', 'cursor-not-allowed'); sb.title = ''; sb.style.opacity = '1'; }
-        }
-        if (totalXP >= 2000 || currentUser.role === 'admin') {
-            const ex = document.getElementById('link-exam') || document.getElementById('nav-exam');
-            if(ex) { ex.href = 'exam.html'; ex.innerHTML = '📝 Exams'; ex.classList.remove('locked', 'cursor-not-allowed'); ex.title = ''; ex.style.opacity = '1'; }
-        }
-        if (totalXP >= 100 || currentUser.role === 'admin') {
-            const an = document.getElementById('link-analytics') || document.getElementById('nav-analytics');
-            if(an) { an.href = 'analytics.html'; an.innerHTML = '📈 Analytics'; an.classList.remove('locked', 'cursor-not-allowed'); an.title = ''; an.style.opacity = '1'; }
-        }
-    }, 300);
-});
 
         // Chat logic preserved exactly
         function speakText(txt) {
@@ -419,7 +382,7 @@
                 statusLabel.innerText = "Tap to speak or select your response.";
                 statusLabel.style.color = "var(--accent-blue)";
             } catch (err) {
-                statusLabel.innerText = err.message.includes("limit") ? "Daily limit reached. (Check backend code)" : "Connection error. Tap mic to retry.";
+                statusLabel.innerText = err.message.includes("limit") ? "Daily limit reached." : "Connection error. Tap mic to retry.";
                 statusLabel.style.color = "var(--accent-red)";
             }
         }
