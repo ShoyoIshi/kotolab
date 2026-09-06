@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.onrender.kotolab_gtma.twa",
+        "sha256_cert_fingerprints": ["7E:99:EA:1B:9F:C5:B3:B2:11:05:07:BE:99:41:2A:7A:7B:41:16:21:94:9E:FA:86:96:95:EC:C8:11:93:34:46"]
+      }
+    }]
