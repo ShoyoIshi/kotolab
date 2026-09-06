@@ -24,6 +24,9 @@ app.get('/', (req, res) => {
 // 2. Serve static assets from client folder
 app.use(express.static(path.join(__dirname, '../client')));
 
+// 🚀 ADD THIS LINE TO FIX THE 404 ERROR FOR PWA ICONS:
+app.use('/assets', express.static(path.join(__dirname, '../assets')));
+
 // -------------------------------------------------------------
 // Core AI Endpoints (Using Groq openai/gpt-oss-120b)
 // -------------------------------------------------------------
