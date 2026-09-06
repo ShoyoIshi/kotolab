@@ -41,6 +41,9 @@ async function globalDatabaseSync() {
         if (data && !data.error && data.total_correct !== undefined) p = data;
     } catch(e) {}
 
+    // Automatically check and unlock features on sync
+    await checkAndUnlockFeatures(userId);
+
     // ==========================================
     // ❤️ LIVES & REFILL TIMER EVALUATION (STRICT PAGE FILTER)
     // ==========================================
@@ -110,8 +113,8 @@ async function globalDatabaseSync() {
     if (currentLives <= 0) {
         const path = window.location.pathname.toLowerCase();
         const isPracticePage = path.includes('drills') || 
-                               path.includes('sandbox') || 
-                               path.includes('exam'); 
+                              path.includes('sandbox') || 
+                              path.includes('exam'); 
         if (isPracticePage) {
             triggerGameOverModal();
         }
@@ -220,7 +223,7 @@ const particleBank = [
     { before: "たなかさんは へや", after: "ほんを よみます。", targetParticle: "で", particles: ["で", "に", "を", "は", "が"], meaning: "Tanaka-san reads a book in the room.", explanation: "「で」 marks the location where an active event takes place." },
     { before: "テーブルの うえ", after: "ねこが います。", targetParticle: "に", particles: ["に", "を", "で", "は", "が"], meaning: "There is a cat on the table.", explanation: "「に」 is used with います/あります to show existence location." },
     { before: "わたし", after: "がくせいです。", targetParticle: "は", particles: ["は", "が", "を", "に", "で"], meaning: "I am a student.", explanation: "「は」 (wa) is the topic marker." },
-    { before: "えんぴつ", after: "てがみを かきます。", targetParticle: "で", particles: ["で", "に", "を", "は", "が"], meaning: "I write a letter with a pencil." , explanation: "「で」 marks the tool or means used to do an action." }
+    { before: "えんぴつ", after: "てがみを かきます。", targetParticle: "で", particles: ["で", "in", "を", "は", "が"], meaning: "I write a letter with a pencil." , explanation: "「で」 marks the tool or means used to do an action." }
 ];
 
 const sentenceBank = [
@@ -722,7 +725,7 @@ function startVoiceChallenge(targetLine) {
             transcript += event.results[i][0].transcript;
         }
         if (recognizedEl) recognizedEl.innerText = transcript;
-        const spokenClean = transcript.trim().replace(/[\s。、.!?]/g, '');
+        const spokenClean = transcript.trim().replace(/[\s☕、.!?]/g, '');
         if (spokenClean.length > 0) {
             aiText.innerHTML = `<span style="color: #22c55e; font-weight: 700;">✅ Voice Evaluated!</span><br>Spoken line: "${transcript}"`;
             recordSandboxSuccess();
@@ -892,4 +895,40 @@ function triggerGameOverModal() {
         </div>
     `;
     document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+// Function to check progress and unlock locked sidebar links automatically
+async function checkAndUnlockFeatures(userId) {
+    try {
+        const res = await fetch(`/api/user/progress?userId=${userId}`);
+        const data = await res.json();
+        
+        if (data && (data.total_correct > 0 || data.lessons_completed > 0 || data.study_time_minutes > 0)) {
+            // 1. Sandbox unlock karo
+            const sandboxLink = document.getElementById('link-sandbox');
+            if (sandboxLink) {
+                sandboxLink.classList.remove('locked');
+                sandboxLink.href = 'sandbox.html';
+                sandboxLink.innerHTML = '🧩 Sandbox';
+                sandboxLink.removeAttribute('title');
+            }
+
+            // 2. Exams unlock karo
+            const examLink = document.getElementById('link-exam');
+            if (examLink) {
+                examLink.classList.remove('locked');
+                examLink.href = 'exam.html';
+                examLink.innerHTML = '📝 Exams';
+                examLink.removeAttribute('title');
+            }
+
+            // 3. Analytics unlock karo agar locked hai
+            const analyticsLink = document.getElementById('link-analytics');
+            if (analyticsLink) {
+                analyticsLink.classList.remove('locked');
+            }
+        }
+    } catch (e) {
+        console.error("Feature unlock check failed:", e);
+    }
 }
