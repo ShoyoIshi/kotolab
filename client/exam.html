@@ -370,15 +370,16 @@
     <nav class="mobile-bottom-nav">
         <a href="index.html" class="mobile-nav-item"><span class="mobile-nav-icon">🏠</span><span>Home</span></a>
         <a href="drills.html" class="mobile-nav-item"><span class="mobile-nav-icon">⚡</span><span>Drills</span></a>
+        <a href="exam.html" class="mobile-nav-item active"><span class="mobile-nav-icon">📝</span><span>Exam</span></a>
         <a href="sandbox.html" class="mobile-nav-item"><span class="mobile-nav-icon">🧩</span><span>Sandbox</span></a>
         <a href="conversation.html" class="mobile-nav-item"><span class="mobile-nav-icon">💬</span><span>Chat</span></a>
         <a href="analytics.html" class="mobile-nav-item"><span class="mobile-nav-icon">📈</span><span>Analytics</span></a>
     </nav>
 
-    <!-- 🚀 GLOBAL APP SCRIPT (Handles Live Lives & Timers Automatically) -->
+    <!-- 🚀 GLOBAL APP SCRIPT -->
     <script src="js/app.js?v=26.0"></script>
 
-    <!-- 🚀 MASSIVE INLINE EXAM BANK & ENGINE 🚀 -->
+    <!-- 🚀 EXAM ENGINE SCRIPT -->
     <script>
         const examBankData = {
             level1: {
@@ -394,7 +395,7 @@
                     { section: "READING", category: "reading", passage: "はじめまして。わたしは マリアです。アメリカから きました。がくせいです。", prompt: "マリアさんは どこから きましたか。", sub: "Read and answer", options: ["イギリス", "アメリカ", "日本", "フランス"], correct: 1, explanation: "Text says アメリカからきました." },
                     { section: "READING", category: "reading", passage: "【スーパーの お知らせ】\nあしたは 休みです。明後日（あさって）来てください。", prompt: "あした、スーパーで 買い物が できますか。", sub: "Read and answer", options: ["はい、できます。", "いいえ、できません。"], correct: 1, explanation: "あしたは休みです means tomorrow it is closed." },
                     { section: "LISTENING", category: "listening", dialogueText: "男：おはようございます。女：ああ、おはようございます。", prompt: "今は いつですか。", sub: "Listen and answer", options: ["あさ (Morning)", "ひる (Afternoon)", "よる (Evening)", "よなか (Night)"], correct: 0, explanation: "おはようございます is used in the morning (あさ)." },
-                    { section: "LISTENING", category: "listening", dialogueText: "男：すみません、いま 何時ですか。女：ええと、３時半です。", prompt: "いま 何時ですか。", sub: "Listen and answer", options: ["３：００", "３：３０", "４：０0", "４：３０"], correct: 1, explanation: "３時半 (San-ji han) means 3:30." },
+                    { section: "LISTENING", category: "listening", dialogueText: "男：すみません、いま 何時ですか。女：ええと、３時半です。", prompt: "いま 何時ですか。", sub: "Listen and answer", options: ["３：００", "３：３０", "４：０0", "４：３0"], correct: 1, explanation: "３時半 (San-ji han) means 3:30." },
                     { section: "LISTENING", category: "listening", dialogueText: "男：りんごを ふたつ ください。女：はい、１００円です。", prompt: "男の人は いくら 払いますか。", sub: "Listen and answer", options: ["１０0円", "２００円", "３００円", "４００円"], correct: 0, explanation: "The woman says it is 100 yen." }
                 ]
             },
