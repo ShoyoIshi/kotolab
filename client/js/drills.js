@@ -1,6 +1,6 @@
 // ============================================================================
 // KotoLab Master Client Script — Character Drills (js/drills.js)
-// Sections, Script History Info (Ultra-Simple Style), Freeze Fix & Etymology
+// Sections, Script History Info, Freeze Fix, Auto-Animation & Dynamic Stroke Mastery
 // ============================================================================
 
 let currentCategory = 'hiragana';
@@ -22,6 +22,7 @@ let isDrawing = false;
 let currentLoadedSvgStrokes = [];
 let strokesDrawnInCurrentAttempt = 0;
 let currentStrokePath = []; 
+let currentActiveRequiredStrokes = 2; // Dynamic stroke target
 
 // Ultra-Simple Script Backgrounds
 const scriptHistories = {
@@ -96,7 +97,7 @@ function startPractice() {
 
     setTimeout(() => {
         if (currentItem) { initInteractiveCanvas(currentItem); }
-    }, 50);
+    }, 100);
     
     isTimerPaused = false;
     startModalTimer();
@@ -287,6 +288,7 @@ function openPracticeModal(index) {
     
     practiceCount = 0;
     strokesDrawnInCurrentAttempt = 0;
+    currentLoadedSvgStrokes = [];
 
     const modal = document.getElementById('practice-modal');
     if (!modal) return;
@@ -366,7 +368,7 @@ function closePracticeModal() {
 }
 
 // ============================================================================
-// CANVAS & STROKE RENDERER
+// CANVAS & STROKE RENDERER (FIXED AUTO-ANIMATION & DYNAMIC STROKES)
 // ============================================================================
 async function initInteractiveCanvas(item) {
     const target = document.getElementById('kanji-target');
@@ -377,6 +379,13 @@ async function initInteractiveCanvas(item) {
     const isKanji = isKanjiCharacter(activeChar);
     let hanziWriterSuccess = false;
 
+    // Determine baseline required stroke count dynamically
+    let calculatedStrokes = item.strokeCount || item.stroke_count || item.totalStrokes || (Array.isArray(item.strokes) ? item.strokes.length : null);
+    if (!calculatedStrokes || Number(calculatedStrokes) <= 0) {
+        calculatedStrokes = isKanji ? 3 : 2;
+    }
+    currentActiveRequiredStrokes = Number(calculatedStrokes);
+
     if (isKanji && window.HanziWriter) {
         try {
             const parentWidth = target.parentElement.clientWidth || 200;
@@ -386,15 +395,27 @@ async function initInteractiveCanvas(item) {
                 width: parentWidth, height: parentHeight, padding: 10,
                 showOutline: true, strokeAnimationSpeed: 1.2,
                 delayBetweenStrokes: 150, strokeColor: '#38bdf8',
-                outlineColor: 'rgba(255, 255, 255, 0.15)', drawingColor: '#22c55e'
+                outlineColor: 'rgba(255, 255, 255, 0.15)', drawingColor: '#22c55e',
+                onLoadCharDataSuccess: function(charData) {
+                    if (charData && charData.strokes) {
+                        currentActiveRequiredStrokes = charData.strokes.length;
+                        renderStrokeOrderColumn({
+                            strokes: charData.strokes.map((_, i) => ({
+                                name: `Stroke ${i + 1}`,
+                                desc: i === 0 ? "First stroke" : "Connecting stroke"
+                            }))
+                        });
+                    }
+                    setTimeout(() => { if (writer) writer.animateCharacter(); }, 200);
+                }
             });
-            
-            writer.animateCharacter();
 
-            // ❤️ ADDED QUIZ LOGIC FOR HANZI WRITER
+            // 🔥 FIX 1: Auto-play stroke animation on load
+            setTimeout(() => { if (writer) writer.animateCharacter(); }, 350);
+
+            // QUIZ LOGIC FOR HANZI WRITER
             writer.quiz({
                 onMistake: function(strokeData) {
-                    console.log("Mistake made during drawing!");
                     if (typeof triggerLifeLoss === 'function') triggerLifeLoss();
                 },
                 onComplete: function(summaryData) {
@@ -404,9 +425,8 @@ async function initInteractiveCanvas(item) {
 
             hanziWriterSuccess = true;
 
-            const targetStrokes = item.strokeCount || item.stroke_count || 4;
             renderStrokeOrderColumn({
-                strokes: Array.from({ length: targetStrokes }, (_, i) => ({
+                strokes: Array.from({ length: currentActiveRequiredStrokes }, (_, i) => ({
                     name: `Stroke ${i + 1}`, desc: i === 0 ? "First stroke" : "Connecting stroke"
                 }))
             });
@@ -429,6 +449,7 @@ async function setupKanaReferenceSvg(item) {
     const activeChar = item.literal || item.char || '?';
     
     if (activeChar.length > 1) {
+        currentActiveRequiredStrokes = 2;
         renderStrokeOrderColumn({ 
             strokes: [
                 { name: "Stroke 1", desc: "First character part" }, 
@@ -456,19 +477,21 @@ async function setupKanaReferenceSvg(item) {
             desc: idx === 0 ? "First stroke" : "Connecting stroke"
         }));
 
+        currentActiveRequiredStrokes = currentLoadedSvgStrokes.length;
         renderStrokeOrderColumn({ strokes: currentLoadedSvgStrokes });
 
         let ghostPaths = '', animPaths = '';
         currentLoadedSvgStrokes.forEach((s, idx) => {
             ghostPaths += `<path d="${s.d}" fill="none" stroke="rgba(255, 255, 255, 0.15)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`;
-            animPaths += `<path id="kana-stroke-${idx}" d="${s.d}" fill="none" stroke="#38bdf8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="400" stroke-dashoffset="400" style="transition: stroke-dashoffset 1.5s ease-in-out;"/>`;
+            animPaths += `<path id="kana-stroke-${idx}" d="${s.d}" fill="none" stroke="#38bdf8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="400" stroke-dashoffset="400" style="transition: stroke-dashoffset 1.2s ease-in-out;"/>`;
         });
 
         target.innerHTML = `<svg viewBox="0 0 109 109" style="width: 100%; height: 100%;"><g>${ghostPaths}${animPaths}</g></svg>`;
-        setTimeout(animateKanaSequentialStrokes, 100);
+        setTimeout(animateKanaSequentialStrokes, 150);
 
     } catch (e) {
-        renderStrokeOrderColumn({ strokes: [{ name: "Stroke 1", desc: "Top/Left stroke" }, { name: "Stroke 2", desc: "Base stroke" }] });
+        currentActiveRequiredStrokes = item.strokeCount || item.stroke_count || 2;
+        renderStrokeOrderColumn({ strokes: Array.from({ length: currentActiveRequiredStrokes }, (_, idx) => ({ name: `Stroke ${idx + 1}`, desc: idx === 0 ? "Top/Left stroke" : "Connecting stroke" })) });
         target.innerHTML = `<div style="font-size: 110px; font-weight: 800; color: #38bdf8; display: flex; align-items: center; justify-content: center; height: 100%;">${activeChar}</div>`;
     }
 }
@@ -503,7 +526,6 @@ function handleIncorrectStroke() {
         setTimeout(() => { kanaCanvas.style.backgroundColor = 'transparent'; }, 400);
     }
 
-    // ❤️ LIFE MINUS LOGIC TRIGGER FOR CUSTOM CANVAS
     if (typeof triggerLifeLoss === 'function') {
         triggerLifeLoss();
     }
@@ -587,8 +609,15 @@ function addCanvasDrawingListeners(cvs) {
 
             strokesDrawnInCurrentAttempt++;
 
+            // 🔥 FIX 2: Dynamic stroke target check (No longer hardcoded to 2)
             const targetStrokeCount = (currentLoadedSvgStrokes && currentLoadedSvgStrokes.length > 0) 
-                ? currentLoadedSvgStrokes.length : (currentItem ? (currentItem.strokeCount || currentItem.stroke_count || 2) : 2);
+                ? currentLoadedSvgStrokes.length : (currentActiveRequiredStrokes || 2);
+
+            const feedback = document.getElementById('modal-feedback-msg');
+            if (feedback && strokesDrawnInCurrentAttempt < targetStrokeCount) {
+                feedback.innerText = `Stroke ${strokesDrawnInCurrentAttempt}/${targetStrokeCount} drawn. Keep going!`;
+                feedback.style.color = '#38bdf8';
+            }
 
             if (strokesDrawnInCurrentAttempt >= targetStrokeCount) {
                 practiceCount++; 
@@ -630,7 +659,7 @@ function renderStrokeOrderColumn(strokeData) {
     }
 
     if (tipsList) {
-        const strokesLen = strokeData && strokeData.strokes ? strokeData.strokes.length : 2;
+        const strokesLen = strokeData && strokeData.strokes ? strokeData.strokes.length : currentActiveRequiredStrokes;
         tipsList.innerHTML = `
             <li style="margin-bottom: 4px;">Total Strokes: <strong style="color:white;">${strokesLen}</strong></li>
             <li>Follow natural top-to-bottom order.</li>
@@ -673,19 +702,27 @@ function playStrokeDemo() {
     }
 }
 
+// 🔥 FIX 1 (Continued): Forced reflow so stroke animation plays smoothly on load
 function animateKanaSequentialStrokes() {
     if (!currentLoadedSvgStrokes || currentLoadedSvgStrokes.length === 0) return;
     currentLoadedSvgStrokes.forEach((_, i) => {
         const path = document.getElementById(`kana-stroke-${i}`);
-        if (path) { path.style.transition = 'none'; path.style.strokeDashoffset = '400'; }
+        if (path) { 
+            path.style.transition = 'none'; 
+            path.style.strokeDashoffset = '400';
+            void path.offsetWidth; // Force DOM reflow
+        }
     });
     let idx = 0;
     function next() {
         if (idx >= currentLoadedSvgStrokes.length) return;
         const path = document.getElementById(`kana-stroke-${idx}`);
-        if (path) { path.style.transition = 'stroke-dashoffset 1.5s ease-in-out'; path.style.strokeDashoffset = '0'; }
+        if (path) { 
+            path.style.transition = 'stroke-dashoffset 1.2s ease-in-out'; 
+            path.style.strokeDashoffset = '0'; 
+        }
         idx++;
-        setTimeout(next, 1600);
+        setTimeout(next, 1400);
     }
     setTimeout(next, 100);
 }
@@ -693,7 +730,9 @@ function animateKanaSequentialStrokes() {
 function playSingleStrokeAnimation(idx) {
     const path = document.getElementById(`kana-stroke-${idx}`);
     if (path) {
-        path.style.transition = 'none'; path.style.strokeDashoffset = '400';
+        path.style.transition = 'none'; 
+        path.style.strokeDashoffset = '400';
+        void path.offsetWidth;
         setTimeout(() => { path.style.transition = 'stroke-dashoffset 1.2s ease-in-out'; path.style.strokeDashoffset = '0'; }, 50);
     }
 }
@@ -735,7 +774,7 @@ function resetStrokePractice() {
     strokesDrawnInCurrentAttempt = 0;
     if (kanaCtx && kanaCanvas) kanaCtx.clearRect(0, 0, kanaCanvas.width, kanaCanvas.height);
     const feedback = document.getElementById('modal-feedback-msg');
-    if (feedback && feedback.innerText.includes('Incorrect')) {
+    if (feedback) {
         feedback.innerText = "Trace the character above!";
         feedback.style.color = '#a5b4fc';
     }

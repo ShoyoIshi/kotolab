@@ -23,6 +23,22 @@
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-main); color: #ffffff; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; display: flex; min-height: 100vh; overflow-x: hidden; }
 
+        /* 🔥 KANJI CENTER ALIGNMENT FIX */
+        #kanji-target {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        #kanji-target svg {
+            display: block !important;
+            margin: auto !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+        }
+
         .sidebar { width: 260px; background: #090d16; border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; height: 100vh; position: fixed; left: 0; top: 0; z-index: 100; }
         .brand { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; padding-left: 0.5rem; }
         .brand-icon-box { width: 40px; height: 40px; background: linear-gradient(135deg, #38bdf8, #6366f1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
@@ -232,7 +248,7 @@
                     <div style="background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 1rem; display: flex; flex-direction: column;">
                         <div style="font-size: 0.85rem; font-weight: 700; color: white; margin-bottom: 0.75rem;">Correct Stroke Order</div>
                         <div class="kanji-canvas-box">
-                            <div id="kanji-target" style="width: 200px; height: 200px; position: relative; z-index: 2;"></div>
+                            <div id="kanji-target" style="position: relative; z-index: 2;"></div>
                         </div>
                         <div id="modal-stroke-list" style="display: flex; flex-direction: column; gap: 0.5rem; overflow-y: auto; max-height: 140px; padding-right: 0.25rem;"></div>
                     </div>
