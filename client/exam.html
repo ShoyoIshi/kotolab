@@ -396,7 +396,7 @@
                     { section: "READING", category: "reading", passage: "【スーパーの お知らせ】\nあしたは 休みです。明後日（あさって）来てください。", prompt: "あした、スーパーで 買い物が できますか。", sub: "Read and answer", options: ["はい、できます。", "いいえ、できません。"], correct: 1, explanation: "あしたは休みです means tomorrow it is closed." },
                     { section: "LISTENING", category: "listening", dialogueText: "男：おはようございます。女：ああ、おはようございます。", prompt: "今は いつですか。", sub: "Listen and answer", options: ["あさ (Morning)", "ひる (Afternoon)", "よる (Evening)", "よなか (Night)"], correct: 0, explanation: "おはようございます is used in the morning (あさ)." },
                     { section: "LISTENING", category: "listening", dialogueText: "男：すみません、いま 何時ですか。女：ええと、３時半です。", prompt: "いま 何時ですか。", sub: "Listen and answer", options: ["３：００", "３：３０", "４：０0", "４：３0"], correct: 1, explanation: "３時半 (San-ji han) means 3:30." },
-                    { section: "LISTENING", category: "listening", dialogueText: "男：りんごを ふたつ ください。女：はい、１００円です。", prompt: "男の人は いくら 払いますか。", sub: "Listen and answer", options: ["１０0円", "２００円", "３００円", "４００円"], correct: 0, explanation: "The woman says it is 100 yen." }
+                    { section: "LISTENING", category: "listening", dialogueText: "男：りんごを ふたつ ください。女：はい、１０0円です。", prompt: "男の人は いくら 払いますか。", sub: "Listen and answer", options: ["１０0円", "２００円", "３００円", "４００円"], correct: 0, explanation: "The woman says it is 100 yen." }
                 ]
             },
             level2: {
@@ -543,7 +543,14 @@
             if (q.passage) { passageBox.innerText = q.passage; passageBox.style.display = 'block'; } else { passageBox.style.display = 'none'; }
 
             const listeningBox = document.getElementById('q-listening-container');
-            if (q.dialogueText) { listeningBox.style.display = 'flex'; document.getElementById('q-listening-script').innerText = "(Click button to listen)"; } else { listeningBox.style.display = 'none'; }
+            const scriptLabel = document.getElementById('q-listening-script');
+            if (q.dialogueText) { 
+                listeningBox.style.display = 'flex'; 
+                scriptLabel.innerText = "(Click button to listen)"; 
+                scriptLabel.style.color = "#cbd5e1";
+            } else { 
+                listeningBox.style.display = 'none'; 
+            }
 
             const opts = document.getElementById('q-options-container');
             opts.innerHTML = q.options.map((opt, oIdx) => `
@@ -567,12 +574,38 @@
             else if (nextIdx >= activePaper.length) promptSubmitExam();
         }
 
+        // 🔥 FIXED: Audio play karne par ab text screen par show nahi hoga!
         function playListeningDialogue() {
             const q = activePaper[activeQuestionIndex];
+            const scriptLabel = document.getElementById('q-listening-script');
+
             if (q.dialogueText && 'speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                window.speechSynthesis.speak(new SpeechSynthesisUtterance(q.dialogueText));
-                document.getElementById('q-listening-script').innerText = `Playing: "${q.dialogueText}"`;
+                
+                const utterance = new SpeechSynthesisUtterance(q.dialogueText);
+                utterance.lang = 'ja-JP';
+                utterance.rate = 0.85;
+
+                if (scriptLabel) {
+                    scriptLabel.innerText = "🔊 Audio Playing... Listen carefully!";
+                    scriptLabel.style.color = "#38bdf8";
+                }
+
+                utterance.onend = () => {
+                    if (scriptLabel) {
+                        scriptLabel.innerText = "✅ Audio Finished. Select your answer below.";
+                        scriptLabel.style.color = "#4ade80";
+                    }
+                };
+
+                utterance.onerror = () => {
+                    if (scriptLabel) {
+                        scriptLabel.innerText = "⚠️ Audio Error. Please try again.";
+                        scriptLabel.style.color = "#ef4444";
+                    }
+                };
+
+                window.speechSynthesis.speak(utterance);
             }
         }
 
@@ -580,7 +613,9 @@
             const q = activePaper[activeQuestionIndex];
             if ('speechSynthesis' in window) { 
                 window.speechSynthesis.cancel();
-                window.speechSynthesis.speak(new SpeechSynthesisUtterance(q.prompt.replace(/[「」【】]/g, ''))); 
+                const utterance = new SpeechSynthesisUtterance(q.prompt.replace(/[「」【】]/g, ''));
+                utterance.lang = 'ja-JP';
+                window.speechSynthesis.speak(utterance); 
             }
         }
 
